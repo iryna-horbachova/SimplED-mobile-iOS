@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  SimplED
-//
-//  Created by Iryna Horbachova on 10.10.2020.
-//
-
 import UIKit
 
 @main
