@@ -9,8 +9,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.windowScene = windowScene
-    window?.rootViewController = WelcomeViewController()
-    window?.rootViewController?.view.backgroundColor = .yellow  // So we can see it
+    window?.rootViewController = AuthenticationViewController()
+    window?.rootViewController?.view.backgroundColor = .white  // So we can see it
     window?.makeKeyAndVisible()
   }
 
