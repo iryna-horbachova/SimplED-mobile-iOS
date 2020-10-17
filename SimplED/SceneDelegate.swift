@@ -9,7 +9,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.windowScene = windowScene
-    window?.rootViewController = AuthenticationViewController()
+    // TODO: Check whether the user is authenticated
+    window?.rootViewController = TabBarController()
+    //window?.rootViewController = AuthenticationViewController()
     window?.rootViewController?.view.backgroundColor = .white  // So we can see it
     window?.makeKeyAndVisible()
   }
