@@ -82,7 +82,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
   
   func authenticateUser() {
     // - TODO: add authentication with server
-    view.window?.rootViewController = UINavigationController(rootViewController: TabBarController())
+    view.window?.rootViewController = TabBarController()
     view.window?.makeKeyAndVisible()
   }
   

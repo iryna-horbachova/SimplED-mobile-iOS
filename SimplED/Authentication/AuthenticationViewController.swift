@@ -37,11 +37,11 @@ class AuthenticationViewController: UIViewController {
         containerView.topAnchor.constraint(equalTo:
           segmentedControl.bottomAnchor, constant: 20),
         containerView.leadingAnchor.constraint(equalTo:
-          view.leadingAnchor, constant: 0),
+          view.leadingAnchor),
         containerView.trailingAnchor.constraint(equalTo:
-          view.trailingAnchor, constant: 0),
+          view.trailingAnchor),
         containerView.bottomAnchor.constraint(equalTo:
-          view.bottomAnchor, constant: 0),
+          view.bottomAnchor),
       ])
 
     // Adding view controllers to the container.
