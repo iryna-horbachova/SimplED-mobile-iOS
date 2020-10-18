@@ -19,6 +19,8 @@
 		894AE4DA253B7088008EEBF5 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4D9253B7088008EEBF5 /* CourseViewController.swift */; };
 		89725E2725379280001273D5 /* BaseAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89725E2625379280001273D5 /* BaseAuthViewController.swift */; };
 		89725E2C25381AFC001273D5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89725E2B25381AFC001273D5 /* Constants.swift */; };
+		898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */; };
+		898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */; };
 		89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233232531CD1E00643E02 /* AppDelegate.swift */; };
 		89B233262531CD1E00643E02 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233252531CD1E00643E02 /* SceneDelegate.swift */; };
 		89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233272531CD1E00643E02 /* AuthenticationViewController.swift */; };
@@ -61,6 +63,8 @@
 		894AE4D9253B7088008EEBF5 /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
 		89725E2625379280001273D5 /* BaseAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAuthViewController.swift; sourceTree = "<group>"; };
 		89725E2B25381AFC001273D5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewController.swift; sourceTree = "<group>"; };
+		898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
 		89B233202531CD1E00643E02 /* SimplED.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimplED.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89B233232531CD1E00643E02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89B233252531CD1E00643E02 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 				894AE4CE253AF0C1008EEBF5 /* CourseCell.swift */,
 				894AE4D3253B16D3008EEBF5 /* Course.swift */,
 				894AE4D9253B7088008EEBF5 /* CourseViewController.swift */,
+				898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */,
+				898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -343,10 +349,12 @@
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,
 				89B233762531F50900643E02 /* SignUpViewController.swift in Sources */,
+				898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */,
 				89B2336C2531DCD900643E02 /* Extensions.swift in Sources */,
 				894AE4D4253B16D3008EEBF5 /* Course.swift in Sources */,
 				894AE4A025383D51008EEBF5 /* Validation.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
+				898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */,
 				89B233262531CD1E00643E02 /* SceneDelegate.swift in Sources */,
 				894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */,
 				89725E2725379280001273D5 /* BaseAuthViewController.swift in Sources */,
