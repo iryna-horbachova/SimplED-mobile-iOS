@@ -2,9 +2,9 @@ import UIKit
 
 class ExploreViewController: UIViewController {
 
-  let categories = ["Hot", "Programming", "Art", "Literature"
-]
+  let categories = ["Hot", "Programming", "Art", "Literature"]
   let tableView = UITableView()
+  var searchController: UISearchController!
   let categoryCellIdentifier = "categoryCell"
   
   override func viewDidLoad() {
@@ -28,8 +28,17 @@ class ExploreViewController: UIViewController {
     tableView.register(CategoryCell.self, forCellReuseIdentifier: categoryCellIdentifier)
     tableView.dataSource = self
     tableView.delegate = self
+    
+    let resultsTableController = CourseTableViewController()
+    searchController = UISearchController(searchResultsController: resultsTableController)
+    searchController.delegate = self
+    searchController.searchResultsUpdater = self
+    searchController.searchBar.autocapitalizationType = .none
+    searchController.searchBar.delegate = self
+    
+    navigationItem.searchController = searchController
+    navigationItem.hidesSearchBarWhenScrolling = true
   }
-  
 }
 
 extension ExploreViewController: UITableViewDataSource {
@@ -70,4 +79,14 @@ extension ExploreViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     50
   }
+}
+
+extension ExploreViewController: UISearchResultsUpdating {
+  func updateSearchResults(for searchController: UISearchController) {
+    print("updatesearchresults")
+  }
+}
+
+extension ExploreViewController: UISearchControllerDelegate, UISearchBarDelegate {
+  
 }
