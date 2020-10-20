@@ -3,16 +3,11 @@ import UIKit
 class CourseTableViewCell: UITableViewCell {
 
   let titleLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel.makeTitleLabel()
     label.text = NSLocalizedString(
       "COURSE_TITLE_LABEL",
       value: "Course title",
       comment: "Label showing the title of the course")
-    
-    label.font = .boldSystemFont(ofSize: 18)
-    label.textColor = .black
-    
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
@@ -31,13 +26,7 @@ class CourseTableViewCell: UITableViewCell {
   }()
   
   let courseImageView: UIImageView = {
-    let iv = UIImageView()
-    iv.translatesAutoresizingMaskIntoConstraints = false
-    iv.contentMode = .scaleAspectFill
-    iv.clipsToBounds = true
-    iv.image = UIImage(named: "course-default")
-    iv.layer.cornerRadius = 10
-    return iv
+    return UIImageView.makeCourseImageView()
   }()
   
   override func awakeFromNib() {
@@ -48,6 +37,7 @@ class CourseTableViewCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     backgroundColor = .white
+    selectionStyle = .none
     
     let stackView = UIStackView.makeVerticalStackView()
     stackView.addArrangedSubview(courseImageView)

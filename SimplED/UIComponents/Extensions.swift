@@ -8,6 +8,10 @@ extension UIColor {
   static var mainTheme: UIColor {
     return UIColor(r: 1, g: 186, b: 239)
   }
+  
+  static var greenTheme: UIColor {
+    return UIColor(r: 125, g: 207, b: 182)
+  }
 }
 
 extension UITextField {
@@ -45,13 +49,48 @@ extension UIButton {
 }
 
 extension UIStackView {
-  static func makeVerticalStackView() -> UIStackView {
+  private static func makeStackView() -> UIStackView {
     let stackView = UIStackView()
-    stackView.axis  = NSLayoutConstraint.Axis.vertical
     stackView.distribution  = .equalSpacing
     stackView.alignment = .fill
     
     stackView.translatesAutoresizingMaskIntoConstraints = false
     return stackView
+  }
+  
+  static func makeVerticalStackView() -> UIStackView {
+    let stackView = UIStackView.makeStackView()
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    return stackView
+  }
+  
+  static func makeHorizontalStackView() -> UIStackView {
+    let stackView = UIStackView.makeStackView()
+    stackView.axis = NSLayoutConstraint.Axis.horizontal
+    return stackView
+  }
+}
+
+extension UILabel {
+  static func makeTitleLabel() -> UILabel {
+    let label = UILabel()
+    
+    label.font = .boldSystemFont(ofSize: 18)
+    label.textColor = .black
+    
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }
+}
+
+extension UIImageView {
+  static func makeCourseImageView() -> UIImageView {
+    let iv = UIImageView()
+    iv.translatesAutoresizingMaskIntoConstraints = false
+    iv.contentMode = .scaleAspectFill
+    iv.clipsToBounds = true
+    iv.image = UIImage(named: "course-default")
+    iv.layer.cornerRadius = 10
+    return iv
   }
 }
