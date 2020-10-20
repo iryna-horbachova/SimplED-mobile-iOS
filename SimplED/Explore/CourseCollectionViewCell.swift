@@ -1,19 +1,15 @@
 import UIKit
 
-class CourseCell: UICollectionViewCell {
+class CourseCollectionViewCell: UICollectionViewCell {
   // TODO: ADD MODEL + DIDSET
   
   let titleLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel.makeTitleLabel()
     label.text = NSLocalizedString(
       "COURSE_TITLE_LABEL",
       value: "Course title",
       comment: "Label showing the title of the course")
-    
-    label.font = .boldSystemFont(ofSize: 18)
-    label.textColor = .black
-    
-    label.translatesAutoresizingMaskIntoConstraints = false
+  
     return label
   }()
   

@@ -1,7 +1,9 @@
 import UIKit
 
 class CourseTableViewController: UITableViewController {
+  let filterTableViewController = FilterTableViewController()
   let cellIdentifier = "courseTableViewCell"
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -29,23 +31,27 @@ class CourseTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = UIView()
+    let header = UITableViewHeaderFooterView()
     let button = UIButton()
-    button.backgroundColor = .mainTheme
-   // button.frame.widt = view.frame.width
+    button.backgroundColor = .greenTheme
     button.setTitle("Filter >", for: .normal)
     button.titleLabel?.font =  .systemFont(ofSize: 20)
     button.layer.cornerRadius = CORNER_RADIUS
+    button.addTarget(self, action: #selector(showFilterTableViewController), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(button)
+    header.translatesAutoresizingMaskIntoConstraints = false
+    header.contentView.addSubview(button)
     NSLayoutConstraint.activate(
       [
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 5),
-        button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
+        button.topAnchor.constraint(equalTo: header.contentView.topAnchor, constant: 5),
+        button.leadingAnchor.constraint(equalTo: header.contentView.leadingAnchor, constant: 5),
+        button.trailingAnchor.constraint(equalTo: header.contentView.trailingAnchor, constant: -5),
+        button.bottomAnchor.constraint(equalTo: header.contentView.bottomAnchor, constant: -5),
       ])
-    return view
+    return header
+  }
+  
+  @objc func showFilterTableViewController(sender: UIButton!) {
+    self.present(filterTableViewController, animated: true, completion: nil)
   }
 }

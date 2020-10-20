@@ -43,7 +43,7 @@ class CategoryCell: UITableViewCell {
     cv.backgroundColor = .white
     cv.dataSource = self
     cv.delegate = self
-    cv.register(CourseCell.self, forCellWithReuseIdentifier: courseCellIdentifier)
+    cv.register(CourseCollectionViewCell.self, forCellWithReuseIdentifier: courseCellIdentifier)
     return cv
   }
 }
@@ -54,7 +54,7 @@ extension CategoryCell : UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
     return cell
   }
   
@@ -64,7 +64,7 @@ extension CategoryCell : UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
     parentViewController?.navigationController?.pushViewController(CourseViewController(), animated: true)
     return true
   }
