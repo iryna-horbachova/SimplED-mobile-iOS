@@ -74,22 +74,45 @@ extension UIStackView {
 extension UILabel {
   static func makeTitleLabel() -> UILabel {
     let label = UILabel()
-    
     label.font = .boldSystemFont(ofSize: 18)
     label.textColor = .label
-    
+    label.minimumScaleFactor = 0.9
+    label.adjustsFontSizeToFitWidth   = true
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }
+  
+  static func makeSecondaryLabel() -> UILabel {
+    let label = UILabel()
+    label.textColor = .secondaryLabel
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.90
+    label.lineBreakMode = .byTruncatingTail
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }
+  
+  static func makeBodyLabel() -> UILabel {
+    let label = UILabel()
+    label.font = .preferredFont(forTextStyle: .body)
+    label.textColor = .secondaryLabel
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.75
+    label.lineBreakMode = .byWordWrapping
+    label.numberOfLines = 0
+    label.sizeToFit()
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }
 }
 
 extension UIImageView {
-  static func makeCourseImageView() -> UIImageView {
+  static func makeImageView(defaultImageName: String) -> UIImageView {
     let iv = UIImageView()
     iv.translatesAutoresizingMaskIntoConstraints = false
     iv.contentMode = .scaleAspectFill
     iv.clipsToBounds = true
-    iv.image = UIImage(named: "course-default")
+    iv.image = UIImage(named: defaultImageName)
     iv.layer.cornerRadius = 10
     return iv
   }

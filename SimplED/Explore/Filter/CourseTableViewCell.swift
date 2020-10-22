@@ -26,7 +26,7 @@ class CourseTableViewCell: UITableViewCell {
   }()
   
   let courseImageView: UIImageView = {
-    return UIImageView.makeCourseImageView()
+    return UIImageView.makeImageView(defaultImageName: "course-default")
   }()
   
   override func awakeFromNib() {
