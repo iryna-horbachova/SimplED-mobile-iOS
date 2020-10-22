@@ -14,7 +14,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .systemBackground
 
     // TODO: Add scrollview
     view.addSubview(self.scrollView)

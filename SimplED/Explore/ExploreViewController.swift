@@ -10,6 +10,7 @@ class ExploreViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Explore"
+    navigationController?.navigationBar.prefersLargeTitles = true
   
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +54,7 @@ extension ExploreViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
     guard let header = view as? UITableViewHeaderFooterView else { return }
-    header.backgroundColor = .white
+    header.backgroundColor = .systemBackground
     header.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     header.textLabel?.frame = header.frame
   }

@@ -1,13 +1,13 @@
 import UIKit
 
-class CourseTableViewCell: UITableViewCell {
-
+class TaskTableViewCell: UITableViewCell {
+  
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
     label.text = NSLocalizedString(
-      "COURSE_TITLE_LABEL",
-      value: "Course title",
-      comment: "Label showing the title of the course")
+      "TASK_TITLE_LABEL",
+      value: "Task title",
+      comment: "Label showing the title of the task")
     return label
   }()
   
@@ -19,28 +19,19 @@ class CourseTableViewCell: UITableViewCell {
       comment: "Label showing the details of the course")
     
     label.font = .systemFont(ofSize: 15)
-    label.textColor = .black
+    label.textColor = .label
     
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
-  let courseImageView: UIImageView = {
-    return UIImageView.makeCourseImageView()
-  }()
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-  }
-  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    backgroundColor = .white
+    backgroundColor = .systemBackground
     selectionStyle = .none
     
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.addArrangedSubview(courseImageView)
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(detailsLabel)
     stackView.spacing = 5
@@ -59,5 +50,4 @@ class CourseTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
 }
