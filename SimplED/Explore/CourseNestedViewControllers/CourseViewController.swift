@@ -7,7 +7,7 @@ class CourseViewController: UIViewController {
   // TODO: ADD MODEL AND REPLACE FAKE VALUES
   
   let titleLabel = TitleLabel(title: "Course Title", size: 25)
-  let imageView = UIImageView.makeCourseImageView()
+  let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
   let segmentedControl = makeSegmentedControl()
   let containerView = UIView()
   
