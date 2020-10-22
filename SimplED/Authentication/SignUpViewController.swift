@@ -2,7 +2,7 @@ import UIKit
 
 class SignUpViewController: BaseAuthViewController {
   
-  let confirmPasswordTextField = UITextField.makeTextField()
+  private let confirmPasswordTextField = UITextField.makeTextField()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,7 +22,7 @@ class SignUpViewController: BaseAuthViewController {
     continueButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
   }
   
-  @objc func signUp(sender: UIButton!) {
+  @objc private func signUp(sender: UIButton!) {
     // - TODO: Add validation + alerts
     authenticateUser()
   }

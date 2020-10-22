@@ -29,10 +29,6 @@ class CourseTableViewCell: UITableViewCell {
     return UIImageView.makeImageView(defaultImageName: "course-default")
   }()
   
-  override func awakeFromNib() {
-    super.awakeFromNib()
-  }
-  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     

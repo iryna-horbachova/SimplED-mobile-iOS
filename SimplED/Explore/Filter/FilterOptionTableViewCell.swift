@@ -2,7 +2,7 @@ import UIKit
 
 class FilterOptionTableViewCell: UITableViewCell {
 
-  let optionTag = 1
+  private let optionTag = 1
   
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
@@ -13,7 +13,7 @@ class FilterOptionTableViewCell: UITableViewCell {
     return label
   }()
   
-  lazy var switchController: UISwitch = {
+  private lazy var switchController: UISwitch = {
     let switchOnOff = UISwitch(frame: .zero)
     switchOnOff.isUserInteractionEnabled = true
     switchOnOff.setOn(false, animated: true)
@@ -21,11 +21,6 @@ class FilterOptionTableViewCell: UITableViewCell {
     switchOnOff.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
     return switchOnOff
   }()
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    // Initialization code
-  }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,7 +43,7 @@ class FilterOptionTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  @objc func switchStateDidChange(_ sender: UISwitch){
+  @objc private func switchStateDidChange(_ sender: UISwitch){
     if (sender.isOn == true){
       print("UISwitch state is now ON")
     }

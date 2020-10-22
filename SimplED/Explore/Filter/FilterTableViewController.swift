@@ -2,9 +2,9 @@ import UIKit
 
 class FilterTableViewController: UITableViewController {
   
-  let filterSections = ["Category", "Languages", "Duration"]
-  let filterOptions = ["Option 1", "Option 2", "Option 3"]
-  let reuseIdentifier = "filterOptionCell"
+  private let filterSections = ["Category", "Languages", "Duration"]
+  private let filterOptions = ["Option 1", "Option 2", "Option 3"]
+  private let reuseIdentifier = "filterOptionCell"
   
   // TODO: ADD MODEL
   override func viewDidLoad() {

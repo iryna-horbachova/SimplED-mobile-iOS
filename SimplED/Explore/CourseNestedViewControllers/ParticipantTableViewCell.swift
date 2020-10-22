@@ -35,11 +35,8 @@ class ParticipantTableViewCell: UITableViewCell {
         avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
         avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PADDING),
         avatarImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
-        avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor)
-      ])
-    
-    NSLayoutConstraint.activate(
-      [
+        avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor),
+
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
         titleLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: PADDING),
         titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),

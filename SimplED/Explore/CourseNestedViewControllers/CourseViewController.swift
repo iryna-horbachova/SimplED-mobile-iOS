@@ -8,23 +8,25 @@ class CourseViewController: UIViewController {
   
   let titleLabel = TitleLabel(title: "Course Title", size: 25)
   let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
-  let segmentedControl = makeSegmentedControl()
-  let containerView = UIView()
+  private let segmentedControl = makeSegmentedControl()
+  private let containerView = UIView()
   
-  let aboutViewController = AboutViewController()
-  let tasksTableViewController = TasksTableViewController()
-  let chatViewController = ChatViewController()
-  let participantsTableViewController = ParticipantsTableViewController()
+  private let aboutViewController = AboutViewController()
+  private let tasksTableViewController = TasksTableViewController()
+  private let chatViewController = ChatViewController()
+  private let participantsTableViewController = ParticipantsTableViewController()
   
-  lazy var nestedVCs = [aboutViewController,
-                        tasksTableViewController,
-                        chatViewController,
-                        participantsTableViewController]
-  
+  private lazy var nestedVCs = [aboutViewController,
+                                tasksTableViewController,
+                                chatViewController,
+                                participantsTableViewController]
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
     
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(containerView)
     view.addSubview(titleLabel)
     view.addSubview(imageView)
     view.addSubview(segmentedControl)
@@ -36,25 +38,14 @@ class CourseViewController: UIViewController {
         titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
         titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-      ])
-    
-    NSLayoutConstraint.activate(
-      [
+  
         imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: PADDING),
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-      ])
-    
-    NSLayoutConstraint.activate(
-      [
+
         segmentedControl.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PADDING),
-        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-      ])
-    
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(containerView)
-    NSLayoutConstraint.activate(
-      [
+        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        
         containerView.topAnchor.constraint(equalTo:
           segmentedControl.bottomAnchor, constant: 20),
         containerView.leadingAnchor.constraint(equalTo:
@@ -75,10 +66,11 @@ class CourseViewController: UIViewController {
       vc.view.isHidden = true
       vc.didMove(toParent: self)
     }
+    aboutViewController.descriptionLabel.text = "Description of the course"
     aboutViewController.view.isHidden = false
   }
   
-  static func makeSegmentedControl() -> UISegmentedControl {
+  private static func makeSegmentedControl() -> UISegmentedControl {
     let aboutText = NSLocalizedString(
       "ABOUT",
       value: "About",
@@ -121,7 +113,7 @@ class CourseViewController: UIViewController {
     return sControl
   }
   
-  @objc func changeController(_ sender: UISegmentedControl!) {
+  @objc private func changeController(_ sender: UISegmentedControl!) {
     nestedVCs.forEach { vc in
       vc.view.isHidden = true
     }

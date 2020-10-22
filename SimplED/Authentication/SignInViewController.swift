@@ -9,7 +9,7 @@ class SignInViewController: BaseAuthViewController {
     continueButton.addTarget(self, action: #selector(signIN), for: .touchUpInside)
   }
   
-  @objc func signIN(sender: UIButton!) {
+  @objc private func signIN(sender: UIButton!) {
     // - TODO: Add validation + alerts
     authenticateUser()
   }

@@ -1,11 +1,10 @@
 import UIKit
 
 class ChatViewController: UIViewController {
+  // TODO: Integrate chat
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
+  }
+  
 }
