@@ -6,11 +6,11 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
   let passwordTextField = UITextField.makeTextField()
 
   let continueButton = UIButton.makeContinueButton()
-  let forgotPasswordButton = makeForgotPasswordButton()
+  private let forgotPasswordButton = makeForgotPasswordButton()
   
   let textFieldStackView = UIStackView.makeVerticalStackView()
-  let buttonStackView = UIStackView.makeVerticalStackView()
-  let scrollView = UIScrollView()
+  private let buttonStackView = UIStackView.makeVerticalStackView()
+  private let scrollView = UIScrollView()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,10 +56,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
           view.leadingAnchor, constant: PADDING),
         textFieldStackView.trailingAnchor.constraint(equalTo:
           view.trailingAnchor, constant: -PADDING),
-      ])
-    
-    NSLayoutConstraint.activate(
-      [
+
         buttonStackView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: 20),
         buttonStackView.leadingAnchor.constraint(equalTo:
           view.leadingAnchor, constant: PADDING),
@@ -68,7 +65,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
       ])
   }
   
-  static func makeForgotPasswordButton() -> UIButton {
+  private static func makeForgotPasswordButton() -> UIButton {
     let button = UIButton()
     let text = NSLocalizedString(
       "FORGOT_PASSWORD",

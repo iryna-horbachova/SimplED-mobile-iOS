@@ -1,8 +1,8 @@
 import UIKit
 
 class CourseTableViewController: UITableViewController {
-  let filterTableViewController = FilterTableViewController()
-  let cellIdentifier = "courseTableViewCell"
+  private let filterTableViewController = FilterTableViewController()
+  private let cellIdentifier = "courseTableViewCell"
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,7 +55,7 @@ class CourseTableViewController: UITableViewController {
     return header
   }
   
-  @objc func showFilterTableViewController(sender: UIButton!) {
-    self.present(filterTableViewController, animated: true, completion: nil)
+  @objc private func showFilterTableViewController(sender: UIButton!) {
+    present(filterTableViewController, animated: true, completion: nil)
   }
 }
