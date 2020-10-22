@@ -29,7 +29,7 @@ class FilterTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
     guard let header = view as? UITableViewHeaderFooterView else { return }
-    header.backgroundColor = .white
+    header.backgroundColor = .systemBackground
     header.textLabel?.font = UIFont.boldSystemFont(ofSize: 25)
     header.textLabel?.frame = header.frame
   }

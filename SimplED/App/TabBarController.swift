@@ -16,6 +16,7 @@ class TabBarController: UITabBarController {
     
     let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 22)]
     UINavigationBar.appearance().titleTextAttributes = attributes
+    UINavigationBar.appearance().tintColor = .mainTheme
     
     viewControllers = [exploreVC, coursesVC, profileVC].map { UINavigationController(rootViewController: $0) }
   }

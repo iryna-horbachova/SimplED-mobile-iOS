@@ -26,6 +26,10 @@ class CourseTableViewController: UITableViewController {
    return cell
    }
   
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    present(CourseViewController(), animated: true)
+  }
+  
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     200
   }

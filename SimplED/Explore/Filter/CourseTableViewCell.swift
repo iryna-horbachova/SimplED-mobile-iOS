@@ -1,15 +1,13 @@
 import UIKit
 
-class CourseCollectionViewCell: UICollectionViewCell {
-  // TODO: ADD MODEL + DIDSET
-  
+class CourseTableViewCell: UITableViewCell {
+
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
     label.text = NSLocalizedString(
       "COURSE_TITLE_LABEL",
       value: "Course title",
       comment: "Label showing the title of the course")
-  
     return label
   }()
   
@@ -27,22 +25,22 @@ class CourseCollectionViewCell: UICollectionViewCell {
     return label
   }()
   
-  let imageView: UIImageView = {
-    let iv = UIImageView()
-    iv.translatesAutoresizingMaskIntoConstraints = false
-    iv.contentMode = .scaleAspectFill
-    iv.clipsToBounds = true
-    iv.image = UIImage(named: "course-default")
-    iv.layer.cornerRadius = 10
-    return iv
+  let courseImageView: UIImageView = {
+    return UIImageView.makeCourseImageView()
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override func awakeFromNib() {
+    super.awakeFromNib()
+  }
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
     backgroundColor = .systemBackground
+    selectionStyle = .none
     
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.addArrangedSubview(imageView)
+    stackView.addArrangedSubview(courseImageView)
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(detailsLabel)
     stackView.spacing = 5
@@ -51,14 +49,15 @@ class CourseCollectionViewCell: UICollectionViewCell {
 
     NSLayoutConstraint.activate(
       [
-        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 5),
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PADDING),
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PADDING),
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
       ])
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
 }

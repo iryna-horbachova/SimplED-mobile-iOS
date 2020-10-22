@@ -11,7 +11,7 @@ class AuthenticationViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .systemBackground
     
     view.addSubview(logoLabel)
     NSLayoutConstraint.activate(

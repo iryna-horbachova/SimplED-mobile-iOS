@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // TODO: Check whether the user is authenticated
     window?.rootViewController = TabBarController()
     //window?.rootViewController = AuthenticationViewController()
-    window?.rootViewController?.view.backgroundColor = .white  // So we can see it
+    window?.rootViewController?.view.backgroundColor = .systemBackground  // So we can see it
     window?.makeKeyAndVisible()
   }
 

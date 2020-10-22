@@ -40,7 +40,7 @@ class CategoryCell: UITableViewCell {
     cv.bounces = true
     cv.alwaysBounceHorizontal = true
     cv.translatesAutoresizingMaskIntoConstraints = false
-    cv.backgroundColor = .white
+    cv.backgroundColor = .systemBackground
     cv.dataSource = self
     cv.delegate = self
     cv.register(CourseCollectionViewCell.self, forCellWithReuseIdentifier: courseCellIdentifier)
@@ -65,7 +65,7 @@ extension CategoryCell : UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
-    parentViewController?.navigationController?.pushViewController(CourseViewController(), animated: true)
+    parentViewController?.present(CourseViewController(), animated: true)
     return true
   }
 }

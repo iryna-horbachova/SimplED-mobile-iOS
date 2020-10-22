@@ -20,7 +20,7 @@ extension UITextField {
     textField.font = .systemFont(ofSize: 22)
     textField.borderStyle = UITextField.BorderStyle.roundedRect
     textField.textColor = .mainTheme
-    textField.backgroundColor = .white
+    textField.backgroundColor = .systemBackground
     textField.layer.borderWidth = 1.0
     textField.layer.borderColor = UIColor.mainTheme.cgColor
     
@@ -76,7 +76,7 @@ extension UILabel {
     let label = UILabel()
     
     label.font = .boldSystemFont(ofSize: 18)
-    label.textColor = .black
+    label.textColor = .label
     
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
