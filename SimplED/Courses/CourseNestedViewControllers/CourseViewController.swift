@@ -98,26 +98,15 @@ class CourseViewController: UIViewController {
       "PARTICIPANTS",
       value: "Participants",
       comment: "Participants segmented control")
+
+    let sControl = UISegmentedControl.makeSegmentedControl()
     
-    let sControl = UISegmentedControl(items: [aboutText,
-                                              tasksText,
-                                              chatText,
-                                              participantsText])
-    sControl.selectedSegmentIndex = 0
-    sControl.selectedSegmentTintColor = .mainTheme
-    sControl.layer.cornerRadius = CORNER_RADIUS
-    
-    sControl.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.mainTheme],
-      for: .normal
-    )
-    sControl.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.white],
-      for: .selected
-    )
-    
-    sControl.translatesAutoresizingMaskIntoConstraints = false
+    sControl.insertSegment(withTitle: aboutText, at: 0, animated: true)
+    sControl.insertSegment(withTitle: tasksText, at: 1, animated: true)
+    sControl.insertSegment(withTitle: chatText, at: 2, animated: true)
+    sControl.insertSegment(withTitle: participantsText, at: 3, animated: true)
   
+    sControl.selectedSegmentIndex = 0
     return sControl
   }
   

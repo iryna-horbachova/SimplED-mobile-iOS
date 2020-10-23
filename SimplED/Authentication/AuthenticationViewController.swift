@@ -12,28 +12,23 @@ class AuthenticationViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
+    segmentedControl.addTarget(self, action: #selector(changeController(_:)), for: .valueChanged)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
     
     view.addSubview(logoLabel)
+    view.addSubview(segmentedControl)
+    view.addSubview(containerView)
+    
     NSLayoutConstraint.activate(
       [
         logoLabel.topAnchor.constraint(equalTo:
           view.safeAreaLayoutGuide.topAnchor, constant: 100),
-        logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-      ])
-    
-    segmentedControl.addTarget(self, action: #selector(changeController(_:)), for: .valueChanged)
-    view.addSubview(segmentedControl)
-    NSLayoutConstraint.activate(
-      [
+        logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        
         segmentedControl.topAnchor.constraint(equalTo:
           logoLabel.bottomAnchor, constant: 20),
-        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-      ])
-    
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(containerView)
-    NSLayoutConstraint.activate(
-      [
+        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
         containerView.topAnchor.constraint(equalTo:
           segmentedControl.bottomAnchor, constant: 20),
         containerView.leadingAnchor.constraint(equalTo:
@@ -91,22 +86,12 @@ class AuthenticationViewController: UIViewController {
       value: "Sign In",
       comment: "Sign in segmented control")
     
-    let sControl = UISegmentedControl(items: [signUpText, signInText])
-    sControl.frame = CGRect(x: 10, y: 150, width: 500, height: 50)
+    let sControl = UISegmentedControl.makeSegmentedControl()
+    
+    sControl.insertSegment(withTitle: signInText, at: 0, animated: true)
+    sControl.insertSegment(withTitle: signUpText, at: 1, animated: true)
+    
     sControl.selectedSegmentIndex = 0
-    sControl.selectedSegmentTintColor = .mainTheme
-    sControl.layer.cornerRadius = CORNER_RADIUS
-    
-    sControl.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.mainTheme],
-      for: .normal
-    )
-    sControl.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.white],
-      for: .selected
-    )
-    
-    sControl.translatesAutoresizingMaskIntoConstraints = false
   
     return sControl
   }

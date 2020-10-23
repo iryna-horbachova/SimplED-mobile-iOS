@@ -117,3 +117,26 @@ extension UIImageView {
     return iv
   }
 }
+
+extension UISegmentedControl {
+  static func makeSegmentedControl() -> UISegmentedControl {
+    let sControl = UISegmentedControl()
+    sControl.frame = CGRect(x: 10, y: 150, width: 500, height: 50)
+    sControl.selectedSegmentIndex = 0
+    sControl.selectedSegmentTintColor = .mainTheme
+    sControl.layer.cornerRadius = CORNER_RADIUS
+    
+    sControl.setTitleTextAttributes(
+      [NSAttributedString.Key.foregroundColor: UIColor.mainTheme],
+      for: .normal
+    )
+    sControl.setTitleTextAttributes(
+      [NSAttributedString.Key.foregroundColor: UIColor.white],
+      for: .selected
+    )
+    
+    sControl.translatesAutoresizingMaskIntoConstraints = false
+  
+    return sControl
+  }
+}
