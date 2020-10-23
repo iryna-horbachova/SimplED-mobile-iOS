@@ -132,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				89CDE08F2541521E008E5EAD /* Filter */,
-				89CDE06D2540259C008E5EAD /* CourseNestedViewControllers */,
 				894AE4AA25384362008EEBF5 /* ExploreViewController.swift */,
 				894AE4C9253AC6C0008EEBF5 /* CategoryCell.swift */,
 				894AE4CE253AF0C1008EEBF5 /* CourseCollectionViewCell.swift */,
@@ -144,6 +143,9 @@
 		894AE4B725384AC5008EEBF5 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */,
+				898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */,
+				89CDE06D2540259C008E5EAD /* CourseNestedViewControllers */,
 				894AE4C125384E14008EEBF5 /* CoursesViewController.swift */,
 			);
 			path = Courses;
@@ -254,8 +256,6 @@
 			children = (
 				89210E81253CAFCA006E6F47 /* FilterOptionTableViewCell.swift */,
 				89210E7C253CAEB3006E6F47 /* FilterTableViewController.swift */,
-				898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */,
-				898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
