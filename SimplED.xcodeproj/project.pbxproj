@@ -26,6 +26,8 @@
 		89A077452546BF60007F65F6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077442546BF60007F65F6 /* User.swift */; };
 		89A0774A2546C936007F65F6 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077492546C936007F65F6 /* Achievement.swift */; };
 		89A0774F2546C98B007F65F6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A0774E2546C98A007F65F6 /* Task.swift */; };
+		89A0776025474BE4007F65F6 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A0775F25474BE4007F65F6 /* APIManager.swift */; };
+		89A0776525474C7C007F65F6 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A0776425474C7C007F65F6 /* APIError.swift */; };
 		89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A7EF2D2541C17F002FA614 /* ProfileOptionTableViewCell.swift */; };
 		89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233232531CD1E00643E02 /* AppDelegate.swift */; };
 		89B233262531CD1E00643E02 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233252531CD1E00643E02 /* SceneDelegate.swift */; };
@@ -83,6 +85,8 @@
 		89A077442546BF60007F65F6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		89A077492546C936007F65F6 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		89A0774E2546C98A007F65F6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		89A0775F25474BE4007F65F6 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		89A0776425474C7C007F65F6 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		89A7EF2D2541C17F002FA614 /* ProfileOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOptionTableViewCell.swift; sourceTree = "<group>"; };
 		89B233202531CD1E00643E02 /* SimplED.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimplED.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89B233232531CD1E00643E02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -167,6 +171,15 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		89A0775E25474BD5007F65F6 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				89A0775F25474BE4007F65F6 /* APIManager.swift */,
+				89A0776425474C7C007F65F6 /* APIError.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		89B233172531CD1E00643E02 = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +203,7 @@
 		89B233222531CD1E00643E02 /* SimplED */ = {
 			isa = PBXGroup;
 			children = (
+				89A0775E25474BD5007F65F6 /* API */,
 				89CDE09025415247008E5EAD /* App */,
 				894AE4B825384AE9008EEBF5 /* Profile */,
 				894AE4B725384AC5008EEBF5 /* Courses */,
@@ -420,6 +434,8 @@
 				89210E7D253CAEB3006E6F47 /* FilterTableViewController.swift in Sources */,
 				898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */,
 				89CDE06F254025CD008E5EAD /* AboutViewController.swift in Sources */,
+				89A0776025474BE4007F65F6 /* APIManager.swift in Sources */,
+				89A0776525474C7C007F65F6 /* APIError.swift in Sources */,
 				89CDE06925401FBD008E5EAD /* TitleLabel.swift in Sources */,
 				89B2336C2531DCD900643E02 /* Extensions.swift in Sources */,
 				894AE4D4253B16D3008EEBF5 /* Course.swift in Sources */,
