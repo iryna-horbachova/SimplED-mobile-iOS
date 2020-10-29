@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController {
   }
   
   @objc func editProfile() {
-    // TODO
+    navigationController?.pushViewController(EditProfileViewController(), animated: true)
   }
 }
 
