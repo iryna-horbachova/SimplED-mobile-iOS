@@ -2,10 +2,10 @@ import UIKit
 import Foundation
 
 extension UIAlertController {
-  static func errorAlertWithOKAction(message: String) -> UIAlertController {
+  static func alertWithOKAction(title: String, message: String) -> UIAlertController {
     let title = NSLocalizedString(
       "ERROR_TITLE",
-      value: "Error occured",
+      value: title,
       comment: "Generic error title")
     
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

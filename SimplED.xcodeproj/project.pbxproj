@@ -23,6 +23,7 @@
 		89725E2C25381AFC001273D5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89725E2B25381AFC001273D5 /* Constants.swift */; };
 		898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */; };
 		898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */; };
+		899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A12BC254B1CB100A1F52F /* EditProfileViewController.swift */; };
 		89A077452546BF60007F65F6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077442546BF60007F65F6 /* User.swift */; };
 		89A0774A2546C936007F65F6 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077492546C936007F65F6 /* Achievement.swift */; };
 		89A0774F2546C98B007F65F6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A0774E2546C98A007F65F6 /* Task.swift */; };
@@ -82,6 +83,7 @@
 		89725E2B25381AFC001273D5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewController.swift; sourceTree = "<group>"; };
 		898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
+		899A12BC254B1CB100A1F52F /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		89A077442546BF60007F65F6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		89A077492546C936007F65F6 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		89A0774E2546C98A007F65F6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				89A7EF2D2541C17F002FA614 /* ProfileOptionTableViewCell.swift */,
 				89A077442546BF60007F65F6 /* User.swift */,
 				89A077492546C936007F65F6 /* Achievement.swift */,
+				899A12BC254B1CB100A1F52F /* EditProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				89A077452546BF60007F65F6 /* User.swift in Sources */,
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,
+				899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */,
 				89B233762531F50900643E02 /* SignUpViewController.swift in Sources */,
 				89210E7D253CAEB3006E6F47 /* FilterTableViewController.swift in Sources */,
 				898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */,
