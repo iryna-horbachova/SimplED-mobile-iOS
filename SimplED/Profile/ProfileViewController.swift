@@ -83,6 +83,10 @@ extension ProfileViewController: UITableViewDataSource {
     print(indexPath.row)
     return cell
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    navigationController?.pushViewController(AddCourseViewController(), animated: true)
+  }
 
 }
 

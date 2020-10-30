@@ -43,15 +43,13 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate {
       comment: "Bio textfield")
     bioTextField.attributedPlaceholder = NSAttributedString(string: bioPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
     
-    textfields.forEach { $0.delegate = self }
-    
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.addArrangedSubview(firstNameTextField)
-    stackView.addArrangedSubview(lastNameTextField)
-    stackView.addArrangedSubview(emailTextField)
-    stackView.addArrangedSubview(bioTextField)
     stackView.spacing = 5
     stackView.distribution = .equalSpacing
+    textfields.forEach {
+      $0.delegate = self
+      stackView.addArrangedSubview($0)
+    }
     view.addSubview(stackView)
 
     NSLayoutConstraint.activate(

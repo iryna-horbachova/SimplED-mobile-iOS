@@ -9,6 +9,7 @@ import UIKit
 
 class ProfileOptionTableViewCell: UITableViewCell {
 
+  let id = 1
   let titleLabel = UILabel.makeSecondaryLabel()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
