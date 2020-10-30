@@ -47,6 +47,7 @@
 		89CDE07E254026B1008E5EAD /* ParticipantsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE07D254026B1008E5EAD /* ParticipantsTableViewController.swift */; };
 		89CDE08625414D9D008E5EAD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE08525414D9D008E5EAD /* TaskTableViewCell.swift */; };
 		89CDE08B25414DC5008E5EAD /* ParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE08A25414DC5008E5EAD /* ParticipantTableViewCell.swift */; };
+		89E00970254B44CB008FA5D9 /* AddCourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		89CDE07D254026B1008E5EAD /* ParticipantsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsTableViewController.swift; sourceTree = "<group>"; };
 		89CDE08525414D9D008E5EAD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		89CDE08A25414DC5008E5EAD /* ParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantTableViewCell.swift; sourceTree = "<group>"; };
+		89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCourseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				894AE4C125384E14008EEBF5 /* CoursesViewController.swift */,
+				89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
 				89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */,
+				89E00970254B44CB008FA5D9 /* AddCourseViewController.swift in Sources */,
 				898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */,
 				89B233262531CD1E00643E02 /* SceneDelegate.swift in Sources */,
 				89210E82253CAFCA006E6F47 /* FilterOptionTableViewCell.swift in Sources */,
