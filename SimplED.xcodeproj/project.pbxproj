@@ -48,6 +48,7 @@
 		89CDE08625414D9D008E5EAD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE08525414D9D008E5EAD /* TaskTableViewCell.swift */; };
 		89CDE08B25414DC5008E5EAD /* ParticipantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE08A25414DC5008E5EAD /* ParticipantTableViewCell.swift */; };
 		89E00970254B44CB008FA5D9 /* AddCourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */; };
+		89E0097B254C0A6F008FA5D9 /* CourseOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E0097A254C0A6F008FA5D9 /* CourseOption.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		89CDE08525414D9D008E5EAD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		89CDE08A25414DC5008E5EAD /* ParticipantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantTableViewCell.swift; sourceTree = "<group>"; };
 		89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCourseViewController.swift; sourceTree = "<group>"; };
+		89E0097A254C0A6F008FA5D9 /* CourseOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 			children = (
 				894AE4C125384E14008EEBF5 /* CoursesViewController.swift */,
 				89E0096F254B44CB008FA5D9 /* AddCourseViewController.swift */,
+				89E0097A254C0A6F008FA5D9 /* CourseOption.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				89B2336C2531DCD900643E02 /* Extensions.swift in Sources */,
 				894AE4D4253B16D3008EEBF5 /* Course.swift in Sources */,
 				894AE4A025383D51008EEBF5 /* Validation.swift in Sources */,
+				89E0097B254C0A6F008FA5D9 /* CourseOption.swift in Sources */,
 				89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
 				89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */,

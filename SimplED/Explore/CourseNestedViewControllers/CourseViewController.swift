@@ -2,9 +2,13 @@
 import UIKit
 
 class CourseViewController: UIViewController {
-
-  // TODO: If the user doesn't have access to the course, hide the tasks and chat
-  // TODO: ADD MODEL AND REPLACE FAKE VALUES
+  let ID = 1
+  var course: Course? {
+    didSet {
+      titleLabel.text = course!.title
+      
+    }
+  }
   
   let titleLabel = TitleLabel(title: "Course Title", size: 25)
   let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
@@ -24,7 +28,7 @@ class CourseViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
-    
+    getCourse(id: ID)
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
     view.addSubview(titleLabel)
@@ -109,4 +113,25 @@ class CourseViewController: UIViewController {
     nestedVCs[sender.selectedSegmentIndex].view.isHidden = false
   }
 
+  func getCourse(id: Int) {
+    APIManager.shared.getCourse(id: id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let course):
+        DispatchQueue.main.async {
+          self.course = course
+        }
+          
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+ 
+        }
+      }
+    }
+  }
 }

@@ -1,11 +1,12 @@
 import Foundation
 
-struct Course: Decodable {
-  let id: Int
-  let title: String
-  let details: String
-  let category: String
-  let teacher: String
-  let language: String
-  let startDate: Date
+public struct Course: Decodable {
+  public let id: Int
+  public let title: String
+  public let description: String
+  public let category: String
+  public let creator: Int
+  public let language: String
+  public let participants: [Int]
+  public let startDate: String
 }
