@@ -2,8 +2,10 @@ import UIKit
 
 class FilterTableViewController: UITableViewController {
   
-  private let filterSections = ["Category", "Languages", "Duration"]
-  private let filterOptions = ["Option 1", "Option 2", "Option 3"]
+  public var filterSections = [String]()
+  public var categoryOptions = [String: [CourseOption]]()
+  //private let filterSections = ["Category", "Languages", "Duration"]
+  // private let filterOptions = ["Option 1", "Option 2", "Option 3"]
   private let reuseIdentifier = "filterOptionCell"
   
   // TODO: ADD MODEL
@@ -16,11 +18,12 @@ class FilterTableViewController: UITableViewController {
   // MARK: - Table view data source
   
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 3 //filterSections.count
+    return filterSections.count
   }
   
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3 //filterOptions.count
+    return categoryOptions[filterSections[section]]?.count ?? 0
   }
   
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -40,6 +43,8 @@ class FilterTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! FilterOptionTableViewCell
+    let sectionTitle = filterSections[indexPath.section]
+    cell.courseOption = categoryOptions[sectionTitle]![indexPath.row]
     return cell
   }
 }

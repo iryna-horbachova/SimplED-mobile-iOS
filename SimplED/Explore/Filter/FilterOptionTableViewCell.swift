@@ -2,6 +2,11 @@ import UIKit
 
 class FilterOptionTableViewCell: UITableViewCell {
 
+  public var courseOption: CourseOption! {
+    didSet {
+      titleLabel.text = courseOption.title
+    }
+  }
   private let optionTag = 1
   
   let titleLabel: UILabel = {

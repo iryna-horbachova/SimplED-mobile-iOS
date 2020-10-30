@@ -1,10 +1,3 @@
-//
-//  AddCourseViewController.swift
-//  SimplED
-//
-//  Created by Iryna Horbachova on 29.10.2020.
-//
-
 import UIKit
 
 class AddCourseViewController: UIViewController, UITextFieldDelegate {

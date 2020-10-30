@@ -1,8 +1,14 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-  
-  // TODO: REPLACE FAKE VALUES
+  let ID = 6
+  var user: User? {
+    didSet {
+      nameLabel.text = "\(user!.firstName) \(user!.lastName)"
+      emailLabel.text = user!.email
+      bioLabel.text = user!.bio
+    }
+  }
   
   let avatarImageView = UIImageView.makeImageView(defaultImageName: "user-default")
   let nameLabel = UILabel.makeTitleLabel()
@@ -15,7 +21,8 @@ class ProfileViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
+    getUser(id: ID)
     title = "Profile"
     view.backgroundColor = .systemBackground
  
@@ -67,6 +74,28 @@ class ProfileViewController: UIViewController {
   
   @objc func editProfile() {
     navigationController?.pushViewController(EditProfileViewController(), animated: true)
+  }
+  
+  func getUser(id: Int) {
+    APIManager.shared.getUser(id: id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let user):
+        DispatchQueue.main.async {
+          self.user = user
+        }
+          
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+ 
+        }
+      }
+    }
   }
 }
 

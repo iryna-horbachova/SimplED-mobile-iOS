@@ -2,7 +2,13 @@ import UIKit
 
 class ExploreViewController: UIViewController {
 
-  let categories = ["Hot", "Programming", "Art", "Literature"]
+  var categories = [CourseOption]() {
+    didSet {
+      DispatchQueue.main.async { [weak self] in
+        self?.tableView.reloadData()
+      }
+    }
+  }
   let tableView = UITableView()
   var searchController: UISearchController!
   let categoryCellIdentifier = "categoryCell"
@@ -12,6 +18,8 @@ class ExploreViewController: UIViewController {
     title = "Explore"
     navigationController?.navigationBar.prefersLargeTitles = true
   
+    getCategories()
+    
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(
@@ -31,6 +39,7 @@ class ExploreViewController: UIViewController {
     tableView.delegate = self
     
     let resultsTableController = CourseTableViewController()
+    
     searchController = UISearchController(searchResultsController: resultsTableController)
     searchController.delegate = self
     searchController.searchResultsUpdater = self
@@ -39,6 +48,31 @@ class ExploreViewController: UIViewController {
     
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = true
+ 
+    tableView.reloadData()
+  }
+  
+  private func getCategories() {
+    APIManager.shared.getCourseOptionsArray(endURL: "courses/categories/"){
+      [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let categories):
+        DispatchQueue.main.async {
+          self.categories = categories
+        }
+  
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+ 
+        }
+      }
+    }
   }
 }
 
@@ -49,7 +83,7 @@ extension ExploreViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return categories[section]
+    return categories[section].title
   }
   
   func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
