@@ -4,7 +4,8 @@ class APIManager {
   static let shared = APIManager()
   private let baseURL = "http://simpled-api.herokuapp.com/"
   
-  typealias coursesCompletionHandler = (Result<Course, APIError>) -> Void
+  typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
+  typealias coursesCompletionHandler = (Result<[Course], APIError>) -> Void
   typealias courseOptionsCompletionHandler = (Result<[CourseOption], APIError>) -> Void
   typealias userCompletionHandler = (Result<User, APIError>) -> Void
   typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
@@ -15,13 +16,66 @@ class APIManager {
     // if success, set as current user
   }
   
-  func registerUser() {
-    // if success, set as current user
+  func register(
+    user: User,
+    completion: @escaping userCompletionHandler
+  ) {
+    let endpoint = baseURL + "users/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    do {
+      let encoder = JSONEncoder()
+      encoder.keyEncodingStrategy = .convertToSnakeCase
+      let httpBody = try encoder.encode(user)
+      request.httpBody = httpBody
+    } catch {
+      completion(.failure(.invalidData))
+    }
+  
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let user = try decoder.decode(User.self, from: data)
+        completion(.success(user))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
   }
   
   func getCourse(
     id: Int,
-    completion: @escaping coursesCompletionHandler
+    completion: @escaping courseCompletionHandler
   ) {
     let endpoint = baseURL + "courses/\(id)"
     
@@ -101,7 +155,7 @@ class APIManager {
   
   func getCourses(
     page: Int,
-    completion: @escaping coursesCompletionHandler
+    completion: @escaping courseCompletionHandler
   ) {
     // TODO
   }
@@ -109,21 +163,21 @@ class APIManager {
   func getCourses(
     category: String,
     page: Int,
-    completion: @escaping coursesCompletionHandler
+    completion: @escaping courseCompletionHandler
   ) {
     // TODO
   }
   
   func getAddedCourses(
     userId: Int,
-    completion: @escaping coursesCompletionHandler
+    completion: @escaping courseCompletionHandler
   ) {
     
   }
   
   func getEnrolledCourses(
     userId: Int,
-    completion: @escaping coursesCompletionHandler
+    completion: @escaping courseCompletionHandler
   ) {
     
   }
@@ -176,8 +230,58 @@ class APIManager {
   
   func add(
     course: Course,
-    userId: Int
+    completion: @escaping courseCompletionHandler
   ) {
+    let endpoint = baseURL + "courses/"
     
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    do {
+      let encoder = JSONEncoder()
+      encoder.keyEncodingStrategy = .convertToSnakeCase
+      let httpBody = try encoder.encode(course)
+      request.httpBody = httpBody
+    } catch {
+      completion(.failure(.invalidData))
+    }
+  
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let course = try decoder.decode(Course.self, from: data)
+        completion(.success(course))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
   }
 }
