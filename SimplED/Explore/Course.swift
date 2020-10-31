@@ -2,12 +2,12 @@ import Foundation
 
 public struct Course: Codable {
   public let id: Int?
-  public let title: String
-  public let description: String
-  public let image: String?
-  public let category: String
-  public let creator: Int
-  public let language: String
-  public let participants: [Int]?
-  public let startDate: String
+  public var title: String
+  public var description: String
+  public var image: String?
+  public var category: String
+  public var creator: Int
+  public var language: String
+  public var participants: [Int]?
+  public var startDate: String
 }
