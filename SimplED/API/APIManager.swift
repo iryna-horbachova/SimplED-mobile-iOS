@@ -5,10 +5,11 @@ class APIManager {
   private let baseURL = "http://simpled-api.herokuapp.com/"
   
   typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
-  typealias coursesCompletionHandler = (Result<[Course], APIError>) -> Void
+  typealias categoryCoursesCompletionHandler = (Result<[String: [Course]], APIError>) -> Void
   typealias courseOptionsCompletionHandler = (Result<[CourseOption], APIError>) -> Void
   typealias userCompletionHandler = (Result<User, APIError>) -> Void
   typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
+  typealias deleteCompletionHandler = (APIError?) -> Void
   
   private init() {}
   
@@ -72,6 +73,43 @@ class APIManager {
     }
     task.resume()
   }
+  
+  func deleteUser(
+    id: Int,
+    completion: @escaping deleteCompletionHandler
+  ) {
+    let endpoint = baseURL + "users/\(id)"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.invalidData)
+      return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "DELETE"
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        completion(.unableToComplete)
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.invalidResponse)
+        return
+      }
+      
+      guard data != nil else {
+        completion(.invalidData)
+        return
+      }
+      completion(nil)
+    }
+    task.resume()
+  }
+  
   
   func getCourse(
     id: Int,
@@ -154,10 +192,42 @@ class APIManager {
   }
   
   func getCourses(
-    page: Int,
-    completion: @escaping courseCompletionHandler
+    completion: @escaping categoryCoursesCompletionHandler
   ) {
-    // TODO
+    let endpoint = baseURL + "courses/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+      
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let courses = try decoder.decode([String: [Course]].self, from: data)
+        completion(.success(courses))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
   }
   
   func getCourses(
@@ -281,6 +351,42 @@ class APIManager {
       } catch {
         completion(.failure(.invalidData))
       }
+    }
+    task.resume()
+  }
+  
+  func deleteCourse(
+    id: Int,
+    completion: @escaping deleteCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(id)"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.invalidData)
+      return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "DELETE"
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        completion(.unableToComplete)
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.invalidResponse)
+        return
+      }
+      
+      guard data != nil else {
+        completion(.invalidData)
+        return
+      }
+      completion(nil)
     }
     task.resume()
   }

@@ -1,7 +1,8 @@
 import UIKit
 
 class CategoryCell: UITableViewCell {
-  // TODO: ADD MODEL + DIDSET
+  
+  var courses: [Course]!
   var collectionView: UICollectionView!
   let courseCellIdentifier = "courseCell"
   weak var parentViewController: ExploreViewController?
@@ -55,17 +56,20 @@ extension CategoryCell : UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
+    cell.course = courses[indexPath.row]
     return cell
   }
   
     
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    5
+    courses.count
   }
   
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
-    parentViewController?.present(CourseViewController(), animated: true)
+    let courseVC = CourseViewController()
+    courseVC.course = courses[indexPath.row]
+    parentViewController?.present(courseVC, animated: true)
     return true
   }
 }

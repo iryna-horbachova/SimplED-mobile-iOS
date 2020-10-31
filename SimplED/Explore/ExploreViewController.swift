@@ -2,13 +2,18 @@ import UIKit
 
 class ExploreViewController: UIViewController {
 
-  var categories = [CourseOption]() {
+  var categoryCourses = [String: [Course]]() {
     didSet {
-      DispatchQueue.main.async { [weak self] in
-        self?.tableView.reloadData()
+      categoryCourses.forEach {
+        if $0.value.count != 0 {
+          categories.append($0.key)
+        }
       }
+      tableView.reloadData()
     }
   }
+  var categories = [String]()
+
   let tableView = UITableView()
   var searchController: UISearchController!
   let categoryCellIdentifier = "categoryCell"
@@ -18,7 +23,7 @@ class ExploreViewController: UIViewController {
     title = "Explore"
     navigationController?.navigationBar.prefersLargeTitles = true
   
-    getCategories()
+    getCourses()
     
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,25 +57,20 @@ class ExploreViewController: UIViewController {
     tableView.reloadData()
   }
   
-  private func getCategories() {
-    APIManager.shared.getCourseOptionsArray(endURL: "courses/categories/"){
-      [weak self] result in
+  private func getCourses() {
+    APIManager.shared.getCourses { [weak self] result in
       guard let self = self else { return }
       switch result {
-      case .success(let categories):
+      case .success(let courses):
         DispatchQueue.main.async {
-          self.categories = categories
+          self.categoryCourses = courses
         }
-  
       case .failure(let error):
-        DispatchQueue.main.async {
-          self.present(UIAlertController.alertWithOKAction(
-                        title: "Error occured!",
-                        message: error.rawValue),
-                       animated: true,
-                       completion: nil)
- 
-        }
+        self.present(UIAlertController.alertWithOKAction(
+                      title: "Error occured!",
+                      message: error.rawValue),
+                     animated: true,
+                     completion: nil)
       }
     }
   }
@@ -83,7 +83,7 @@ extension ExploreViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return categories[section].title
+    return categories[section].uppercased()
   }
   
   func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -98,7 +98,9 @@ extension ExploreViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let categoryTitle = categories[indexPath.section]
     let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellIdentifier) as! CategoryCell
+    cell.courses = categoryCourses[categoryTitle]
     cell.parentViewController = self
     return cell
   }

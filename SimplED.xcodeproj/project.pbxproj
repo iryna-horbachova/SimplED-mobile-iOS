@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		89210E7D253CAEB3006E6F47 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89210E7C253CAEB3006E6F47 /* FilterTableViewController.swift */; };
 		89210E82253CAFCA006E6F47 /* FilterOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89210E81253CAFCA006E6F47 /* FilterOptionTableViewCell.swift */; };
+		89293BF0254D73F400539021 /* CategoryCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89293BEF254D73F400539021 /* CategoryCourses.swift */; };
 		894AE4A025383D51008EEBF5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE49F25383D51008EEBF5 /* Validation.swift */; };
 		894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4A425383E86008EEBF5 /* ErrorHandling.swift */; };
 		894AE4AB25384362008EEBF5 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4AA25384362008EEBF5 /* ExploreViewController.swift */; };
@@ -71,6 +72,7 @@
 /* Begin PBXFileReference section */
 		89210E7C253CAEB3006E6F47 /* FilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		89210E81253CAFCA006E6F47 /* FilterOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionTableViewCell.swift; sourceTree = "<group>"; };
+		89293BEF254D73F400539021 /* CategoryCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCourses.swift; sourceTree = "<group>"; };
 		894AE49F25383D51008EEBF5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		894AE4A425383E86008EEBF5 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		894AE4AA25384362008EEBF5 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				894AE4CE253AF0C1008EEBF5 /* CourseCollectionViewCell.swift */,
 				894AE4D3253B16D3008EEBF5 /* Course.swift */,
 				89A0774E2546C98A007F65F6 /* Task.swift */,
+				89293BEF254D73F400539021 /* CategoryCourses.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				89B233712531F4FE00643E02 /* SignInViewController.swift in Sources */,
 				89A0774F2546C98B007F65F6 /* Task.swift in Sources */,
 				89A077452546BF60007F65F6 /* User.swift in Sources */,
+				89293BF0254D73F400539021 /* CategoryCourses.swift in Sources */,
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,
 				899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */,
