@@ -1,9 +1,9 @@
 public struct User: Codable {
   public let id: Int?
-  public let firstName: String
-  public let lastName: String
-  public let email: String
-  public let bio: String?
-  public let image: String?
-  public let points: Int?
+  public var firstName: String
+  public var lastName: String
+  public var email: String
+  public var bio: String?
+  public var image: String?
+  public var points: Int?
 }
