@@ -1,50 +1,124 @@
 import UIKit
 
-class AddCourseViewController: UIViewController, UITextFieldDelegate {
-  
+class AddCourseViewController: UIViewController {
+
   let titleTextField = UITextField.makeTextField()
   let descriptionTextField = UITextField.makeTextField()
   let categoryTextField = UITextField.makeTextField()
   let languageTextField = UITextField.makeTextField()
+  let startDateTextField = UITextField.makeTextField()
+  
+  var categoryPicker: UIPickerView {
+    let pickerView = UIPickerView()
+    pickerView.translatesAutoresizingMaskIntoConstraints = false
+    pickerView.tag = 0
+    pickerView.delegate = self
+    pickerView.dataSource = self
+    return pickerView
+  }
+  
+  var languagePicker: UIPickerView {
+    let pickerView = UIPickerView()
+    pickerView.translatesAutoresizingMaskIntoConstraints = false
+    pickerView.tag = 1
+    pickerView.delegate = self
+    pickerView.dataSource = self
+    return pickerView
+  }
+  
+  var datePicker: UIDatePicker {
+    let dp = UIDatePicker()
+    dp.datePickerMode = UIDatePicker.Mode.date
+    dp.addTarget(self, action: #selector(self.startDateChanged), for: .allEvents)
+    return dp
+  }
+  
+  var categories = [CourseOption]() {
+    didSet {
+      categoryPicker.reloadAllComponents()
+      print(categories)
+    }
+  }
+  var languages = [CourseOption]() {
+    didSet {
+      languagePicker.reloadAllComponents()
+    }
+  }
   
   lazy var textfields = [ titleTextField,
                           descriptionTextField,
                           categoryTextField,
-                          languageTextField ]
+                          languageTextField,
+                          startDateTextField ]
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     title = "Add course"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(addCourse))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(addCourse))
+    
+    // API
+    getCourseOptions(endURL: "courses/categories/") { [weak self] options in
+      DispatchQueue.main.async {
+        self?.categories = options ?? []
+      }
+    }
+    getCourseOptions(endURL: "courses/languages/") { [weak self] options in
+      DispatchQueue.main.async {
+        self?.languages = options ?? []
+      }
+    }
     
     let titlePlaceholderString = NSLocalizedString(
       "TITLE_TEXTFIELD",
       value: "Title",
       comment: "Title textfield")
-    titleTextField.attributedPlaceholder = NSAttributedString(string: titlePlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
+    titleTextField.attributedPlaceholder = NSAttributedString(
+      string: titlePlaceholderString,
+      attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme]
+    )
     
     let descriptionPlaceholderString = NSLocalizedString(
       "DESCRIPTION_TEXTFIELD",
       value: "Description",
       comment: "Description textfield")
-    descriptionTextField.attributedPlaceholder = NSAttributedString(string: descriptionPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
+    descriptionTextField.attributedPlaceholder = NSAttributedString(
+      string: descriptionPlaceholderString,
+      attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme]
+    )
     
     let categoryPlaceholderString = NSLocalizedString(
       "CATEGORY_TEXTFIELD",
       value: "Category",
       comment: "Category textfield")
-    categoryTextField.attributedPlaceholder = NSAttributedString(string: categoryPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
+    categoryTextField.attributedPlaceholder = NSAttributedString(
+      string: categoryPlaceholderString,
+      attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme]
+    )
+    categoryTextField.inputView = categoryPicker
     
     let languagePlaceholderString = NSLocalizedString(
       "LANGUAGE_TEXTFIELD",
       value: "Language",
       comment: "Language textfield")
-    languageTextField.attributedPlaceholder = NSAttributedString(string: languagePlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
+    languageTextField.attributedPlaceholder = NSAttributedString(
+      string: languagePlaceholderString,
+      attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme]
+    )
+    languageTextField.inputView = languagePicker
     
+    let startDatePlaceholderString = NSLocalizedString(
+      "START_DATE_TEXTFIELD",
+      value: "Start date",
+      comment: "Start date textfield")
+    startDateTextField.attributedPlaceholder = NSAttributedString(
+      string: startDatePlaceholderString,
+      attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme]
+    )
+    startDateTextField.inputView = datePicker
     
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.spacing = 5
+    stackView.spacing = 0.5
     stackView.distribution = .equalSpacing
     textfields.forEach {
       $0.delegate = self
@@ -60,14 +134,126 @@ class AddCourseViewController: UIViewController, UITextFieldDelegate {
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200),
       ])
     
+    let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+    view.addGestureRecognizer(tap)
   }
   
   @objc func addCourse() {
-    present(
-      UIAlertController.alertWithOKAction(title: "Success!",
-                                          message: "The course was added successfully!"),
-      animated: true,
-      completion: nil
-    )
+    let language = languages.first { $0.title == languageTextField.text }
+    let category = categories.first { $0.title == categoryTextField.text }
+    let course = Course(id: nil,
+                        title: titleTextField.text!,
+                        description: descriptionTextField.text!,
+                        image: "https://ilia.humanrightshouse.org/theme/image.php/mb2nl/theme/1598292688/course-default",
+                        category: category!.dbValue,
+                        creator: APIManager.currentUser!.id!,
+                        language: language!.dbValue,
+                        participants: nil,
+                        startDate: "2021-01-01")
+    
+    APIManager.shared.add(course: course) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let course):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Success!",
+              message: "The course \(course.title) was added successfully!"),
+            animated: true,
+            completion: nil
+          )
+        }
+        
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Error occured!",
+              message: error.rawValue),
+            animated: true,
+            completion: nil)
+          
+        }
+      }
+    }
   }
+  
+  private func getCourseOptions(endURL: String,
+                                completion: @escaping ([CourseOption]?) -> Void) {
+    APIManager.shared.getCourseOptionsArray(endURL: endURL){
+      [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let options):
+        completion(options)
+        
+      case .failure(let error):
+        completion(nil)
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Error occured!",
+              message: error.rawValue),
+            animated: true,
+            completion: nil)
+        }
+      }
+    }
+  }
+  
+  @objc func startDateChanged() {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let date = dateFormatter.string(from: datePicker.date)
+    startDateTextField.text = date
+  }
+}
+
+extension AddCourseViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+  
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    switch pickerView.tag {
+    case 0:
+      return categories.count
+    case 1:
+      return languages.count
+    default:
+      return 0
+    }
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    switch pickerView.tag {
+    case 0:
+      return categories[row].title
+    case 1:
+      return languages[row].title
+    default:
+      return ""
+    }
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    switch pickerView.tag {
+    case 0:
+      categoryTextField.text = categories[row].title
+    case 1:
+      languageTextField.text = languages[row].title
+    default:
+     print("unknown pickerview")
+    }
+  }
+}
+
+extension AddCourseViewController: UITextFieldDelegate {
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    return true
+  }
+
 }
