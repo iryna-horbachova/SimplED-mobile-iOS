@@ -55,6 +55,28 @@ class ExploreViewController: UIViewController {
     navigationItem.hidesSearchBarWhenScrolling = true
  
     tableView.reloadData()
+    
+    // TODO: SET A REAL USER ON LOAD
+    APIManager.shared.getUser(id: 6) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let user):
+        DispatchQueue.main.async {
+          APIManager.currentUser = user
+          print(APIManager.currentUser)
+        }
+          
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+ 
+        }
+      }
+    }
   }
   
   private func getCourses() {

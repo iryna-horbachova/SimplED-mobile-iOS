@@ -1,8 +1,10 @@
 import Foundation
 
 class APIManager {
+  
   static var currentUser: User?
   static let shared = APIManager()
+  
   private let baseURL = "http://simpled-api.herokuapp.com/"
   
   typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
@@ -79,7 +81,7 @@ class APIManager {
     user: User,
     completion: @escaping userCompletionHandler
   ) {
-    let endpoint = baseURL + "users/\(user.id)"
+    let endpoint = baseURL + "users/\(user.id!)"
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
