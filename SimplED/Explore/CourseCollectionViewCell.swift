@@ -1,7 +1,12 @@
 import UIKit
 
 class CourseCollectionViewCell: UICollectionViewCell {
-  // TODO: ADD MODEL + DIDSET
+  var course: Course! {
+    didSet {
+      titleLabel.text = course.title
+      detailsLabel.text = course.description
+    }
+  }
   
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()

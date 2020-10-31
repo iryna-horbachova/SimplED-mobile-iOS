@@ -1,6 +1,7 @@
 import UIKit
 
 class CoursesViewController: UIViewController {
+  
   let segmentedControl = makeSegmentedControl()
   let containerView = UIView()
   let coursesTVC = CourseTableViewController()
