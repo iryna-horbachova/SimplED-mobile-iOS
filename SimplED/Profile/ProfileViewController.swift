@@ -72,6 +72,11 @@ class ProfileViewController: UIViewController {
     ])
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(true)
+    user = APIManager.currentUser
+  }
+  
   @objc func editProfile() {
     navigationController?.pushViewController(EditProfileViewController(), animated: true)
   }
