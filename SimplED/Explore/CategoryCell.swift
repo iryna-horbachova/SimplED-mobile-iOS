@@ -69,7 +69,7 @@ extension CategoryCell : UICollectionViewDataSource {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
     let courseVC = CourseViewController()
     courseVC.course = courses[indexPath.row]
-    parentViewController?.present(courseVC, animated: true)
+    parentViewController?.present(UINavigationController(rootViewController: courseVC), animated: true)
     return true
   }
 }
