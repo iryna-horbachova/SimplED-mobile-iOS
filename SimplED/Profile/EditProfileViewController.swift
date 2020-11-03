@@ -15,6 +15,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    view.backgroundColor = .systemBackground
     title = "Edit"
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(updateProfile))
     

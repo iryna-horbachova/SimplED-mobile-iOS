@@ -4,11 +4,10 @@ import UIKit
 class CourseViewController: UIViewController {
   var course: Course! {
     didSet {
-     titleLabel.text = course.title
+     title = course.title
     }
   }
   
-  let titleLabel = TitleLabel(title: "Course Title", size: 25)
   let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
   private let segmentedControl = makeSegmentedControl()
   private let containerView = UIView()
@@ -26,9 +25,16 @@ class CourseViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
+    
+    if course.creator == APIManager.currentUser?.id {
+      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
+                                                          style: .plain,
+                                                          target: self,
+                                                          action: #selector(showEditCourseVC))
+    }
+    
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
-    view.addSubview(titleLabel)
     view.addSubview(imageView)
     view.addSubview(segmentedControl)
     
@@ -36,11 +42,7 @@ class CourseViewController: UIViewController {
     
     NSLayoutConstraint.activate(
       [
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
-        titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-  
-        imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: PADDING),
+        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PADDING),
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
 
@@ -108,5 +110,13 @@ class CourseViewController: UIViewController {
       vc.view.isHidden = true
     }
     nestedVCs[sender.selectedSegmentIndex].view.isHidden = false
+  }
+  
+  @objc func showEditCourseVC() {
+    let editCourseVC = CourseFormViewController()
+    editCourseVC.controllerOption = .edit
+    editCourseVC.course = course
+    navigationController?.pushViewController(editCourseVC,
+                                             animated: true)
   }
 }

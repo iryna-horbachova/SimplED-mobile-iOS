@@ -1,7 +1,21 @@
 import UIKit
 
-class AddCourseViewController: UIViewController {
+public enum CourseVCOption {
+  case edit
+  case add
+}
 
+class CourseFormViewController: UIViewController {
+
+  var controllerOption: CourseVCOption = .add
+  var course: Course? {
+    didSet {
+      titleTextField.text = course!.title
+      descriptionTextField.text = course!.description
+      startDateTextField.text = course!.startDate
+    }
+  }
+  
   let titleTextField = UITextField.makeTextField()
   let descriptionTextField = UITextField.makeTextField()
   let categoryTextField = UITextField.makeTextField()
@@ -36,7 +50,6 @@ class AddCourseViewController: UIViewController {
   var categories = [CourseOption]() {
     didSet {
       categoryPicker.reloadAllComponents()
-      print(categories)
     }
   }
   var languages = [CourseOption]() {
@@ -53,19 +66,35 @@ class AddCourseViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .systemBackground
     
-    title = "Add course"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(addCourse))
+    switch controllerOption {
+    case .add:
+      title = "Add course"
+      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(addCourse))
+    default:
+      title = "Edit course"
+      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(editCourse))
+    }
+
     
     // API
     getCourseOptions(endURL: "courses/categories/") { [weak self] options in
       DispatchQueue.main.async {
         self?.categories = options ?? []
+        let category = self?.categories.first {
+          $0.dbValue == self?.course!.category
+        }
+        self?.categoryTextField.text = category!.title
       }
     }
     getCourseOptions(endURL: "courses/languages/") { [weak self] options in
       DispatchQueue.main.async {
         self?.languages = options ?? []
+        let language = self?.languages.first {
+          $0.dbValue == self?.course!.language
+        }
+        self?.languageTextField.text = language!.title
       }
     }
     
@@ -179,6 +208,46 @@ class AddCourseViewController: UIViewController {
     }
   }
   
+  @objc func editCourse() {
+    let language = languages.first { $0.title == languageTextField.text }
+    let category = categories.first { $0.title == categoryTextField.text }
+    var updatedCourse = course
+    updatedCourse?.title = titleTextField.text!
+    updatedCourse?.description = descriptionTextField.text!
+    updatedCourse?.language = language!.dbValue
+    updatedCourse?.category = category!.dbValue
+    
+    
+    APIManager.shared.update(course: updatedCourse!) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let course):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Success!",
+              message: "The course \(course.title) was updated successfully!"),
+            animated: true,
+            completion: nil
+          )
+        }
+        
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Error occured!",
+              message: error.rawValue),
+            animated: true,
+            completion: nil)
+          
+        }
+      }
+    }
+    
+  
+  }
+  
   private func getCourseOptions(endURL: String,
                                 completion: @escaping ([CourseOption]?) -> Void) {
     APIManager.shared.getCourseOptionsArray(endURL: endURL){
@@ -210,7 +279,7 @@ class AddCourseViewController: UIViewController {
   }
 }
 
-extension AddCourseViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension CourseFormViewController: UIPickerViewDataSource, UIPickerViewDelegate {
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
@@ -250,7 +319,7 @@ extension AddCourseViewController: UIPickerViewDataSource, UIPickerViewDelegate 
   }
 }
 
-extension AddCourseViewController: UITextFieldDelegate {
+extension CourseFormViewController: UITextFieldDelegate {
   
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     return true
