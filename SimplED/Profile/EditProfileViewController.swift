@@ -43,6 +43,11 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate {
       comment: "Bio textfield")
     bioTextField.attributedPlaceholder = NSAttributedString(string: bioPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
     
+    firstNameTextField.text = APIManager.currentUser?.firstName
+    lastNameTextField.text = APIManager.currentUser?.lastName
+    emailTextField.text = APIManager.currentUser?.email
+    bioTextField.text = APIManager.currentUser?.bio
+    
     let stackView = UIStackView.makeVerticalStackView()
     stackView.spacing = 5
     stackView.distribution = .equalSpacing
@@ -62,12 +67,38 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate {
   }
   
   @objc func updateProfile() {
-    present(
-      UIAlertController.alertWithOKAction(title: "Success!",
-                                          message: "Information updated successfully!"),
-      animated: true,
-      completion: nil
-    )
+    var user = APIManager.currentUser
+    user?.firstName = firstNameTextField.text!
+    user?.lastName = lastNameTextField.text!
+    user?.email = emailTextField.text!
+    user?.bio = bioTextField.text!
+    
+    APIManager.shared.update(user: user!) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let user):
+        DispatchQueue.main.async {
+          APIManager.currentUser = user
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Success!",
+              message: "Information updated successfully!"),
+            animated: true,
+            completion: nil
+          )
+        }
+          
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+ 
+        }
+      }
+    }
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
