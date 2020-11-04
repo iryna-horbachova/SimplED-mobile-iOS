@@ -1,6 +1,7 @@
 import UIKit
 
 class CourseTableViewController: UITableViewController {
+  public var courses: [Course]?
   public let filterTableViewController = FilterTableViewController()
   private let cellIdentifier = "courseTableViewCell"
   
@@ -17,17 +18,20 @@ class CourseTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    5
+    courses?.count ?? 0
   }
   
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
    let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CourseTableViewCell
+    cell.course = courses![indexPath.row]
    
    return cell
    }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    present(CourseViewController(), animated: true)
+    let courseVC = CourseViewController()
+    courseVC.course = courses![indexPath.row]
+    present(UINavigationController(rootViewController: courseVC), animated: true)
   }
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

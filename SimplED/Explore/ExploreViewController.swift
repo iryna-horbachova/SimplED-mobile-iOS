@@ -18,6 +18,10 @@ class ExploreViewController: UIViewController {
   var searchController: UISearchController!
   let categoryCellIdentifier = "categoryCell"
   
+  var isSearchBarEmpty: Bool {
+    return searchController.searchBar.text?.isEmpty ?? true
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Explore"
@@ -63,7 +67,6 @@ class ExploreViewController: UIViewController {
       case .success(let user):
         DispatchQueue.main.async {
           APIManager.currentUser = user
-          print(APIManager.currentUser)
         }
           
       case .failure(let error):
@@ -142,7 +145,23 @@ extension ExploreViewController: UITableViewDelegate {
 
 extension ExploreViewController: UISearchResultsUpdating {
   func updateSearchResults(for searchController: UISearchController) {
-    print("updatesearchresults")
+    // Update the filtered array based on the search text.
+    var searchResults = [Course]()
+    
+    for (_, courses) in categoryCourses {
+      searchResults.append(contentsOf: courses)
+    }
+
+    let filteredResults = searchResults.filter { $0.title.lowercased().contains(searchController.searchBar.text!.lowercased()) ||
+      $0.description.lowercased().contains(searchController.searchBar.text!.lowercased())
+    }
+
+    // Apply the filtered results to the search results table.
+    if let resultsController = searchController.searchResultsController as? CourseTableViewController {
+        resultsController.courses = filteredResults
+        resultsController.tableView.reloadData()
+
+    }
   }
 }
 

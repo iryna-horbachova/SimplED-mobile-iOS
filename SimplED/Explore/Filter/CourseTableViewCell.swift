@@ -2,6 +2,12 @@ import UIKit
 
 class CourseTableViewCell: UITableViewCell {
 
+  var course: Course? {
+    didSet {
+      titleLabel.text = course?.title
+    }
+  }
+  
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
     label.text = NSLocalizedString(
