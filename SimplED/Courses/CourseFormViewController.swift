@@ -83,7 +83,7 @@ class CourseFormViewController: UIViewController {
       DispatchQueue.main.async {
         self?.categories = options ?? []
         let category = self?.categories.first {
-          $0.dbValue == self?.course!.category
+          $0.dbValue == self?.course?.category
         }
         self?.categoryTextField.text = category!.title
       }

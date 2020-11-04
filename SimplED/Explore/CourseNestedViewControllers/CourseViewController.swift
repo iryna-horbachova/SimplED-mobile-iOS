@@ -26,7 +26,8 @@ class CourseViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
     
-    if course.creator == APIManager.currentUser?.id {
+    
+    if course!.creator == APIManager.currentUser?.id {
       navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
                                                           style: .plain,
                                                           target: self,
