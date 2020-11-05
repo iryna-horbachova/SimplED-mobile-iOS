@@ -5,7 +5,9 @@ public enum CourseVCOption {
   case add
 }
 
-class CourseFormViewController: UIViewController {
+class CourseFormViewController: UIViewController,
+                                UIImagePickerControllerDelegate,
+                                UINavigationControllerDelegate {
 
   var controllerOption: CourseVCOption = .add
   var course: Course? {
@@ -21,6 +23,9 @@ class CourseFormViewController: UIViewController {
   let categoryTextField = UITextField.makeTextField()
   let languageTextField = UITextField.makeTextField()
   let startDateTextField = UITextField.makeTextField()
+  
+  let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
+  let selectImageButton = UIButton.makeSecondaryButton(title: "Select image")
   
   var categoryPicker: UIPickerView {
     let pickerView = UIPickerView()
@@ -76,7 +81,6 @@ class CourseFormViewController: UIViewController {
       title = "Edit course"
       navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(editCourse))
     }
-
     
     // API
     getCourseOptions(endURL: "courses/categories/") { [weak self] options in
@@ -85,16 +89,16 @@ class CourseFormViewController: UIViewController {
         let category = self?.categories.first {
           $0.dbValue == self?.course?.category
         }
-        self?.categoryTextField.text = category!.title
+        self?.categoryTextField.text = category?.title ?? "Category"
       }
     }
     getCourseOptions(endURL: "courses/languages/") { [weak self] options in
       DispatchQueue.main.async {
         self?.languages = options ?? []
         let language = self?.languages.first {
-          $0.dbValue == self?.course!.language
+          $0.dbValue == self?.course?.language
         }
-        self?.languageTextField.text = language!.title
+        self?.languageTextField.text = language?.title ?? "Language"
       }
     }
     
@@ -146,13 +150,20 @@ class CourseFormViewController: UIViewController {
     )
     startDateTextField.inputView = datePicker
     
+    selectImageButton.setTitle("Select image", for: .normal)
+    selectImageButton.addTarget(self, action: #selector(displayImagePickerButtonTapped(_:)), for: .touchUpInside)
+
+    
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.spacing = 0.5
+    stackView.spacing = 2
     stackView.distribution = .equalSpacing
     textfields.forEach {
       $0.delegate = self
       stackView.addArrangedSubview($0)
     }
+    stackView.addArrangedSubview(imageView)
+    stackView.addArrangedSubview(selectImageButton)
+    
     view.addSubview(stackView)
 
     NSLayoutConstraint.activate(
@@ -160,7 +171,7 @@ class CourseFormViewController: UIViewController {
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PADDING),
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200),
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
       ])
     
     let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
@@ -276,6 +287,21 @@ class CourseFormViewController: UIViewController {
     dateFormatter.dateFormat = "yyyy-MM-dd"
     let date = dateFormatter.string(from: datePicker.date)
     startDateTextField.text = date
+  }
+  
+  @objc func displayImagePickerButtonTapped(_ sender:UIButton!) {
+    let myPickerController = UIImagePickerController()
+    myPickerController.delegate = self;
+    myPickerController.sourceType = UIImagePickerController.SourceType.photoLibrary
+    
+    present(myPickerController, animated: true, completion: nil)
+  }
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    imageView.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+    imageView.backgroundColor = UIColor.clear
+    imageView.contentMode = UIView.ContentMode.scaleAspectFit
+    dismiss(animated: true, completion: nil)
   }
 }
 

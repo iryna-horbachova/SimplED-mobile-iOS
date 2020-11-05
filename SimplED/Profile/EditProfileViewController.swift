@@ -3,7 +3,7 @@ import UIKit
 class EditProfileViewController: UIViewController,
                                  UITextFieldDelegate,
                                  UIImagePickerControllerDelegate,
-                                 UINavigationControllerDelegate{
+                                 UINavigationControllerDelegate {
   
   let firstNameTextField = UITextField.makeTextField()
   let emailTextField = UITextField.makeTextField()
