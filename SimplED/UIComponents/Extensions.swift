@@ -46,6 +46,17 @@ extension UIButton {
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }
+  
+  static func makeSecondaryButton(title: String) -> UIButton {
+    let button = UIButton()
+    button.tintColor = .mainTheme
+    button.titleLabel?.font =  .preferredFont(forTextStyle: .title2)
+    button.setTitle(title, for: .normal)
+    button.setTitleColor(.mainTheme, for: .normal)
+    button.layer.cornerRadius = CORNER_RADIUS
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }
 }
 
 extension UIStackView {
