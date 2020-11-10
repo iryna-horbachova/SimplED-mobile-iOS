@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-SimplED-SimplEDUITests/Pods-SimplED-SimplEDUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Cloudinary/Cloudinary.framework
+${BUILT_PRODUCTS_DIR}/Keys/Keys.framework
