@@ -22,6 +22,8 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 
+## API keys 
+Pods/CocoaPodsKeys
 ## Obj-C/Swift specific
 *.hmap
 
