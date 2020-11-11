@@ -5,6 +5,17 @@ class EditProfileViewController: UIViewController,
                                  UIImagePickerControllerDelegate,
                                  UINavigationControllerDelegate {
   
+  var user: User? {
+    didSet {
+      firstNameTextField.text = user?.firstName
+      lastNameTextField.text = user?.lastName
+      emailTextField.text = user?.email
+      bioTextField.text = user?.bio
+      if let image = user?.image {
+        Utilities.loadImage(imageView: imageView, baseURLString: image)
+      }
+    }
+  }
   let firstNameTextField = UITextField.makeTextField()
   let emailTextField = UITextField.makeTextField()
   let lastNameTextField = UITextField.makeTextField()
@@ -20,6 +31,7 @@ class EditProfileViewController: UIViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    user = APIManager.currentUser
     view.backgroundColor = .systemBackground
     title = "Edit"
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(updateProfile))
@@ -49,68 +61,80 @@ class EditProfileViewController: UIViewController,
       comment: "Bio textfield")
     bioTextField.attributedPlaceholder = NSAttributedString(string: bioPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
     
-    selectImageButton.setTitle("Select image", for: .normal)
+    selectImageButton.setTitle("Change image", for: .normal)
     selectImageButton.addTarget(self, action: #selector(displayImagePickerButtonTapped(_:)), for: .touchUpInside)
-
-    
-    firstNameTextField.text = APIManager.currentUser?.firstName
-    lastNameTextField.text = APIManager.currentUser?.lastName
-    emailTextField.text = APIManager.currentUser?.email
-    bioTextField.text = APIManager.currentUser?.bio
     
     let stackView = UIStackView.makeVerticalStackView()
-    stackView.spacing = 2
+    stackView.spacing = 3
     stackView.distribution = .equalSpacing
     textfields.forEach {
       $0.delegate = self
       stackView.addArrangedSubview($0)
     }
     stackView.addArrangedSubview(imageView)
-    stackView.addArrangedSubview(selectImageButton)
+   // stackView.addArrangedSubview(selectImageButton)
     view.addSubview(stackView)
+    view.addSubview(selectImageButton)
 
     NSLayoutConstraint.activate(
       [
+        selectImageButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -PADDING),
+        selectImageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
+        selectImageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
+        
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PADDING),
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+        stackView.bottomAnchor.constraint(equalTo: selectImageButton.topAnchor, constant: -50),
       ])
   }
   
   @objc func updateProfile() {
-    var user = APIManager.currentUser
-    user?.firstName = firstNameTextField.text!
-    user?.lastName = lastNameTextField.text!
-    user?.email = emailTextField.text!
-    user?.bio = bioTextField.text!
+    var updatedUser = APIManager.currentUser
+    updatedUser?.firstName = firstNameTextField.text!
+    updatedUser?.lastName = lastNameTextField.text!
+    updatedUser?.email = emailTextField.text!
+    updatedUser?.bio = bioTextField.text!
     
-    APIManager.shared.update(user: user!) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let user):
-        DispatchQueue.main.async {
-          APIManager.currentUser = user
-          self.present(
-            UIAlertController.alertWithOKAction(
-              title: "Success!",
-              message: "Information updated successfully!"),
-            animated: true,
-            completion: nil
-          )
+    let image = imageView.image
+    let imageData = image?.pngData()
+    let group = DispatchGroup()
+    
+
+    APIManager.shared.uploadImageToCloudinary(imageOption: .profilePic, imageData: imageData!, group: group) { url in
+      updatedUser?.image = url
+      APIManager.shared.update(user: updatedUser!) { [weak self] result in
+        guard let self = self else { return }
+        group.enter()
+        switch result {
+        case .success(let user):
+          DispatchQueue.main.async {
+            APIManager.currentUser = user
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Success!",
+                message: "Information updated successfully!"),
+              animated: true,
+              completion: nil
+            )
+          }
+            
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Error occured!",
+                          message: error.rawValue),
+                         animated: true,
+                         completion: nil)
+   
+          }
         }
-          
-      case .failure(let error):
-        DispatchQueue.main.async {
-          self.present(UIAlertController.alertWithOKAction(
-                        title: "Error occured!",
-                        message: error.rawValue),
-                       animated: true,
-                       completion: nil)
- 
-        }
+        group.leave()
       }
+
     }
+    
+    
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -136,10 +160,12 @@ class EditProfileViewController: UIViewController,
   }
   
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    imageView.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-    imageView.backgroundColor = UIColor.clear
-    imageView.contentMode = UIView.ContentMode.scaleAspectFit
-    dismiss(animated: true, completion: nil)
+    if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+      imageView.image = image
+      imageView.backgroundColor = UIColor.clear
+      imageView.contentMode = UIView.ContentMode.scaleAspectFit
+      dismiss(animated: true, completion: nil)
+    }
   }
 
   

@@ -7,6 +7,9 @@ class ProfileViewController: UIViewController {
       nameLabel.text = "\(user!.firstName) \(user!.lastName)"
       emailLabel.text = user!.email
       bioLabel.text = user!.bio
+      if let image = user!.image {
+        Utilities.loadImage(imageView: avatarImageView, baseURLString: image)
+      }
     }
   }
   

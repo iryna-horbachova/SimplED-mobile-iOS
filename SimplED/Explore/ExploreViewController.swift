@@ -91,11 +91,13 @@ class ExploreViewController: UIViewController {
           self.categoryCourses = courses
         }
       case .failure(let error):
-        self.present(UIAlertController.alertWithOKAction(
-                      title: "Error occured!",
-                      message: error.rawValue),
-                     animated: true,
-                     completion: nil)
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+        }
       }
     }
   }
