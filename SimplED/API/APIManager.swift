@@ -1,11 +1,23 @@
 import Foundation
+import Keys
+import Cloudinary
 
 class APIManager {
   
   static var currentUser: User?
   static let shared = APIManager()
+  private let keys = SimplEDKeys()
   
   private let baseURL = "http://simpled-api.herokuapp.com/"
+  public let baseImageURL = "https://res.cloudinary.com/hgrb5wnzc/"
+  private let imageCloudName = "hgrb5wnzc"
+  
+  private var cloudinary: CLDCloudinary {
+    
+    let config = CLDConfiguration(cloudinaryUrl: "cloudinary://\(keys.cloudinaryAPIKey):\(keys.cloudinaryAPISecretKey)@\(imageCloudName)")
+
+    return CLDCloudinary(configuration: config!)
+  }
   
   typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
   typealias categoryCoursesCompletionHandler = (Result<[String: [Course]], APIError>) -> Void
@@ -68,7 +80,10 @@ class APIManager {
       do {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let user = try decoder.decode(User.self, from: data)
+        var user = try decoder.decode(User.self, from: data)
+        if let image = user.image {
+          user.image =  self.baseImageURL + image
+        }
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))
@@ -82,12 +97,13 @@ class APIManager {
     completion: @escaping userCompletionHandler
   ) {
     let endpoint = baseURL + "users/\(user.id!)"
-    
+
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
         return
     }
-    
+    print("update user")
+    print(user)
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
     
@@ -343,7 +359,9 @@ class APIManager {
       do {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let user = try decoder.decode(User.self, from: data)
+        var user = try decoder.decode(User.self, from: data)
+
+
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))
@@ -506,5 +524,31 @@ class APIManager {
       completion(nil)
     }
     task.resume()
+  }
+  
+  func uploadImageToCloudinary(imageOption: ImageOption, imageData: Data, group: DispatchGroup, completionHandler: @escaping (String?) -> ()) {
+    let params = CLDUploadRequestParams()
+    params.setFolder(imageOption.rawValue)
+
+    var url: String? = nil
+    print("uploadImageToCloudinary")
+    let request = cloudinary.createUploader().signedUpload(data: imageData, params: params, progress: nil) { result, error in
+      group.enter()
+      print("result")
+      print(result)
+      print("error")
+      print(error)
+      if error == nil {
+        url = "v\(result!.version!)/\(result!.publicId!)"
+        print("my url")
+      } else {
+        url = APIManager.currentUser?.image
+      }
+      group.leave()
+      group.notify(queue: .main) {
+        completionHandler(url)
+      }
+      
+    }
   }
 }
