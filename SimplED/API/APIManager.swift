@@ -6,11 +6,13 @@ class APIManager {
   
   static var currentUser: User?
   static let shared = APIManager()
+  private var token: Token?
   private let keys = SimplEDKeys()
   
   private let baseURL = "http://simpled-api.herokuapp.com/"
   public let baseImageURL = "https://res.cloudinary.com/hgrb5wnzc/"
   private let imageCloudName = "hgrb5wnzc"
+  
   
   private var cloudinary: CLDCloudinary {
     
@@ -27,6 +29,125 @@ class APIManager {
   typealias deleteCompletionHandler = (APIError?) -> Void
   
   private init() {}
+  
+  func getToken(
+    email: String,
+    password: String,
+    completion: @escaping () -> ()
+  ) {
+    let endpoint = baseURL + "users/token/"
+    let group = DispatchGroup()
+    group.enter()
+    
+    guard let url = URL(string: endpoint) else {
+      print("invalid url")
+        return
+    }
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    let parameters: [String: String] = ["email": email, "password": password]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+
+    } catch {
+      print("invalid request body")
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        print("got an error from the server")
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        print("invalid response")
+        return
+      }
+      
+      guard let data = data else {
+        print("invalid data")
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let receivedToken = try decoder.decode(Token.self, from: data)
+        print("success")
+        print(receivedToken)
+        APIManager.shared.token = receivedToken
+        group.leave()
+        group.notify(queue: .main) {
+          completion()
+        }
+      } catch {
+        print("invalid decoder")
+      }
+    }
+    task.resume()
+  }
+  
+  func refreshToken() {
+    let endpoint = baseURL + "users/token/"
+    
+    guard let url = URL(string: endpoint) else {
+      print("invalid url")
+        return
+    }
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    let parameters: [String: String] = ["refresh": token!.refresh]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+
+    } catch {
+      print("invalid request body")
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      if let _ = error {
+        print("got an error from the server")
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        print("invalid response")
+        return
+      }
+      
+      guard let data = data else {
+        print("invalid data")
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let receivedToken = try decoder.decode(Token.self, from: data)
+        APIManager.shared.token = receivedToken
+        
+      } catch {
+        print("invalid decoder")
+      }
+    }
+    task.resume()
+  }
   
   func login() {
     // if success, set as current user
@@ -110,6 +231,7 @@ class APIManager {
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
     request.allHTTPHeaderFields = headers
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
     
     do {
       let encoder = JSONEncoder()
@@ -163,6 +285,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "DELETE"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
@@ -198,7 +321,11 @@ class APIManager {
         return
     }
     
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -238,7 +365,11 @@ class APIManager {
         return
     }
     
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -270,6 +401,7 @@ class APIManager {
   func getCourses(
     completion: @escaping categoryCoursesCompletionHandler
   ) {
+    print("get courses")
     let endpoint = baseURL + "courses/"
     
     guard let url = URL(string: endpoint) else {
@@ -277,7 +409,11 @@ class APIManager {
         return
     }
     
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -299,7 +435,7 @@ class APIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let courses = try decoder.decode([String: [Course]].self, from: data)
         completion(.success(courses))
-      } catch {
+      } catch let error {
         completion(.failure(.invalidData))
       }
     }
@@ -339,7 +475,11 @@ class APIManager {
       return
     }
     
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -360,7 +500,6 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         var user = try decoder.decode(User.self, from: data)
-
 
         completion(.success(user))
       } catch {
@@ -389,6 +528,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
     
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
@@ -446,6 +586,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
     
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
@@ -503,6 +644,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "DELETE"
+    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
@@ -531,16 +673,11 @@ class APIManager {
     params.setFolder(imageOption.rawValue)
 
     var url: String? = nil
-    print("uploadImageToCloudinary")
     let request = cloudinary.createUploader().signedUpload(data: imageData, params: params, progress: nil) { result, error in
       group.enter()
-      print("result")
-      print(result)
-      print("error")
-      print(error)
+
       if error == nil {
         url = "v\(result!.version!)/\(result!.publicId!)"
-        print("my url")
       } else {
         url = APIManager.currentUser?.image
       }
@@ -548,7 +685,6 @@ class APIManager {
       group.notify(queue: .main) {
         completionHandler(url)
       }
-      
     }
   }
 }

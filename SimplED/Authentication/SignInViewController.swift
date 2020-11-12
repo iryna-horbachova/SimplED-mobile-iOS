@@ -10,8 +10,13 @@ class SignInViewController: BaseAuthViewController {
   }
   
   @objc private func signIN(sender: UIButton!) {
-    // - TODO: Add validation + alerts
-    authenticateUser()
+    var email = emailTextField.text!
+    var password = passwordTextField.text!
+    APIManager.shared.getToken(email: email, password: password) {
+      DispatchQueue.main.async { [weak self] in
+        self?.authenticateUser()
+      }
+    }
   }
   
 }
