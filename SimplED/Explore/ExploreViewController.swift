@@ -61,7 +61,7 @@ class ExploreViewController: UIViewController {
     tableView.reloadData()
     
     // TODO: SET A REAL USER ON LOAD
-    APIManager.shared.getUser(id: 6) { [weak self] result in
+    /*APIManager.shared.getUser(id: 6) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let user):
@@ -79,7 +79,7 @@ class ExploreViewController: UIViewController {
  
         }
       }
-    }
+    }*/
   }
   
   private func getCourses() {

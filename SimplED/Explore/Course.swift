@@ -6,7 +6,7 @@ public struct Course: Codable {
   public var description: String
   public var image: String?
   public var category: String
-  public var creator: Int
+  public var creator: Int?
   public var language: String
   public var participants: [Int]?
   public var startDate: String

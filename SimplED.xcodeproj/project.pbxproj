@@ -27,6 +27,7 @@
 		898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */; };
 		898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */; };
 		899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A12BC254B1CB100A1F52F /* EditProfileViewController.swift */; };
+		899DA427255DBE0B00772C3E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899DA426255DBE0B00772C3E /* Token.swift */; };
 		89A077452546BF60007F65F6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077442546BF60007F65F6 /* User.swift */; };
 		89A0774A2546C936007F65F6 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A077492546C936007F65F6 /* Achievement.swift */; };
 		89A0774F2546C98B007F65F6 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A0774E2546C98A007F65F6 /* Task.swift */; };
@@ -98,6 +99,7 @@
 		898DDAFE253C1AFD00C5D70B /* CourseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewController.swift; sourceTree = "<group>"; };
 		898DDB03253C1EF800C5D70B /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
 		899A12BC254B1CB100A1F52F /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		899DA426255DBE0B00772C3E /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		89A077442546BF60007F65F6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		89A077492546C936007F65F6 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		89A0774E2546C98A007F65F6 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				89A0775F25474BE4007F65F6 /* APIManager.swift */,
 				89A0776425474C7C007F65F6 /* APIError.swift */,
 				893FFE02255B03F7009A61ED /* Utilities.swift */,
+				899DA426255DBE0B00772C3E /* Token.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				894AE4D4253B16D3008EEBF5 /* Course.swift in Sources */,
 				894AE4A025383D51008EEBF5 /* Validation.swift in Sources */,
 				89E0097B254C0A6F008FA5D9 /* CourseOption.swift in Sources */,
+				899DA427255DBE0B00772C3E /* Token.swift in Sources */,
 				89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
 				89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */,
