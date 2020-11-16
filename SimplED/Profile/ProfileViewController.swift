@@ -25,7 +25,6 @@ class ProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    getUser(id: ID)
     title = "Profile"
     view.backgroundColor = .systemBackground
  
@@ -86,28 +85,7 @@ class ProfileViewController: UIViewController {
   @objc func editProfile() {
     navigationController?.pushViewController(EditProfileViewController(), animated: true)
   }
-  
-  func getUser(id: Int) {
-    APIManager.shared.getUser(id: id) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let user):
-        DispatchQueue.main.async {
-          self.user = user
-        }
-          
-      case .failure(let error):
-        DispatchQueue.main.async {
-          self.present(UIAlertController.alertWithOKAction(
-                        title: "Error occured!",
-                        message: error.rawValue),
-                       animated: true,
-                       completion: nil)
- 
-        }
-      }
-    }
-  }
+
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -120,12 +98,17 @@ extension ProfileViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfileOptionTableViewCell
    
     cell.titleLabel.text = options[indexPath.row]
-    print(indexPath.row)
     return cell
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    navigationController?.pushViewController(CourseFormViewController(), animated: true)
+    let id = indexPath.row
+    switch id {
+      case 1:
+        navigationController?.pushViewController(CourseFormViewController(), animated: true)
+    default:
+      view.window?.rootViewController = AuthenticationViewController()
+    }
   }
 
 }

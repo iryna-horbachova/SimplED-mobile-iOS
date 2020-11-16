@@ -10,15 +10,17 @@ class SignInViewController: BaseAuthViewController {
   }
   
   @objc private func signIN(sender: UIButton!) {
-    var email = emailTextField.text!
-    var password = passwordTextField.text!
+    let email = emailTextField.text!
+    let password = passwordTextField.text!
     APIManager.shared.getToken(email: email, password: password) { error in
       if let error = error {
-        self.present(UIAlertController.alertWithOKAction(
-                      title: "Error occured!",
-                      message: error.rawValue),
-                     animated: true,
-                     completion: nil)
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+          }
       } else {
         DispatchQueue.main.async { [weak self] in
           self?.authenticateUser()
