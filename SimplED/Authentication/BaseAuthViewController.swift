@@ -22,6 +22,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
     
     emailTextField.delegate = self
     emailTextField.keyboardType = .emailAddress
+    emailTextField.autocapitalizationType = .none
     let emailPlaceholderString = NSLocalizedString(
       "EMAIL_TEXTFIELD",
       value: "Email",
@@ -35,6 +36,7 @@ class BaseAuthViewController: UIViewController, UITextFieldDelegate {
       value: "Password",
       comment: "Password textfield")
     passwordTextField.attributedPlaceholder = NSAttributedString(string: passwordPlaceholderString, attributes:[NSAttributedString.Key.foregroundColor: UIColor.mainTheme])
+    passwordTextField.autocapitalizationType = .none
     
     textFieldStackView.spacing = 17
     
