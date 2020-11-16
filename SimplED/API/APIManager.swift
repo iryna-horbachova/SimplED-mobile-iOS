@@ -33,7 +33,7 @@ class APIManager {
   func getToken(
     email: String,
     password: String,
-    completion: @escaping () -> ()
+    completion: @escaping (APIError?) -> ()
   ) {
     let endpoint = baseURL + "users/token/"
     let group = DispatchGroup()
@@ -41,6 +41,7 @@ class APIManager {
     
     guard let url = URL(string: endpoint) else {
       print("invalid url")
+      completion(.invalidData)
         return
     }
     var request = URLRequest(url: url)
@@ -63,17 +64,20 @@ class APIManager {
       
       if let _ = error {
         print("got an error from the server")
+        completion(.unableToComplete)
         return
       }
 
       guard let response = response as? HTTPURLResponse,
         (200 ... 299) ~= response.statusCode else {
         print("invalid response")
+        completion(.invalidResponse)
         return
       }
       
       guard let data = data else {
         print("invalid data")
+        completion(.invalidData)
         return
       }
       
@@ -86,10 +90,11 @@ class APIManager {
         APIManager.shared.token = receivedToken
         group.leave()
         group.notify(queue: .main) {
-          completion()
+          completion(nil)
         }
       } catch {
         print("invalid decoder")
+        completion(.invalidData)
       }
     }
     task.resume()
@@ -149,10 +154,6 @@ class APIManager {
     task.resume()
   }
   
-  func login() {
-    // if success, set as current user
-  }
-  
   func register(
     user: User,
     completion: @escaping userCompletionHandler
@@ -202,9 +203,7 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         var user = try decoder.decode(User.self, from: data)
-        if let image = user.image {
-          user.image =  self.baseImageURL + image
-        }
+        print(user)
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))

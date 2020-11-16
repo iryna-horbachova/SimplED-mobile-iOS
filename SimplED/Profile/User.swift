@@ -6,4 +6,6 @@ public struct User: Codable {
   public var bio: String?
   public var image: String?
   public var points: Int?
+  public var password: String?
+  public var confirmPassword: String?
 }

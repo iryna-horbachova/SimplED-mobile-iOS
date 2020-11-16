@@ -31,6 +31,7 @@ class SignUpViewController: BaseAuthViewController {
     confirmPasswordTextField.delegate = self
     confirmPasswordTextField.isSecureTextEntry = true
     confirmPasswordTextField.returnKeyType = .done
+    confirmPasswordTextField.autocapitalizationType = .none
     let confirmPasswordPlaceholderString = NSLocalizedString(
       "CONFIRM_PASSWORD_TEXTFIELD",
       value: "Confirm password",
@@ -50,8 +51,42 @@ class SignUpViewController: BaseAuthViewController {
   }
   
   @objc private func signUp(sender: UIButton!) {
-    // - TODO: Add validation + alerts
-    authenticateUser()
+    let email = emailTextField.text!
+    let password = passwordTextField.text!
+    let confirmPassword = confirmPasswordTextField.text!
+    let firstName = firstNameTextField.text!
+    let lastName = lastNameTextField.text!
+    let user = User(id: nil, firstName: firstName, lastName: lastName, email: email, bio: nil, image: nil, points: nil, password: password, confirmPassword: confirmPassword)
+    
+    APIManager.shared.register(user: user){ [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let newUser):
+          APIManager.shared.getToken(email: email, password: password) { error in
+            if let error = error {
+              self.present(UIAlertController.alertWithOKAction(
+                            title: "Error occured!",
+                            message: error.rawValue),
+                           animated: true,
+                           completion: nil)
+            } else {
+              APIManager.currentUser = newUser
+              DispatchQueue.main.async { [weak self] in
+                self?.authenticateUser()
+              }
+            }
+          }
+        
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+        }
+      }
+    }
   }
   
   // MARK: - UITextFieldDelegate
