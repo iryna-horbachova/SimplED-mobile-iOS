@@ -26,8 +26,7 @@ class ExploreViewController: UIViewController {
     super.viewDidLoad()
     title = "Explore"
     navigationController?.navigationBar.prefersLargeTitles = true
-  
-    getCourses()
+    view.backgroundColor = .systemBackground
     
     view.addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,26 +59,27 @@ class ExploreViewController: UIViewController {
  
     tableView.reloadData()
     
-    // TODO: SET A REAL USER ON LOAD
-    /*APIManager.shared.getUser(id: 6) { [weak self] result in
+    let userId = UserDefaults.standard.object(forKey: "userId") as? Int
+    APIManager.shared.getUser(id: userId ?? 1) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let user):
         DispatchQueue.main.async {
           APIManager.currentUser = user
+          self.getCourses()
         }
           
       case .failure(let error):
         DispatchQueue.main.async {
           self.present(UIAlertController.alertWithOKAction(
-                        title: "Error occured!",
+                        title: "Error occured with loading user!",
                         message: error.rawValue),
                        animated: true,
                        completion: nil)
  
         }
       }
-    }*/
+    }
   }
   
   private func getCourses() {
@@ -93,7 +93,7 @@ class ExploreViewController: UIViewController {
       case .failure(let error):
         DispatchQueue.main.async {
           self.present(UIAlertController.alertWithOKAction(
-                        title: "Error occured!",
+                        title: "Error occured with loading courses!",
                         message: error.rawValue),
                        animated: true,
                        completion: nil)

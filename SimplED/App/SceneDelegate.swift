@@ -9,10 +9,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.windowScene = windowScene
-    // TODO: Check whether the user is authenticated
-    window?.rootViewController = AuthenticationViewController()  //TabBarController()
-    //window?.rootViewController = AuthenticationViewController()
-    window?.rootViewController?.view.backgroundColor = .systemBackground  // So we can see it
+    
+    if (UserDefaults.standard.object(forKey: "userId") as? Int) != nil {
+      APIManager.shared.refreshAuthenticatedUserOnAppStart() { [weak self] error in
+        if error == nil {
+          DispatchQueue.main.async {
+            self?.window?.rootViewController = TabBarController()
+          }
+        } else {
+          DispatchQueue.main.async {
+            self?.window?.rootViewController = AuthenticationViewController()
+          }
+        }
+      }
+    } else {
+      window?.rootViewController = AuthenticationViewController()
+    }
+    
+    window?.rootViewController?.view.backgroundColor = .systemBackground
     window?.makeKeyAndVisible()
   }
 

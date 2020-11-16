@@ -85,9 +85,10 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let receivedToken = try decoder.decode(Token.self, from: data)
-        print("success")
-        print(receivedToken)
         APIManager.shared.token = receivedToken
+        UserDefaults.standard.set(receivedToken.access, forKey: "accessToken")
+        UserDefaults.standard.set(receivedToken.refresh, forKey: "refreshToken")
+        UserDefaults.standard.set(receivedToken.userId, forKey: "userId")
         group.leave()
         group.notify(queue: .main) {
           completion(nil)
@@ -100,8 +101,8 @@ class APIManager {
     task.resume()
   }
   
-  func refreshToken() {
-    let endpoint = baseURL + "users/token/"
+  func refreshToken(completion: @escaping (APIError?) -> ()) {
+    let endpoint = baseURL + "users/refresh/"
     
     guard let url = URL(string: endpoint) else {
       print("invalid url")
@@ -114,7 +115,7 @@ class APIManager {
     headers["Content-Type"] = "application/json"
     request.allHTTPHeaderFields = headers
     
-    let parameters: [String: String] = ["refresh": token!.refresh]
+    let parameters: [String: String] = ["refresh": token!.refresh!]
     
     do {
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
@@ -124,7 +125,7 @@ class APIManager {
     }
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
+
       if let _ = error {
         print("got an error from the server")
         return
@@ -146,12 +147,21 @@ class APIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let receivedToken = try decoder.decode(Token.self, from: data)
         APIManager.shared.token = receivedToken
-        
+        UserDefaults.standard.set(receivedToken.refresh, forKey: "refreshToken")
+        completion(nil)
       } catch {
         print("invalid decoder")
       }
     }
     task.resume()
+  }
+  
+  func refreshAuthenticatedUserOnAppStart(completion: @escaping (APIError?) -> ()) {
+    let id = UserDefaults.standard.object(forKey: "userId") as! Int
+    let refresh = UserDefaults.standard.object(forKey: "refreshToken") as! String
+    let access = UserDefaults.standard.object(forKey: "accessToken") as! String
+    APIManager.shared.token = Token(userId: id, refresh: refresh, access: access)
+    refreshToken(completion: completion)
   }
   
   func register(
@@ -202,8 +212,7 @@ class APIManager {
       do {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        var user = try decoder.decode(User.self, from: data)
-        print(user)
+        let user = try decoder.decode(User.self, from: data)
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))
@@ -230,7 +239,7 @@ class APIManager {
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
     request.allHTTPHeaderFields = headers
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     do {
       let encoder = JSONEncoder()
@@ -284,7 +293,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "DELETE"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
@@ -322,10 +331,9 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -366,7 +374,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
@@ -410,10 +418,9 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -434,7 +441,7 @@ class APIManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let courses = try decoder.decode([String: [Course]].self, from: data)
         completion(.success(courses))
-      } catch let error {
+      } catch _ {
         completion(.failure(.invalidData))
       }
     }
@@ -476,7 +483,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
@@ -527,7 +534,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
@@ -543,7 +550,9 @@ class APIManager {
     }
   
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
+      print("add course")
+      print(response)
+      print(error)
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -566,6 +575,7 @@ class APIManager {
         let course = try decoder.decode(Course.self, from: data)
         completion(.success(course))
       } catch {
+        print("invalid decoder")
         completion(.failure(.invalidData))
       }
     }
@@ -585,7 +595,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     var headers = request.allHTTPHeaderFields ?? [:]
     headers["Content-Type"] = "application/json"
@@ -643,7 +653,7 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "DELETE"
-    request.setValue("Bearer \(token!.access)", forHTTPHeaderField:"Authorization")
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       
