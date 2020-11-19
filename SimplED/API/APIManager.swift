@@ -27,8 +27,11 @@ class APIManager {
   typealias userCompletionHandler = (Result<User, APIError>) -> Void
   typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
   typealias deleteCompletionHandler = (APIError?) -> Void
+  
   typealias tasksCompletionHandler = (Result<[Task], APIError>) -> Void
   typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
+  typealias solutionsCompletionHandler = (Result<[Solution], APIError>) -> Void
+  typealias solutionCompletionHandler = (Result<Solution, APIError>) -> Void
   
   private init() {}
   
@@ -527,9 +530,6 @@ class APIManager {
     }
   
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      print("add task")
-      print(response)
-      print(error)
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -558,6 +558,119 @@ class APIManager {
     }
     task.resume()
   }
+  
+  // MARK: - Solutions
+  
+  func getSolutions(
+    courseId: Int,
+    completion: @escaping solutionsCompletionHandler
+  ) {
+    print("getting solutions")
+    let endpoint = baseURL + "courses/\(courseId)/solutions/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let solutions = try decoder.decode([Solution].self, from: data)
+        print("solutions")
+        print(solutions)
+        completion(.success(solutions))
+      } catch _ {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  func add(
+    solution: Solution,
+    courseId: Int,
+    completion: @escaping solutionCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(courseId)/solutions/"
+    print("solution")
+    print(solution)
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    do {
+      let encoder = JSONEncoder()
+      encoder.keyEncodingStrategy = .convertToSnakeCase
+      let httpBody = try encoder.encode(solution)
+      request.httpBody = httpBody
+    } catch {
+      completion(.failure(.invalidData))
+    }
+  
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+
+      print("solution response")
+      print(response)
+      
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let solution = try decoder.decode(Solution.self, from: data)
+        completion(.success(solution))
+      } catch {
+        print("invalid decoder")
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
   
   func getCourses(
     category: String,
@@ -660,9 +773,6 @@ class APIManager {
     }
   
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      print("add course")
-      print(response)
-      print(error)
       if let _ = error {
         completion(.failure(.unableToComplete))
         return

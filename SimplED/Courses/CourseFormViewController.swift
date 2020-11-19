@@ -95,6 +95,7 @@ class CourseFormViewController: UIViewController,
         self?.categoryTextField.text = category?.title ?? "Category"
       }
     }
+    
     getCourseOptions(endURL: "courses/languages/") { [weak self] options in
       DispatchQueue.main.async {
         self?.languages = options ?? []

@@ -36,7 +36,7 @@ class CourseViewController: UIViewController {
       navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Task",style: .plain,
                                                           target: self, action: #selector(showAddTaskVC))
     }
-    
+    tasksTableViewController.creatorId = course!.creator
     
     
     containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +96,24 @@ class CourseViewController: UIViewController {
                          completion: nil)
           }
         }
-      
+    }
+    
+    APIManager.shared.getSolutions(courseId: course.id!) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let solutions):
+          DispatchQueue.main.async {
+            self.tasksTableViewController.solutions = solutions
+          }
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Error occured with loading solutions!",
+                          message: error.rawValue),
+                         animated: true,
+                         completion: nil)
+          }
+        }
     }
   }
   

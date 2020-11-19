@@ -2,12 +2,20 @@ import UIKit
 
 class TasksTableViewController: UITableViewController {
   
+  var creatorId: Int?
+  
   var tasks = [Task]() {
     didSet {
       tableView.reloadData()
     }
   }
-  // TODO: Make resizable tableviewcells
+  
+  var solutions = [Solution]() {
+    didSet {
+      tableView.reloadData()
+    }
+  }
+
   let cellIdentifier = "taskTableViewCell"
   
   override func viewDidLoad() {
@@ -31,6 +39,7 @@ class TasksTableViewController: UITableViewController {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TaskTableViewCell
     cell.titleLabel.text = task.title
     cell.detailsLabel.text = task.description
+    cell.parentViewController = self
     
     return cell
    }
@@ -40,8 +49,20 @@ class TasksTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let id = indexPath.row
-    navigationController?.pushViewController(SolutionViewController(), animated: true)
+    let task = tasks[indexPath.row]
+    if creatorId == APIManager.currentUser!.id {
+      let solutionVC = SolutionViewController()
+      solutionVC.solution = solutions.first(where: { $0.task == task.id && $0.owner!.id == APIManager.currentUser!.id })
+      solutionVC.taskId = task.id
+      solutionVC.courseId = task.course
+      navigationController?.pushViewController(solutionVC, animated: true)
+    } else {
+      let solutionVC = SolutionViewController()
+      solutionVC.solution = solutions.first(where: { $0.task == task.id  && $0.owner!.id == APIManager.currentUser!.id})
+      solutionVC.taskId = task.id
+      solutionVC.courseId = task.course
+      navigationController?.pushViewController(solutionVC, animated: true)
+    }
   }
 
 }
