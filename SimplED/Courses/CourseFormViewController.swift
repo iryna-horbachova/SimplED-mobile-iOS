@@ -15,6 +15,9 @@ class CourseFormViewController: UIViewController,
       titleTextField.text = course!.title
       descriptionTextField.text = course!.description
       startDateTextField.text = course!.startDate
+      if let image = course!.image {
+        Utilities.loadImage(imageView: imageView, baseURLString: image)
+      }
     }
   }
   
@@ -228,34 +231,41 @@ class CourseFormViewController: UIViewController,
     updatedCourse?.language = language!.dbValue
     updatedCourse?.category = category!.dbValue
     
+    let image = imageView.image
+    let imageData = image?.pngData()
+    let group = DispatchGroup()
     
-    APIManager.shared.update(course: updatedCourse!) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let course):
-        DispatchQueue.main.async {
-          self.present(
-            UIAlertController.alertWithOKAction(
-              title: "Success!",
-              message: "The course \(course.title) was updated successfully!"),
-            animated: true,
-            completion: nil
-          )
-        }
-        
-      case .failure(let error):
-        DispatchQueue.main.async {
-          self.present(
-            UIAlertController.alertWithOKAction(
-              title: "Error occured!",
-              message: error.rawValue),
-            animated: true,
-            completion: nil)
+
+    APIManager.shared.uploadImageToCloudinary(imageOption: .coursePic, imageData: imageData!, group: group) { url in
+      updatedCourse?.image = url
+      
+      APIManager.shared.update(course: updatedCourse!) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let course):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Success!",
+                message: "The course \(course.title) was updated successfully!"),
+              animated: true,
+              completion: nil
+            )
+          }
           
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Error occured!",
+                message: error.rawValue),
+              animated: true,
+              completion: nil)
+            
+          }
         }
       }
     }
-    
   
   }
   

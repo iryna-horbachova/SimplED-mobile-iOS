@@ -1,8 +1,9 @@
 import Foundation
 
-struct Task: Decodable {
-  let id: Int
+struct Task: Codable {
+  let id: Int?
   let title: String
   let description: String
-  let deadline: Date
+  let deadline: String
+  let course: Int?
 }

@@ -20,4 +20,5 @@ class Utilities {
 
 public enum ImageOption: String {
   case profilePic = "profile_pics"
+  case coursePic = "course_pics"
 }

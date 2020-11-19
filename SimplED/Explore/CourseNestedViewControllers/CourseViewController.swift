@@ -5,6 +5,9 @@ class CourseViewController: UIViewController {
   var course: Course! {
     didSet {
      title = course.title
+      if let image = course!.image {
+        Utilities.loadImage(imageView: imageView, baseURLString: image)
+      }
     }
   }
   
@@ -28,11 +31,13 @@ class CourseViewController: UIViewController {
     
     
     if course!.creator == APIManager.currentUser?.id {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-                                                          style: .plain,
-                                                          target: self,
-                                                          action: #selector(showEditCourseVC))
+      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",style: .plain,
+                                                          target: self, action: #selector(showEditCourseVC))
+      navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Task",style: .plain,
+                                                          target: self, action: #selector(showAddTaskVC))
     }
+    
+    
     
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
@@ -41,11 +46,13 @@ class CourseViewController: UIViewController {
     
     segmentedControl.addTarget(self, action: #selector(changeController(_:)), for: .valueChanged)
     
+    
     NSLayoutConstraint.activate(
       [
         imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PADDING),
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
+        imageView.heightAnchor.constraint(equalToConstant: 250),
 
         segmentedControl.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PADDING),
         segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -70,8 +77,27 @@ class CourseViewController: UIViewController {
       vc.view.isHidden = true
       vc.didMove(toParent: self)
     }
-    aboutViewController.descriptionLabel.text = "Description of the course"
+    aboutViewController.descriptionLabel.text = course.description
     aboutViewController.view.isHidden = false
+    
+    APIManager.shared.getTasks(courseId: course.id!) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let tasks):
+          DispatchQueue.main.async {
+            self.tasksTableViewController.tasks = tasks
+          }
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Error occured with loading tasks!",
+                          message: error.rawValue),
+                         animated: true,
+                         completion: nil)
+          }
+        }
+      
+    }
   }
   
   private static func makeSegmentedControl() -> UISegmentedControl {
@@ -118,6 +144,13 @@ class CourseViewController: UIViewController {
     editCourseVC.controllerOption = .edit
     editCourseVC.course = course
     navigationController?.pushViewController(editCourseVC,
+                                             animated: true)
+  }
+  
+  @objc func showAddTaskVC() {
+    let addTaskVC = AddTaskViewController()
+    addTaskVC.courseId = course.id
+    navigationController?.pushViewController(addTaskVC,
                                              animated: true)
   }
 }
