@@ -20,10 +20,12 @@ class TaskTableViewCell: UITableViewCell {
     
     label.font = .systemFont(ofSize: 15)
     label.textColor = .label
-    
+    label.numberOfLines = 0
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+  
+  
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
