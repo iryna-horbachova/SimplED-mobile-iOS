@@ -27,6 +27,8 @@ class APIManager {
   typealias userCompletionHandler = (Result<User, APIError>) -> Void
   typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
   typealias deleteCompletionHandler = (APIError?) -> Void
+  typealias tasksCompletionHandler = (Result<[Task], APIError>) -> Void
+  typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
   
   private init() {}
   
@@ -408,7 +410,6 @@ class APIManager {
   func getCourses(
     completion: @escaping categoryCoursesCompletionHandler
   ) {
-    print("get courses")
     let endpoint = baseURL + "courses/"
     
     guard let url = URL(string: endpoint) else {
@@ -442,6 +443,116 @@ class APIManager {
         let courses = try decoder.decode([String: [Course]].self, from: data)
         completion(.success(courses))
       } catch _ {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  // MARK: - TASKS
+  
+  func getTasks(
+    courseId: Int,
+    completion: @escaping tasksCompletionHandler
+  ) {
+    print("getting tasks")
+    let endpoint = baseURL + "courses/\(courseId)/tasks/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let tasks = try decoder.decode([Task].self, from: data)
+        print("tasks")
+        print(tasks)
+        completion(.success(tasks))
+      } catch _ {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  func add(
+    task: Task,
+    courseId: Int,
+    completion: @escaping taskCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(courseId)/tasks/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    do {
+      let encoder = JSONEncoder()
+      encoder.keyEncodingStrategy = .convertToSnakeCase
+      let httpBody = try encoder.encode(task)
+      request.httpBody = httpBody
+    } catch {
+      completion(.failure(.invalidData))
+    }
+  
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      print("add task")
+      print(response)
+      print(error)
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let task = try decoder.decode(Task.self, from: data)
+        completion(.success(task))
+      } catch {
+        print("invalid decoder")
         completion(.failure(.invalidData))
       }
     }
@@ -506,7 +617,6 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         var user = try decoder.decode(User.self, from: data)
-
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))

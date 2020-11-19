@@ -1,7 +1,6 @@
 import UIKit
 
-class EditProfileViewController: UIViewController,
-                                 UITextFieldDelegate,
+class EditProfileViewController: UIViewController, UITextFieldDelegate,
                                  UIImagePickerControllerDelegate,
                                  UINavigationControllerDelegate {
   
@@ -72,7 +71,7 @@ class EditProfileViewController: UIViewController,
       stackView.addArrangedSubview($0)
     }
     stackView.addArrangedSubview(imageView)
-   // stackView.addArrangedSubview(selectImageButton)
+
     view.addSubview(stackView)
     view.addSubview(selectImageButton)
 
@@ -131,10 +130,7 @@ class EditProfileViewController: UIViewController,
         }
         group.leave()
       }
-
     }
-    
-    
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {

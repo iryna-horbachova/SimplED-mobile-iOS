@@ -9,6 +9,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.windowScene = windowScene
+    window?.rootViewController = AuthenticationViewController()
     
     if (UserDefaults.standard.object(forKey: "userId") as? Int) != nil {
       APIManager.shared.refreshAuthenticatedUserOnAppStart() { [weak self] error in

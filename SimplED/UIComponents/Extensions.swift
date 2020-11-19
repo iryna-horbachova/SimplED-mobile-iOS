@@ -36,6 +36,27 @@ extension UITextField {
   }
 }
 
+extension UITextView {
+  static func makeTextView() -> UITextView {
+    let textView = UITextView()
+
+    textView.font = .systemFont(ofSize: 22)
+ 
+    textView.textColor = .mainTheme
+    textView.backgroundColor = .systemBackground
+    textView.layer.borderWidth = 1.0
+    textView.layer.borderColor = UIColor.mainTheme.cgColor
+    
+    textView.autocorrectionType = .no
+    textView.keyboardType = .default
+    textView.returnKeyType = .next
+    
+    textView.layer.cornerRadius = CORNER_RADIUS
+    textView.translatesAutoresizingMaskIntoConstraints = false
+    return textView
+  }
+}
+
 extension UIButton {
   static func makeContinueButton() -> UIButton {
     let button = UIButton()
@@ -121,7 +142,7 @@ extension UIImageView {
   static func makeImageView(defaultImageName: String) -> UIImageView {
     let iv = UIImageView()
     iv.translatesAutoresizingMaskIntoConstraints = false
-    iv.contentMode = .scaleAspectFill
+    iv.contentMode = .scaleToFill
     iv.clipsToBounds = true
     iv.image = UIImage(named: defaultImageName)
     iv.layer.cornerRadius = 10

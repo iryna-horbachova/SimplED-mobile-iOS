@@ -5,6 +5,9 @@ class CourseCollectionViewCell: UICollectionViewCell {
     didSet {
       titleLabel.text = course.title
       detailsLabel.text = course.description
+      if let image = course!.image {
+        Utilities.loadImage(imageView: imageView, baseURLString: image)
+      }
     }
   }
   
