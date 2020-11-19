@@ -13,6 +13,7 @@
 		89293BF0254D73F400539021 /* CategoryCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89293BEF254D73F400539021 /* CategoryCourses.swift */; };
 		89398CFB25670387004DF25C /* SolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFA25670387004DF25C /* SolutionViewController.swift */; };
 		89398D00256707E6004DF25C /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFF256707E6004DF25C /* AddTaskViewController.swift */; };
+		89398D0825671CB9004DF25C /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398D0725671CB9004DF25C /* Solution.swift */; };
 		893FFE03255B03F7009A61ED /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893FFE02255B03F7009A61ED /* Utilities.swift */; };
 		894AE4A025383D51008EEBF5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE49F25383D51008EEBF5 /* Validation.swift */; };
 		894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4A425383E86008EEBF5 /* ErrorHandling.swift */; };
@@ -87,6 +88,7 @@
 		89293BEF254D73F400539021 /* CategoryCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCourses.swift; sourceTree = "<group>"; };
 		89398CFA25670387004DF25C /* SolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionViewController.swift; sourceTree = "<group>"; };
 		89398CFF256707E6004DF25C /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
+		89398D0725671CB9004DF25C /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		893FFE02255B03F7009A61ED /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		894AE49F25383D51008EEBF5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		894AE4A425383E86008EEBF5 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				894AE4D3253B16D3008EEBF5 /* Course.swift */,
 				89A0774E2546C98A007F65F6 /* Task.swift */,
 				89293BEF254D73F400539021 /* CategoryCourses.swift */,
+				89398D0725671CB9004DF25C /* Solution.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 				899DA427255DBE0B00772C3E /* Token.swift in Sources */,
 				89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
+				89398D0825671CB9004DF25C /* Solution.swift in Sources */,
 				89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */,
 				89E00970254B44CB008FA5D9 /* CourseFormViewController.swift in Sources */,
 				898DDAFF253C1AFD00C5D70B /* CourseTableViewController.swift in Sources */,
