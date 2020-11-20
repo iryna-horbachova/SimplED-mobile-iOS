@@ -14,6 +14,8 @@
 		89398CFB25670387004DF25C /* SolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFA25670387004DF25C /* SolutionViewController.swift */; };
 		89398D00256707E6004DF25C /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFF256707E6004DF25C /* AddTaskViewController.swift */; };
 		89398D0825671CB9004DF25C /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398D0725671CB9004DF25C /* Solution.swift */; };
+		89398D102567891F004DF25C /* SolutionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398D0F2567891F004DF25C /* SolutionsTableViewController.swift */; };
+		89398D1525678967004DF25C /* SolutionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398D1425678967004DF25C /* SolutionTableViewCell.swift */; };
 		893FFE03255B03F7009A61ED /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893FFE02255B03F7009A61ED /* Utilities.swift */; };
 		894AE4A025383D51008EEBF5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE49F25383D51008EEBF5 /* Validation.swift */; };
 		894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4A425383E86008EEBF5 /* ErrorHandling.swift */; };
@@ -89,6 +91,8 @@
 		89398CFA25670387004DF25C /* SolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionViewController.swift; sourceTree = "<group>"; };
 		89398CFF256707E6004DF25C /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		89398D0725671CB9004DF25C /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
+		89398D0F2567891F004DF25C /* SolutionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionsTableViewController.swift; sourceTree = "<group>"; };
+		89398D1425678967004DF25C /* SolutionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionTableViewCell.swift; sourceTree = "<group>"; };
 		893FFE02255B03F7009A61ED /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		894AE49F25383D51008EEBF5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		894AE4A425383E86008EEBF5 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 				89CDE07D254026B1008E5EAD /* ParticipantsTableViewController.swift */,
 				89CDE08525414D9D008E5EAD /* TaskTableViewCell.swift */,
 				89CDE08A25414DC5008E5EAD /* ParticipantTableViewCell.swift */,
+				89398D0F2567891F004DF25C /* SolutionsTableViewController.swift */,
+				89398D1425678967004DF25C /* SolutionTableViewCell.swift */,
 			);
 			path = CourseNestedViewControllers;
 			sourceTree = "<group>";
@@ -617,6 +623,7 @@
 				89A0776525474C7C007F65F6 /* APIError.swift in Sources */,
 				89CDE06925401FBD008E5EAD /* TitleLabel.swift in Sources */,
 				89B2336C2531DCD900643E02 /* Extensions.swift in Sources */,
+				89398D1525678967004DF25C /* SolutionTableViewCell.swift in Sources */,
 				894AE4D4253B16D3008EEBF5 /* Course.swift in Sources */,
 				894AE4A025383D51008EEBF5 /* Validation.swift in Sources */,
 				89E0097B254C0A6F008FA5D9 /* CourseOption.swift in Sources */,
@@ -636,6 +643,7 @@
 				894AE4B025384556008EEBF5 /* TabBarController.swift in Sources */,
 				894AE4BA25384B30008EEBF5 /* ProfileViewController.swift in Sources */,
 				894AE4CF253AF0C1008EEBF5 /* CourseCollectionViewCell.swift in Sources */,
+				89398D102567891F004DF25C /* SolutionsTableViewController.swift in Sources */,
 				89CDE07925402648008E5EAD /* ChatViewController.swift in Sources */,
 				894AE4AB25384362008EEBF5 /* ExploreViewController.swift in Sources */,
 				89725E2C25381AFC001273D5 /* Constants.swift in Sources */,

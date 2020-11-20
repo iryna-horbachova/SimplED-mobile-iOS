@@ -563,10 +563,11 @@ class APIManager {
   
   func getSolutions(
     courseId: Int,
+    taskId: Int,
     completion: @escaping solutionsCompletionHandler
   ) {
     print("getting solutions")
-    let endpoint = baseURL + "courses/\(courseId)/solutions/"
+    let endpoint = baseURL + "courses/\(courseId)/tasks/\(taskId)/solutions/"
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -582,7 +583,8 @@ class APIManager {
         completion(.failure(.unableToComplete))
         return
       }
-        
+      print("solutions")
+      print(response)
       guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
         completion(.failure(.invalidResponse))
         return
@@ -610,9 +612,10 @@ class APIManager {
   func add(
     solution: Solution,
     courseId: Int,
+    taskId: Int,
     completion: @escaping solutionCompletionHandler
   ) {
-    let endpoint = baseURL + "courses/\(courseId)/solutions/"
+    let endpoint = baseURL + "courses/\(courseId)/tasks/\(taskId)/solutions/"
     print("solution")
     print(solution)
     
@@ -623,6 +626,71 @@ class APIManager {
     
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    do {
+      let encoder = JSONEncoder()
+      encoder.keyEncodingStrategy = .convertToSnakeCase
+      let httpBody = try encoder.encode(solution)
+      request.httpBody = httpBody
+    } catch {
+      completion(.failure(.invalidData))
+    }
+  
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+
+      print("solution response")
+      print(response)
+      
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let solution = try decoder.decode(Solution.self, from: data)
+        completion(.success(solution))
+      } catch {
+        print("invalid decoder")
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  func update(
+    solution: Solution,
+    courseId: Int,
+    taskId: Int,
+    completion: @escaping solutionCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(courseId)/tasks/\(taskId)/solutions/\(solution.id!)/"
+    print("solution")
+    print(solution)
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "PUT"
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     var headers = request.allHTTPHeaderFields ?? [:]

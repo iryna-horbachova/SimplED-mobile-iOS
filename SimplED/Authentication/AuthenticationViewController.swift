@@ -88,8 +88,8 @@ class AuthenticationViewController: UIViewController {
     
     let sControl = UISegmentedControl.makeSegmentedControl()
     
-    sControl.insertSegment(withTitle: signInText, at: 0, animated: true)
-    sControl.insertSegment(withTitle: signUpText, at: 1, animated: true)
+    sControl.insertSegment(withTitle: signInText, at: 1, animated: true)
+    sControl.insertSegment(withTitle: signUpText, at: 0, animated: true)
     
     sControl.selectedSegmentIndex = 0
   
