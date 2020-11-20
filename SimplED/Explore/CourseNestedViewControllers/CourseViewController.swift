@@ -84,8 +84,30 @@ class CourseViewController: UIViewController {
         guard let self = self else { return }
         switch result {
         case .success(let tasks):
-          DispatchQueue.main.async {
+          DispatchQueue.main.sync {
             self.tasksTableViewController.tasks = tasks
+            
+            for task in tasks {
+              APIManager.shared.getSolutions(courseId: task.course!, taskId: task.id!) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let solutions):
+                  DispatchQueue.main.async {
+                    self.tasksTableViewController.solutions += solutions
+                    self.tasksTableViewController.tableView.reloadData()
+                  }
+                case .failure(let error):
+                  DispatchQueue.main.async {
+                    self.present(UIAlertController.alertWithOKAction(
+                                  title: "Error occured with loading solutions!",
+                                  message: error.rawValue),
+                                 animated: true,
+                                 completion: nil)
+                  }
+                }
+                
+              }
+            }
           }
         case .failure(let error):
           DispatchQueue.main.async {
@@ -97,24 +119,8 @@ class CourseViewController: UIViewController {
           }
         }
     }
+    print("getting solutions")
     
-    APIManager.shared.getSolutions(courseId: course.id!) { [weak self] result in
-        guard let self = self else { return }
-        switch result {
-        case .success(let solutions):
-          DispatchQueue.main.async {
-            self.tasksTableViewController.solutions = solutions
-          }
-        case .failure(let error):
-          DispatchQueue.main.async {
-            self.present(UIAlertController.alertWithOKAction(
-                          title: "Error occured with loading solutions!",
-                          message: error.rawValue),
-                         animated: true,
-                         completion: nil)
-          }
-        }
-    }
   }
   
   private static func makeSegmentedControl() -> UISegmentedControl {
