@@ -22,6 +22,7 @@ class TasksTableViewController: UITableViewController {
     super.viewDidLoad()
     
     tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+    
   }
   
   // MARK: - Table view data source
@@ -51,10 +52,8 @@ class TasksTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let task = tasks[indexPath.row]
     if creatorId == APIManager.currentUser!.id {
-      let solutionVC = SolutionViewController()
-      solutionVC.solution = solutions.first(where: { $0.task == task.id && $0.owner!.id == APIManager.currentUser!.id })
-      solutionVC.taskId = task.id
-      solutionVC.courseId = task.course
+      let solutionVC = SolutionsTableViewController()
+      solutionVC.solutions = solutions.filter{ $0.task == task.id }
       navigationController?.pushViewController(solutionVC, animated: true)
     } else {
       let solutionVC = SolutionViewController()

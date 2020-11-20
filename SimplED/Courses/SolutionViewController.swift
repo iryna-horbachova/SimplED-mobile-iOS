@@ -13,6 +13,7 @@ class SolutionViewController: UIViewController, UITextFieldDelegate, UITextViewD
     title = "Solution to the task"
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(addSolution))
 
+    print(solution)
     textField.text = solution?.text ?? "Solution"
     textField.delegate = self
     
@@ -27,35 +28,65 @@ class SolutionViewController: UIViewController, UITextFieldDelegate, UITextViewD
   }
 
   @objc func addSolution() {
-    print("former solution")
-    print(solution)
-    let newSolution = Solution(id: nil, owner: APIManager.currentUser!, task: taskId!, text: textField.text!)
-    
-    APIManager.shared.add(solution: newSolution, courseId: courseId!) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(_):
-        DispatchQueue.main.async {
-          self.present(
-            UIAlertController.alertWithOKAction(
-              title: "Success!",
-              message: "The solution was added successfully!"),
-            animated: true,
-            completion: nil
-          )
-        }
-        
-      case .failure(let error):
-        DispatchQueue.main.async {
-          self.present(
-            UIAlertController.alertWithOKAction(
-              title: "Error occured!",
-              message: error.rawValue),
-            animated: true,
-            completion: nil)
+    if solution != nil {
+      var updatedSolution = solution
+      updatedSolution!.text = textField.text!
+      APIManager.shared.update(solution: updatedSolution!, courseId: courseId!, taskId: taskId!) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(_):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Success!",
+                message: "The solution was updated successfully!"),
+              animated: true,
+              completion: nil
+            )
+          }
           
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Error occured!",
+                message: error.rawValue),
+              animated: true,
+              completion: nil)
+            
+          }
+        }
+      }
+    } else {
+      let newSolution = Solution(id: nil, owner: nil, task: nil, text: textField.text!)
+      APIManager.shared.add(solution: newSolution, courseId: courseId!, taskId: taskId!) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(_):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Success!",
+                message: "The solution was added successfully!"),
+              animated: true,
+              completion: nil
+            )
+          }
+          
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(
+              UIAlertController.alertWithOKAction(
+                title: "Error occured!",
+                message: error.rawValue),
+              animated: true,
+              completion: nil)
+            
+          }
         }
       }
     }
+    
+
   }
 }

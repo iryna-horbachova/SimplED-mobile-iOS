@@ -1,9 +1,6 @@
 import UIKit
 
-class TaskTableViewCell: UITableViewCell {
-  
-  weak var parentViewController: TasksTableViewController?
-  var solution: Solution?
+class SolutionTableViewCell: UITableViewCell {
   
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
@@ -28,8 +25,6 @@ class TaskTableViewCell: UITableViewCell {
     return label
   }()
   
-  let solutionButton = UIButton.makeSecondaryButton(title: "Solution")
-  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
@@ -42,18 +37,13 @@ class TaskTableViewCell: UITableViewCell {
     stackView.spacing = 5
     stackView.distribution = .equalCentering
     addSubview(stackView)
-    addSubview(solutionButton)
 
     NSLayoutConstraint.activate(
       [
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
         stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PADDING),
         stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
-        
-        solutionButton.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
-        solutionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PADDING),
-        solutionButton.widthAnchor.constraint(equalToConstant: 90),
-        solutionButton.leadingAnchor.constraint(equalTo: stackView.trailingAnchor)
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PADDING),
       ])
   }
   

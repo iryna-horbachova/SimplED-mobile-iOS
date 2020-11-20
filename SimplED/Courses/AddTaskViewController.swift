@@ -35,7 +35,7 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate, UITextViewDe
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PADDING),
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200),
+        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -300),
       ])
   }
   
