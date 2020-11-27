@@ -172,3 +172,20 @@ extension UISegmentedControl {
     return sControl
   }
 }
+
+extension UICollectionView {
+  static func makeHorizontalCollectionView() -> UICollectionView {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
+  
+    let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    cv.showsHorizontalScrollIndicator = true
+    cv.isPagingEnabled = true
+    cv.bounces = true
+    cv.alwaysBounceHorizontal = true
+    cv.translatesAutoresizingMaskIntoConstraints = false
+    cv.backgroundColor = .systemBackground
+
+    return cv
+  }
+}

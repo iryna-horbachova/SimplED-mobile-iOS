@@ -49,6 +49,8 @@
 		89B2336C2531DCD900643E02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B2336B2531DCD900643E02 /* Extensions.swift */; };
 		89B233712531F4FE00643E02 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233702531F4FE00643E02 /* SignInViewController.swift */; };
 		89B233762531F50900643E02 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B233752531F50900643E02 /* SignUpViewController.swift */; };
+		89BD95F82571579400B13286 /* GroupVideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD95F72571579400B13286 /* GroupVideoChatViewController.swift */; };
+		89BD95FD25715C8F00B13286 /* ParticipantVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD95FC25715C8F00B13286 /* ParticipantVideoCell.swift */; };
 		89CDE06925401FBD008E5EAD /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE06825401FBD008E5EAD /* TitleLabel.swift */; };
 		89CDE06F254025CD008E5EAD /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE06E254025CD008E5EAD /* AboutViewController.swift */; };
 		89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CDE073254025F1008E5EAD /* TasksTableViewController.swift */; };
@@ -132,6 +134,8 @@
 		89B2336B2531DCD900643E02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		89B233702531F4FE00643E02 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		89B233752531F50900643E02 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		89BD95F72571579400B13286 /* GroupVideoChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVideoChatViewController.swift; sourceTree = "<group>"; };
+		89BD95FC25715C8F00B13286 /* ParticipantVideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantVideoCell.swift; sourceTree = "<group>"; };
 		89CDE06825401FBD008E5EAD /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 		89CDE06E254025CD008E5EAD /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		89CDE073254025F1008E5EAD /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 		894AE4B725384AC5008EEBF5 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				89BD95F62571576D00B13286 /* VideoChat */,
 				894AE4C125384E14008EEBF5 /* CoursesViewController.swift */,
 				89E0096F254B44CB008FA5D9 /* CourseFormViewController.swift */,
 				89E0097A254C0A6F008FA5D9 /* CourseOption.swift */,
@@ -327,6 +332,15 @@
 				89CDE06825401FBD008E5EAD /* TitleLabel.swift */,
 			);
 			path = UIComponents;
+			sourceTree = "<group>";
+		};
+		89BD95F62571576D00B13286 /* VideoChat */ = {
+			isa = PBXGroup;
+			children = (
+				89BD95F72571579400B13286 /* GroupVideoChatViewController.swift */,
+				89BD95FC25715C8F00B13286 /* ParticipantVideoCell.swift */,
+			);
+			path = VideoChat;
 			sourceTree = "<group>";
 		};
 		89CDE06D2540259C008E5EAD /* CourseNestedViewControllers */ = {
@@ -614,6 +628,7 @@
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,
 				899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */,
+				89BD95FD25715C8F00B13286 /* ParticipantVideoCell.swift in Sources */,
 				89B233762531F50900643E02 /* SignUpViewController.swift in Sources */,
 				89210E7D253CAEB3006E6F47 /* FilterTableViewController.swift in Sources */,
 				898DDB04253C1EF800C5D70B /* CourseTableViewCell.swift in Sources */,
@@ -629,6 +644,7 @@
 				89E0097B254C0A6F008FA5D9 /* CourseOption.swift in Sources */,
 				899DA427255DBE0B00772C3E /* Token.swift in Sources */,
 				89CDE074254025F1008E5EAD /* TasksTableViewController.swift in Sources */,
+				89BD95F82571579400B13286 /* GroupVideoChatViewController.swift in Sources */,
 				89B233242531CD1E00643E02 /* AppDelegate.swift in Sources */,
 				89398D0825671CB9004DF25C /* Solution.swift in Sources */,
 				89A7EF2E2541C17F002FA614 /* ProfileOptionTableViewCell.swift in Sources */,
