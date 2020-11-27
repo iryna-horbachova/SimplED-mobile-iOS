@@ -3,7 +3,7 @@ import UIKit
 class CategoryCell: UITableViewCell {
   
   var courses: [Course]!
-  var collectionView: UICollectionView!
+  let collectionView = UICollectionView.makeHorizontalCollectionView()
   let courseCellIdentifier = "courseCell"
   weak var parentViewController: ExploreViewController?
   
@@ -11,7 +11,10 @@ class CategoryCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .none
     
-    collectionView = makeCollectionView()
+    collectionView.dataSource = self
+    collectionView.delegate = self
+    collectionView.register(CourseCollectionViewCell.self,
+                            forCellWithReuseIdentifier: courseCellIdentifier)
     
     contentView.addSubview(collectionView)
     NSLayoutConstraint.activate(
@@ -29,23 +32,6 @@ class CategoryCell: UITableViewCell {
   
   override func awakeFromNib() {
     super.awakeFromNib()
-  }
-  
-  func makeCollectionView() -> UICollectionView {
-    let layout = UICollectionViewFlowLayout()
-    layout.scrollDirection = .horizontal
-  
-    let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    cv.showsHorizontalScrollIndicator = true
-    cv.isPagingEnabled = true
-    cv.bounces = true
-    cv.alwaysBounceHorizontal = true
-    cv.translatesAutoresizingMaskIntoConstraints = false
-    cv.backgroundColor = .systemBackground
-    cv.dataSource = self
-    cv.delegate = self
-    cv.register(CourseCollectionViewCell.self, forCellWithReuseIdentifier: courseCellIdentifier)
-    return cv
   }
 }
 
