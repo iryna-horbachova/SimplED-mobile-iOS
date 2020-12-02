@@ -142,4 +142,3 @@ extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
     }
   }
 }
-
