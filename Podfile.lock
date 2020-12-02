@@ -1,15 +1,27 @@
 PODS:
+<<<<<<< HEAD
+=======
+  - AgoraRtcEngine_iOS (3.1.2)
+>>>>>>> setup-agora-engine
   - Cloudinary (2.9.0):
     - Cloudinary/ios (= 2.9.0)
   - Cloudinary/ios (2.9.0)
   - Keys (1.0.1)
 
 DEPENDENCIES:
+<<<<<<< HEAD
+=======
+  - AgoraRtcEngine_iOS
+>>>>>>> setup-agora-engine
   - Cloudinary (~> 2.0)
   - Keys (from `Pods/CocoaPodsKeys`)
 
 SPEC REPOS:
   trunk:
+<<<<<<< HEAD
+=======
+    - AgoraRtcEngine_iOS
+>>>>>>> setup-agora-engine
     - Cloudinary
 
 EXTERNAL SOURCES:
@@ -17,9 +29,17 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
 
 SPEC CHECKSUMS:
+<<<<<<< HEAD
   Cloudinary: 8e9511826bd58df6b14f0c6c042f2c5a034081f4
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
 
 PODFILE CHECKSUM: 0681c3d8f05009a282fd73db684b620e481ce49e
+=======
+  AgoraRtcEngine_iOS: 0628532d3475471d1c352ba548cee98492850cc0
+  Cloudinary: 8e9511826bd58df6b14f0c6c042f2c5a034081f4
+  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
+
+PODFILE CHECKSUM: 08dec0a634c2b8f42edc0bb7273b59e0a9134555
+>>>>>>> setup-agora-engine
 
 COCOAPODS: 1.10.0

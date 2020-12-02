@@ -1,6 +1,0 @@
-framework module Pods_SimplED_SimplEDUITests {
-  umbrella header "Pods-SimplED-SimplEDUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}
