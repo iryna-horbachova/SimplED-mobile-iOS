@@ -1,11 +1,23 @@
 import UIKit
+import AgoraRtcKit
+import Keys
 
 class GroupVideoChatViewController: UIViewController {
   
+  // UI Setup
   let videoView = UIView()
   let leaveButton = UIButton.makeSecondaryButton(title: "Leave call")
   let participantsCollectionView = UICollectionView.makeHorizontalCollectionView()
   let participantCellIdentifier = "participantCell"
+  
+  // Agora Setup
+  
+  let appID = SimplEDKeys().agoraAppID
+  var agoraKit: AgoraRtcEngineKit?
+  let tempToken: String? = "357fbb1fbf084ffe8e2be90441863ed9" 
+  var userID: UInt = 0
+  var channelName = "default"
+  var remoteUserIDs: [UInt] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,25 +52,94 @@ class GroupVideoChatViewController: UIViewController {
         videoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
         videoView.bottomAnchor.constraint(equalTo: leaveButton.topAnchor),
       ])
+    
+    setUpVideo()
+    joinChannel()
   }
+  
+  // - MARK: Agora management
+  
+  // Entry point to Agora
+  private func getAgoraEngine() -> AgoraRtcEngineKit {
+    if agoraKit == nil {
+      agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appID, delegate: self)
+    }
+      
+    return agoraKit!
+  }
+  
+  func setUpVideo() {
+    getAgoraEngine().enableVideo()
+    
+    let videoCanvas = AgoraRtcVideoCanvas()
+    videoCanvas.uid = userID
+    videoCanvas.view = videoView
+    videoCanvas.renderMode = .fit
+    getAgoraEngine().setupLocalVideo(videoCanvas)
+  }
+
+  func joinChannel() {
+    videoView.isHidden = false
+    
+    getAgoraEngine().joinChannel(byToken: tempToken,
+                                 channelId: channelName,
+                                 info: nil,
+                                 uid: userID) { [weak self] (sid, uid, elapsed) in
+      self?.userID = uid
+    }
+  }
+
 }
 
 extension GroupVideoChatViewController: UICollectionViewDelegate,
                                         UICollectionViewDataSource,
                                         UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    5
+    return remoteUserIDs.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier,
-                                                  for: indexPath) as! ParticipantVideoCell
-
+    /*let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier,
+     for: indexPath) as! ParticipantVideoCell
+     
+     return cell*/
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath)
+    
+    let remoteID = remoteUserIDs[indexPath.row]
+    if let videoCell = cell as? ParticipantVideoCell {
+      let videoCanvas = AgoraRtcVideoCanvas()
+      videoCanvas.uid = remoteID
+      videoCanvas.view = videoCell.videoView
+      videoCanvas.renderMode = .fit
+      getAgoraEngine().setupRemoteVideo(videoCanvas)
+    }
+    
     return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: 200, height: collectionView.bounds.height)
+  }
+}
+
+extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+    remoteUserIDs.append(uid)
+    participantsCollectionView.reloadData()
+  }
+  
+  //Sometimes, user info isn't immediately available when a remote user joins - if we get it later, reload their nameplate.
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didUpdatedUserInfo userInfo: AgoraUserInfo, withUid uid: UInt) {
+    if let index = remoteUserIDs.first(where: { $0 == uid }) {
+      participantsCollectionView.reloadItems(at: [IndexPath(item: Int(index), section: 0)])
+    }
+  }
+  
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+    if let index = remoteUserIDs.firstIndex(where: { $0 == uid }) {
+      remoteUserIDs.remove(at: index)
+      participantsCollectionView.reloadData()
+    }
   }
 }
 

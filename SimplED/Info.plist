@@ -65,5 +65,9 @@
 	</dict>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>SimplED requires camera usage for video chat feature</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SimplED requires microphone usage for video chat feature</string>
 </dict>
 </plist>
