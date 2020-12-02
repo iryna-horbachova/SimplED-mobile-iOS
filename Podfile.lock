@@ -1,5 +1,4 @@
 PODS:
-
   - AgoraRtcEngine_iOS (3.1.2)
   - Cloudinary (2.9.0):
     - Cloudinary/ios (= 2.9.0)

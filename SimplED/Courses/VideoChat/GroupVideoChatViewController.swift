@@ -14,7 +14,7 @@ class GroupVideoChatViewController: UIViewController {
   
   let appID = SimplEDKeys().agoraAppID
   var agoraKit: AgoraRtcEngineKit?
-  let tempToken: String? = "357fbb1fbf084ffe8e2be90441863ed9" 
+  let tempToken: String? = "357fbb1fbf084ffe8e2be90441863ed9"
   var userID: UInt = 0
   var channelName = "default"
   var remoteUserIDs: [UInt] = []
@@ -142,3 +142,4 @@ extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
     }
   }
 }
+
