@@ -119,8 +119,6 @@ class CourseViewController: UIViewController {
           }
         }
     }
-    print("getting solutions")
-    
   }
   
   private static func makeSegmentedControl() -> UISegmentedControl {

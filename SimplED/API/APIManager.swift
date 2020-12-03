@@ -32,6 +32,7 @@ class APIManager {
   typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
   typealias solutionsCompletionHandler = (Result<[Solution], APIError>) -> Void
   typealias solutionCompletionHandler = (Result<Solution, APIError>) -> Void
+  typealias participantsCompletionHandler = (Result<[Participant], APIError>) -> Void
   
   private init() {}
   
@@ -972,5 +973,49 @@ class APIManager {
         completionHandler(url)
       }
     }
+  }
+  
+  func getParticipantsArray(
+    completion: @escaping participantsCompletionHandler
+  ) {
+    let endpoint = baseURL + "users/video-chat-users/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let participants = try decoder.decode([Participant].self, from: data)
+        print(participants)
+        completion(.success(participants))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
   }
 }

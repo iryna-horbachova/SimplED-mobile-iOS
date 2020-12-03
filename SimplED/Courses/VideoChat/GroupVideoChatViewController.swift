@@ -18,6 +18,7 @@ class GroupVideoChatViewController: UIViewController {
   var userID = UInt((APIManager.currentUser?.id)!)
   var channelName = "default"
   var remoteUserIDs: [UInt] = []
+  var participants: [Participant] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -33,7 +34,7 @@ class GroupVideoChatViewController: UIViewController {
     view.addSubview(videoView)
     view.addSubview(leaveButton)
     view.addSubview(participantsCollectionView)
-    videoView.backgroundColor = .red
+    videoView.backgroundColor = .systemBlue
     
     leaveButton.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
     
@@ -58,6 +59,25 @@ class GroupVideoChatViewController: UIViewController {
     
     setUpVideo()
     joinChannel()
+
+    print("getting participants")
+    APIManager.shared.getParticipantsArray{ [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let participants):
+        self.participants = participants
+        
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Error occured!",
+              message: error.rawValue),
+            animated: true,
+            completion: nil)
+        }
+      }
+    }
   }
   
   @objc func leaveButtonTapped(sender: UIButton!) {
@@ -95,15 +115,12 @@ class GroupVideoChatViewController: UIViewController {
 
   func joinChannel() {
     videoView.isHidden = false
-    print("join channel")
     
     getAgoraEngine().joinChannel(byToken: nil,
                                  channelId: channelName,
                                  info: nil,
                                  uid: userID) { [weak self] (sid, uid, elapsed) in
       self?.userID = uid
-      print("success")
-      print(self?.userID)
     }
   }
 
@@ -117,19 +134,16 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    /*let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier,
-     for: indexPath)
-     
-     return cell*/
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier, for: indexPath) as! ParticipantVideoCell
     
     let remoteID = remoteUserIDs[indexPath.row]
+    let participant = participants.first { $0.id == Int(remoteID)}
     let videoCanvas = AgoraRtcVideoCanvas()
     videoCanvas.uid = remoteID
     videoCanvas.view = cell.videoView
     videoCanvas.renderMode = .fit
     getAgoraEngine().setupRemoteVideo(videoCanvas)
-    
+    cell.nameLabel.text = participant?.fullName ?? "Anonymous user"
     
     return cell
   }
@@ -142,7 +156,6 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
 extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     remoteUserIDs.append(uid)
-    print("hello")
     participantsCollectionView.reloadData()
   }
   
@@ -150,14 +163,12 @@ extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
   func rtcEngine(_ engine: AgoraRtcEngineKit, didUpdatedUserInfo userInfo: AgoraUserInfo, withUid uid: UInt) {
     if let index = remoteUserIDs.first(where: { $0 == uid }) {
       participantsCollectionView.reloadItems(at: [IndexPath(item: Int(index), section: 0)])
-      print("hello2")
     }
   }
   
   func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
     if let index = remoteUserIDs.firstIndex(where: { $0 == uid }) {
       remoteUserIDs.remove(at: index)
-      print("hello3")
       participantsCollectionView.reloadData()
     }
   }

@@ -8,24 +8,20 @@ class ParticipantVideoCell: UICollectionViewCell {
     super.init(frame: frame)
     
     videoView.translatesAutoresizingMaskIntoConstraints = false
-    videoView.backgroundColor = .green
+    videoView.backgroundColor = .systemBlue
 
-    nameLabel.text = "Name"
     addSubview(videoView)
-    /*let stackView = UIStackView.makeVerticalStackView()
-
-    stackView.addArrangedSubview(videoView)
-    stackView.addArrangedSubview(nameLabel)
-    stackView.spacing = 2
-    stackView.distribution = .equalCentering*/
-    //addSubview(stackView)
+    addSubview(nameLabel)
 
     NSLayoutConstraint.activate(
       [
-        videoView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-        videoView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-        videoView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 5),
-        videoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+        videoView.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+        videoView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
+        videoView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2),
+        nameLabel.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: 2),
+        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
+        nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2),
+        nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
       ])
   }
   

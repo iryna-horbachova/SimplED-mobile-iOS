@@ -22,3 +22,8 @@ public enum ImageOption: String {
   case profilePic = "profile_pics"
   case coursePic = "course_pics"
 }
+
+public struct Participant: Codable {
+  public let id: Int
+  public let fullName: String
+}
