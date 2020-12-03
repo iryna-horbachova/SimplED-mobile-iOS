@@ -103,19 +103,19 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     /*let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier,
-     for: indexPath) as! ParticipantVideoCell
+     for: indexPath)
      
      return cell*/
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier, for: indexPath) as! ParticipantVideoCell
     
     let remoteID = remoteUserIDs[indexPath.row]
-    if let videoCell = cell as? ParticipantVideoCell {
-      let videoCanvas = AgoraRtcVideoCanvas()
-      videoCanvas.uid = remoteID
-      videoCanvas.view = videoCell.videoView
-      videoCanvas.renderMode = .fit
-      getAgoraEngine().setupRemoteVideo(videoCanvas)
-    }
+    let videoCanvas = AgoraRtcVideoCanvas()
+    videoCanvas.uid = remoteID
+    videoCanvas.view = cell.videoView
+    print(videoCanvas.view)
+    videoCanvas.renderMode = .fit
+    getAgoraEngine().setupRemoteVideo(videoCanvas)
+    
     
     return cell
   }

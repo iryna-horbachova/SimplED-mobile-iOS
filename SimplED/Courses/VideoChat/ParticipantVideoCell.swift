@@ -1,7 +1,7 @@
 import UIKit
 
 class ParticipantVideoCell: UICollectionViewCell {
-  let videoView = UIView()
+  var videoView = UIView(frame: .zero)
   let nameLabel = UILabel.makeSecondaryLabel()
   
   override init(frame: CGRect) {
@@ -11,19 +11,21 @@ class ParticipantVideoCell: UICollectionViewCell {
     videoView.backgroundColor = .green
 
     nameLabel.text = "Name"
-    let stackView = UIStackView.makeVerticalStackView()
+    addSubview(videoView)
+    /*let stackView = UIStackView.makeVerticalStackView()
+
     stackView.addArrangedSubview(videoView)
     stackView.addArrangedSubview(nameLabel)
     stackView.spacing = 2
-    stackView.distribution = .equalCentering
-    addSubview(stackView)
+    stackView.distribution = .equalCentering*/
+    //addSubview(stackView)
 
     NSLayoutConstraint.activate(
       [
-        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 5),
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+        videoView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+        videoView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+        videoView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 5),
+        videoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
       ])
   }
   
