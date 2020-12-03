@@ -583,8 +583,7 @@ class APIManager {
         completion(.failure(.unableToComplete))
         return
       }
-      print("solutions")
-      print(response)
+
       guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
         completion(.failure(.invalidResponse))
         return
@@ -599,8 +598,6 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let solutions = try decoder.decode([Solution].self, from: data)
-        print("solutions")
-        print(solutions)
         completion(.success(solutions))
       } catch _ {
         completion(.failure(.invalidData))
@@ -616,8 +613,6 @@ class APIManager {
     completion: @escaping solutionCompletionHandler
   ) {
     let endpoint = baseURL + "courses/\(courseId)/tasks/\(taskId)/solutions/"
-    print("solution")
-    print(solution)
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -646,9 +641,6 @@ class APIManager {
         completion(.failure(.unableToComplete))
         return
       }
-
-      print("solution response")
-      print(response)
       
       guard let response = response as? HTTPURLResponse,
         (200 ... 299) ~= response.statusCode else {
@@ -711,9 +703,6 @@ class APIManager {
         completion(.failure(.unableToComplete))
         return
       }
-
-      print("solution response")
-      print(response)
       
       guard let response = response as? HTTPURLResponse,
         (200 ... 299) ~= response.statusCode else {
@@ -797,7 +786,7 @@ class APIManager {
       do {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        var user = try decoder.decode(User.self, from: data)
+        let user = try decoder.decode(User.self, from: data)
         completion(.success(user))
       } catch {
         completion(.failure(.invalidData))
@@ -967,10 +956,10 @@ class APIManager {
   
   func uploadImageToCloudinary(imageOption: ImageOption, imageData: Data, group: DispatchGroup, completionHandler: @escaping (String?) -> ()) {
     let params = CLDUploadRequestParams()
-    params.setFolder(imageOption.rawValue)
+    _ = params.setFolder(imageOption.rawValue)
 
     var url: String? = nil
-    let request = cloudinary.createUploader().signedUpload(data: imageData, params: params, progress: nil) { result, error in
+    _ = cloudinary.createUploader().signedUpload(data: imageData, params: params, progress: nil) { result, error in
       group.enter()
 
       if error == nil {

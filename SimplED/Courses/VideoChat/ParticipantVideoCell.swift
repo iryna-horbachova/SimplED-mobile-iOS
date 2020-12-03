@@ -8,6 +8,7 @@ class ParticipantVideoCell: UICollectionViewCell {
     super.init(frame: frame)
     
     videoView.translatesAutoresizingMaskIntoConstraints = false
+    videoView.backgroundColor = .green
 
     nameLabel.text = "Name"
     let stackView = UIStackView.makeVerticalStackView()

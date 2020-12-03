@@ -12,10 +12,10 @@ class GroupVideoChatViewController: UIViewController {
   
   // Agora Setup
   
-  let appID = SimplEDKeys().agoraAppID
+  let appID = "a9f5c4461deb4586ae253047f2bc342e" //SimplEDKeys().agoraAppID
   var agoraKit: AgoraRtcEngineKit?
-  let tempToken: String? = "357fbb1fbf084ffe8e2be90441863ed9" 
-  var userID: UInt = 0
+
+  var userID: UInt = 1
   var channelName = "default"
   var remoteUserIDs: [UInt] = []
   
@@ -80,12 +80,15 @@ class GroupVideoChatViewController: UIViewController {
 
   func joinChannel() {
     videoView.isHidden = false
+    print("join channel")
     
-    getAgoraEngine().joinChannel(byToken: tempToken,
+    getAgoraEngine().joinChannel(byToken: nil,
                                  channelId: channelName,
                                  info: nil,
                                  uid: userID) { [weak self] (sid, uid, elapsed) in
       self?.userID = uid
+      print("success")
+      print(self?.userID)
     }
   }
 
@@ -103,7 +106,7 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
      for: indexPath) as! ParticipantVideoCell
      
      return cell*/
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: participantCellIdentifier, for: indexPath)
     
     let remoteID = remoteUserIDs[indexPath.row]
     if let videoCell = cell as? ParticipantVideoCell {
@@ -125,6 +128,7 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
 extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     remoteUserIDs.append(uid)
+    print("hello")
     participantsCollectionView.reloadData()
   }
   
@@ -132,12 +136,14 @@ extension GroupVideoChatViewController: AgoraRtcEngineDelegate {
   func rtcEngine(_ engine: AgoraRtcEngineKit, didUpdatedUserInfo userInfo: AgoraUserInfo, withUid uid: UInt) {
     if let index = remoteUserIDs.first(where: { $0 == uid }) {
       participantsCollectionView.reloadItems(at: [IndexPath(item: Int(index), section: 0)])
+      print("hello2")
     }
   }
   
   func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
     if let index = remoteUserIDs.firstIndex(where: { $0 == uid }) {
       remoteUserIDs.remove(at: index)
+      print("hello3")
       participantsCollectionView.reloadData()
     }
   }

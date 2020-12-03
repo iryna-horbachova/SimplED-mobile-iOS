@@ -13,7 +13,6 @@ class SolutionViewController: UIViewController, UITextFieldDelegate, UITextViewD
     title = "Solution to the task"
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(addSolution))
 
-    print(solution)
     textField.text = solution?.text ?? "Solution"
     textField.delegate = self
     
