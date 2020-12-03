@@ -35,6 +35,9 @@ class GroupVideoChatViewController: UIViewController {
     view.addSubview(participantsCollectionView)
     videoView.backgroundColor = .red
     
+    leaveButton.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
+    
+    
     NSLayoutConstraint.activate(
       [
         participantsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
@@ -57,6 +60,18 @@ class GroupVideoChatViewController: UIViewController {
     joinChannel()
   }
   
+  @objc func leaveButtonTapped(sender: UIButton!) {
+    leaveChannel()
+  }
+  
+  func leaveChannel() {
+    getAgoraEngine().leaveChannel(nil)
+    print("leave channel")
+    videoView.isHidden = true
+    remoteUserIDs.removeAll()
+    participantsCollectionView.reloadData()
+    dismiss(animated: true, completion: nil)
+  }
   // - MARK: Agora management
   
   // Entry point to Agora
