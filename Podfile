@@ -7,7 +7,7 @@ plugin 'cocoapods-keys', {
   :keys => [
     "CloudinaryAPIKey",
     "CloudinaryAPISecretKey",
-    "AgoraAppID"
+    "AgoraWebRTCAppID"
   ]
 }
 

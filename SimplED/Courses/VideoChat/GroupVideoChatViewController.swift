@@ -12,10 +12,10 @@ class GroupVideoChatViewController: UIViewController {
   
   // Agora Setup
   
-  let appID = "a9f5c4461deb4586ae253047f2bc342e" //SimplEDKeys().agoraAppID
+  let appID = SimplEDKeys().agoraWebRTCAppID
   var agoraKit: AgoraRtcEngineKit?
 
-  var userID: UInt = 1
+  var userID = UInt((APIManager.currentUser?.id)!)
   var channelName = "default"
   var remoteUserIDs: [UInt] = []
   
@@ -112,7 +112,6 @@ extension GroupVideoChatViewController: UICollectionViewDelegate,
     let videoCanvas = AgoraRtcVideoCanvas()
     videoCanvas.uid = remoteID
     videoCanvas.view = cell.videoView
-    print(videoCanvas.view)
     videoCanvas.renderMode = .fit
     getAgoraEngine().setupRemoteVideo(videoCanvas)
     
