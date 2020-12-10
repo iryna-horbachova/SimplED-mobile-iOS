@@ -3,6 +3,7 @@ import UIKit
 class TasksTableViewController: UITableViewController {
   
   var creatorId: Int?
+  var courseId: Int?
   
   var tasks = [Task]() {
     didSet {
@@ -21,8 +22,21 @@ class TasksTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+    title = "Tasks"
+    view.backgroundColor = .systemBackground
+
+    if creatorId == APIManager.currentUser?.id {
+      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Task",style: .plain,
+                                                          target: self, action: #selector(showAddTaskVC))
+    }
     
+    tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+  }
+  
+  @objc func showAddTaskVC() {
+    let addTaskVC = AddTaskViewController()
+    addTaskVC.courseId = courseId
+    navigationController?.pushViewController(addTaskVC, animated: true)
   }
   
   // MARK: - Table view data source

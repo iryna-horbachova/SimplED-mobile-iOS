@@ -1,9 +1,26 @@
 import UIKit
 
 class AboutViewController: UIViewController {
-
+  
+  var userIsEnrolled: Bool! {
+    didSet {
+      if !userIsEnrolled! {
+        stackView.addArrangedSubview(enrollButton)
+      } else {
+        stackView.addArrangedSubview(joinVideoChatButton)
+        stackView.addArrangedSubview(joinTextChatButton)
+        stackView.addArrangedSubview(showTasksButton)
+      }
+    }
+  }
+  
+  let stackView = UIStackView.makeHorizontalStackView()
   let descriptionLabel = UILabel.makeSecondaryLabel()
-  let joinVideoChatButton = UIButton.makeSecondaryButton(title: "Join video chat")
+  let joinVideoChatButton = UIButton.makeSecondaryButton(title: "Video chat")
+  let joinTextChatButton = UIButton.makeSecondaryButton(title: "Chat")
+  let showTasksButton = UIButton.makeSecondaryButton(title: "Tasks")
+  let enrollButton = UIButton.makeSecondaryButton(title: "Enroll")
+  let tasksViewController = TasksTableViewController()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -11,24 +28,48 @@ class AboutViewController: UIViewController {
     view.backgroundColor = .systemBackground
     
     joinVideoChatButton.addTarget(self, action: #selector(pushVideoChatVC), for: .touchUpInside)
+    joinTextChatButton.addTarget(self, action: #selector(pushChatVC), for: .touchUpInside)
+    showTasksButton.addTarget(self, action: #selector(pushTasksVC), for: .touchUpInside)
+    enrollButton.addTarget(self, action: #selector(enrollUser), for: .touchUpInside)
     
     view.addSubview(descriptionLabel)
-    view.addSubview(joinVideoChatButton)
+    view.addSubview(stackView)
+
     NSLayoutConstraint.activate(
       [
-        joinVideoChatButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -PADDING),
-        joinVideoChatButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
-        joinVideoChatButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
+        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -PADDING),
+        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
+        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
         
         descriptionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
         descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: PADDING),
         descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PADDING),
-        descriptionLabel.bottomAnchor.constraint(equalTo: joinVideoChatButton.topAnchor, constant: -PADDING),
+        descriptionLabel.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -PADDING),
       ])
   }
 
   @objc private func pushVideoChatVC() {
-    present(GroupVideoChatViewController(), animated: true, completion: nil)
-   // navigationController?.pushViewController(GroupVideoChatViewController(), animated: true)
+   navigationController?.pushViewController(GroupVideoChatViewController(), animated: true)
+  }
+  
+  @objc private func pushChatVC() {
+   navigationController?.pushViewController(ChatViewController(), animated: true)
+  }
+  
+  @objc private func pushTasksVC() {
+   navigationController?.pushViewController(tasksViewController, animated: true)
+  }
+  
+  @objc private func enrollUser() {
+    
+    stackView.removeArrangedSubview(enrollButton)
+    enrollButton.removeFromSuperview()
+    userIsEnrolled = true
+    present(UIAlertController.alertWithOKAction(
+                  title: "Enroll successfully completed!",
+                  message: "Knowledge is power. Don't stop studying."),
+                 animated: true,
+                 completion: nil)
+    //view.willRemoveSubview(enrollButton)
   }
 }

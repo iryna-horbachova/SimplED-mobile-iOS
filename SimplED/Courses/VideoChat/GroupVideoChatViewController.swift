@@ -23,6 +23,7 @@ class GroupVideoChatViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
+    title = "Video chat"
     
     videoView.translatesAutoresizingMaskIntoConstraints = false
     

@@ -11,6 +11,8 @@ class CourseViewController: UIViewController {
     }
   }
   
+  var userIsEnrolled: Bool?
+  
   let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
   private let segmentedControl = makeSegmentedControl()
   private let containerView = UIView()
@@ -21,23 +23,25 @@ class CourseViewController: UIViewController {
   private let participantsTableViewController = ParticipantsTableViewController()
   
   private lazy var nestedVCs = [aboutViewController,
-                                tasksTableViewController,
-                                chatViewController,
+                                //tasksTableViewController,
+                                //chatViewController,
                                 participantsTableViewController]
+  
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
     
+    userIsEnrolled = course!.participants!.contains(APIManager.currentUser!.id!) ||
+      course!.creator == APIManager.currentUser?.id
+    aboutViewController.userIsEnrolled = userIsEnrolled
     
     if course!.creator == APIManager.currentUser?.id {
       navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",style: .plain,
                                                           target: self, action: #selector(showEditCourseVC))
-      navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Task",style: .plain,
-                                                          target: self, action: #selector(showAddTaskVC))
     }
-    tasksTableViewController.creatorId = course!.creator
-    
+    aboutViewController.tasksViewController.creatorId = course!.creator
+    aboutViewController.tasksViewController.courseId = course!.id
     
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
@@ -85,7 +89,7 @@ class CourseViewController: UIViewController {
         switch result {
         case .success(let tasks):
           DispatchQueue.main.sync {
-            self.tasksTableViewController.tasks = tasks
+            self.aboutViewController.tasksViewController.tasks = tasks
             
             for task in tasks {
               APIManager.shared.getSolutions(courseId: task.course!, taskId: task.id!) { [weak self] result in
@@ -93,8 +97,8 @@ class CourseViewController: UIViewController {
                 switch result {
                 case .success(let solutions):
                   DispatchQueue.main.async {
-                    self.tasksTableViewController.solutions += solutions
-                    self.tasksTableViewController.tableView.reloadData()
+                    self.aboutViewController.tasksViewController.solutions += solutions
+                    //self.tasksTableViewController.tableView.reloadData()
                   }
                 case .failure(let error):
                   DispatchQueue.main.async {
@@ -132,11 +136,6 @@ class CourseViewController: UIViewController {
       value: "Tasks",
       comment: "Tasks segmented control")
     
-    let chatText = NSLocalizedString(
-      "CHAT",
-      value: "Chat",
-      comment: "Chat segmented control")
-    
     let participantsText = NSLocalizedString(
       "PARTICIPANTS",
       value: "Participants",
@@ -145,9 +144,7 @@ class CourseViewController: UIViewController {
     let sControl = UISegmentedControl.makeSegmentedControl()
     
     sControl.insertSegment(withTitle: aboutText, at: 0, animated: true)
-    sControl.insertSegment(withTitle: tasksText, at: 1, animated: true)
-    sControl.insertSegment(withTitle: chatText, at: 2, animated: true)
-    sControl.insertSegment(withTitle: participantsText, at: 3, animated: true)
+    sControl.insertSegment(withTitle: participantsText, at: 1, animated: true)
   
     sControl.selectedSegmentIndex = 0
     return sControl
@@ -165,13 +162,6 @@ class CourseViewController: UIViewController {
     editCourseVC.controllerOption = .edit
     editCourseVC.course = course
     navigationController?.pushViewController(editCourseVC,
-                                             animated: true)
-  }
-  
-  @objc func showAddTaskVC() {
-    let addTaskVC = AddTaskViewController()
-    addTaskVC.courseId = course.id
-    navigationController?.pushViewController(addTaskVC,
                                              animated: true)
   }
 }
