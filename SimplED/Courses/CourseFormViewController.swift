@@ -193,7 +193,8 @@ class CourseFormViewController: UIViewController,
                         creator: nil,
                         language: language!.dbValue,
                         participants: nil,
-                        startDate: "2021-01-01")
+                        startDate: "2021-01-01",
+                        isActive: true)
     
     APIManager.shared.add(course: course) { [weak self] result in
       guard let self = self else { return }

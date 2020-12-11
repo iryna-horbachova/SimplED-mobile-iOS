@@ -23,8 +23,6 @@ class CourseViewController: UIViewController {
   private let participantsTableViewController = ParticipantsTableViewController()
   
   private lazy var nestedVCs = [aboutViewController,
-                                //tasksTableViewController,
-                                //chatViewController,
                                 participantsTableViewController]
   
 
@@ -42,6 +40,8 @@ class CourseViewController: UIViewController {
     }
     aboutViewController.tasksViewController.creatorId = course!.creator
     aboutViewController.tasksViewController.courseId = course!.id
+    aboutViewController.creatorId = course!.creator
+    //aboutViewController.isActive = course.isActive ?? false
     
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
@@ -61,14 +61,10 @@ class CourseViewController: UIViewController {
         segmentedControl.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PADDING),
         segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         
-        containerView.topAnchor.constraint(equalTo:
-          segmentedControl.bottomAnchor, constant: 20),
-        containerView.leadingAnchor.constraint(equalTo:
-          view.leadingAnchor),
-        containerView.trailingAnchor.constraint(equalTo:
-          view.trailingAnchor),
-        containerView.bottomAnchor.constraint(equalTo:
-          view.bottomAnchor),
+        containerView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       ])
     
     // Adding view controllers to the container.
@@ -98,7 +94,6 @@ class CourseViewController: UIViewController {
                 case .success(let solutions):
                   DispatchQueue.main.async {
                     self.aboutViewController.tasksViewController.solutions += solutions
-                    //self.tasksTableViewController.tableView.reloadData()
                   }
                 case .failure(let error):
                   DispatchQueue.main.async {
@@ -130,11 +125,6 @@ class CourseViewController: UIViewController {
       "ABOUT",
       value: "About",
       comment: "About segmented control")
-    
-    let tasksText = NSLocalizedString(
-      "TASKS",
-      value: "Tasks",
-      comment: "Tasks segmented control")
     
     let participantsText = NSLocalizedString(
       "PARTICIPANTS",
