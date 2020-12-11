@@ -14,12 +14,28 @@ class AboutViewController: UIViewController {
     }
   }
   
+  var creatorId: Int! {
+    didSet {
+      if creatorId == APIManager.currentUser!.id! {
+        if isActive {
+          stackView.addArrangedSubview(closeCourseButton)
+        } else {
+          stackView.addArrangedSubview(relaunchCourseButton)
+        }
+      }
+    }
+  }
+  var isActive: Bool! = false
+  
   let stackView = UIStackView.makeHorizontalStackView()
   let descriptionLabel = UILabel.makeSecondaryLabel()
   let joinVideoChatButton = UIButton.makeSecondaryButton(title: "Video chat")
   let joinTextChatButton = UIButton.makeSecondaryButton(title: "Chat")
   let showTasksButton = UIButton.makeSecondaryButton(title: "Tasks")
   let enrollButton = UIButton.makeSecondaryButton(title: "Enroll")
+  let closeCourseButton = UIButton.makeSecondaryButton(title: "Close")
+  let relaunchCourseButton = UIButton.makeSecondaryButton(title: "Relaunch")
+  
   let tasksViewController = TasksTableViewController()
   
   override func viewDidLoad() {

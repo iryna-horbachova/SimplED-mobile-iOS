@@ -10,4 +10,5 @@ public struct Course: Codable {
   public var language: String
   public var participants: [Int]?
   public var startDate: String
+  public var isActive: Bool?
 }
