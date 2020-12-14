@@ -19,6 +19,7 @@
 		893FFE03255B03F7009A61ED /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893FFE02255B03F7009A61ED /* Utilities.swift */; };
 		894A93E2258769D600CE893B /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93E1258769D600CE893B /* ChatRoomViewController.swift */; };
 		894A93E725876A3000CE893B /* MessageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93E625876A3000CE893B /* MessageInputView.swift */; };
+		894A93EF2587873400CE893B /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93EE2587873400CE893B /* MessageCell.swift */; };
 		894AE4A025383D51008EEBF5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE49F25383D51008EEBF5 /* Validation.swift */; };
 		894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4A425383E86008EEBF5 /* ErrorHandling.swift */; };
 		894AE4AB25384362008EEBF5 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4AA25384362008EEBF5 /* ExploreViewController.swift */; };
@@ -99,6 +100,7 @@
 		893FFE02255B03F7009A61ED /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		894A93E1258769D600CE893B /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		894A93E625876A3000CE893B /* MessageInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInputView.swift; sourceTree = "<group>"; };
+		894A93EE2587873400CE893B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		894AE49F25383D51008EEBF5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		894AE4A425383E86008EEBF5 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		894AE4AA25384362008EEBF5 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				894A93E1258769D600CE893B /* ChatRoomViewController.swift */,
 				894A93E625876A3000CE893B /* MessageInputView.swift */,
+				894A93EE2587873400CE893B /* MessageCell.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				894A93E725876A3000CE893B /* MessageInputView.swift in Sources */,
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,
+				894A93EF2587873400CE893B /* MessageCell.swift in Sources */,
 				899A12BD254B1CB100A1F52F /* EditProfileViewController.swift in Sources */,
 				89BD95FD25715C8F00B13286 /* ParticipantVideoCell.swift in Sources */,
 				89B233762531F50900643E02 /* SignUpViewController.swift in Sources */,
