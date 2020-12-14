@@ -19,7 +19,7 @@ class CourseViewController: UIViewController {
   
   private let aboutViewController = AboutViewController()
   private let tasksTableViewController = TasksTableViewController()
-  private let chatViewController = ChatViewController()
+  private let chatViewController = ChatRoomViewController()
   private let participantsTableViewController = ParticipantsTableViewController()
   
   private lazy var nestedVCs = [aboutViewController,
