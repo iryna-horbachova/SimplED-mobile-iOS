@@ -69,7 +69,7 @@ class AboutViewController: UIViewController {
   }
   
   @objc private func pushChatVC() {
-   navigationController?.pushViewController(ChatViewController(), animated: true)
+   navigationController?.pushViewController(ChatRoomViewController(), animated: true)
   }
   
   @objc private func pushTasksVC() {
