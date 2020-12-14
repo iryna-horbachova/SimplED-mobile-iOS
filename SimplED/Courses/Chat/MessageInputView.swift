@@ -2,9 +2,9 @@ import UIKit
 
 class MessageInputView: UIView {
 
-  let textView = UITextView.makeTextView()
-  let sendButton = UIButton.makeContinueButton()
-  let stackView = UIStackView.makeHorizontalStackView()
+  private let textView = UITextView.makeTextView()
+  private let sendButton = UIButton.makeContinueButton()
+  private let stackView = UIStackView.makeHorizontalStackView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
