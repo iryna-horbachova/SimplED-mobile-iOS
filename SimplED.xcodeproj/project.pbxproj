@@ -20,6 +20,7 @@
 		894A93E2258769D600CE893B /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93E1258769D600CE893B /* ChatRoomViewController.swift */; };
 		894A93E725876A3000CE893B /* MessageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93E625876A3000CE893B /* MessageInputView.swift */; };
 		894A93EF2587873400CE893B /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93EE2587873400CE893B /* MessageCell.swift */; };
+		894A93F725878A7D00CE893B /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A93F625878A7D00CE893B /* Message.swift */; };
 		894AE4A025383D51008EEBF5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE49F25383D51008EEBF5 /* Validation.swift */; };
 		894AE4A525383E86008EEBF5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4A425383E86008EEBF5 /* ErrorHandling.swift */; };
 		894AE4AB25384362008EEBF5 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894AE4AA25384362008EEBF5 /* ExploreViewController.swift */; };
@@ -101,6 +102,7 @@
 		894A93E1258769D600CE893B /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		894A93E625876A3000CE893B /* MessageInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInputView.swift; sourceTree = "<group>"; };
 		894A93EE2587873400CE893B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		894A93F625878A7D00CE893B /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		894AE49F25383D51008EEBF5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		894AE4A425383E86008EEBF5 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		894AE4AA25384362008EEBF5 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				894A93E1258769D600CE893B /* ChatRoomViewController.swift */,
 				894A93E625876A3000CE893B /* MessageInputView.swift */,
 				894A93EE2587873400CE893B /* MessageCell.swift */,
+				894A93F625878A7D00CE893B /* Message.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 				89CDE08B25414DC5008E5EAD /* ParticipantTableViewCell.swift in Sources */,
 				89398CFB25670387004DF25C /* SolutionViewController.swift in Sources */,
 				89CDE08625414D9D008E5EAD /* TaskTableViewCell.swift in Sources */,
+				894A93F725878A7D00CE893B /* Message.swift in Sources */,
 				89CDE07E254026B1008E5EAD /* ParticipantsTableViewController.swift in Sources */,
 				89B233712531F4FE00643E02 /* SignInViewController.swift in Sources */,
 				89A0774F2546C98B007F65F6 /* Task.swift in Sources */,
