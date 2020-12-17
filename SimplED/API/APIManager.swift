@@ -9,7 +9,7 @@ class APIManager {
   private var token: Token?
   private let keys = SimplEDKeys()
   
-  private let baseURL = "http://simpled-api.herokuapp.com/"
+  private let baseURL = "https://simpled-api.herokuapp.com/"
   public let baseImageURL = "https://res.cloudinary.com/hgrb5wnzc/"
   private let imageCloudName = "hgrb5wnzc"
   
@@ -67,6 +67,13 @@ class APIManager {
     }
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("get token")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
       
       if let _ = error {
         print("got an error from the server")
@@ -424,8 +431,18 @@ class APIManager {
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    print("get courses request headers")
+    print(request.allHTTPHeaderFields)
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("get couurses")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
+      
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -756,7 +773,7 @@ class APIManager {
     id: Int,
     completion: @escaping userCompletionHandler
   ) {
-    let endpoint = baseURL + "users/\(id)"
+    let endpoint = baseURL + "users/\(id)/"
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -766,8 +783,16 @@ class APIManager {
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    print(request.allHTTPHeaderFields)
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("get user")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
       
       if let _ = error {
         completion(.failure(.unableToComplete))
