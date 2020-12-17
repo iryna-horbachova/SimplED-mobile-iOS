@@ -5,6 +5,9 @@ class CourseTableViewCell: UITableViewCell {
   var course: Course? {
     didSet {
       titleLabel.text = course?.title
+      if let image = course!.image {
+        Utilities.loadImage(imageView: courseImageView, baseURLString: image)
+      }
     }
   }
   

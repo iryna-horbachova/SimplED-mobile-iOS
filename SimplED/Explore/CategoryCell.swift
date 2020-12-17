@@ -52,7 +52,6 @@ extension CategoryCell : UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: courseCellIdentifier, for: indexPath) as! CourseCollectionViewCell
     let courseVC = CourseViewController()
     courseVC.course = courses[indexPath.row]
     parentViewController?.present(UINavigationController(rootViewController: courseVC), animated: true)
@@ -61,7 +60,9 @@ extension CategoryCell : UICollectionViewDataSource {
 }
 
  extension CategoryCell : UICollectionViewDelegateFlowLayout {
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: 200, height: contentView.bounds.height)
   }
+  
 }

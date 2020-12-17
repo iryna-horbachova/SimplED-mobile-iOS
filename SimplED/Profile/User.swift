@@ -8,4 +8,6 @@ public struct User: Codable {
   public var points: Int?
   public var password: String?
   public var confirmPassword: String?
+  public var addedCourses: [Course]?
+  public var enrolledCourses: [Course]?
 }
