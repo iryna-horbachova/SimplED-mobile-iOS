@@ -33,7 +33,8 @@ class TasksTableViewController: UITableViewController {
     tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
   }
   
-  @objc func showAddTaskVC() {
+  @objc
+  func showAddTaskVC() {
     let addTaskVC = AddTaskViewController()
     addTaskVC.courseId = courseId
     navigationController?.pushViewController(addTaskVC, animated: true)
@@ -54,7 +55,6 @@ class TasksTableViewController: UITableViewController {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TaskTableViewCell
     cell.titleLabel.text = task.title
     cell.detailsLabel.text = task.description
-    cell.parentViewController = self
     
     return cell
    }
@@ -65,11 +65,13 @@ class TasksTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let task = tasks[indexPath.row]
+    
     if creatorId == APIManager.currentUser!.id {
       let solutionVC = SolutionsTableViewController()
       solutionVC.solutions = solutions.filter{ $0.task == task.id }
       navigationController?.pushViewController(solutionVC, animated: true)
-    } else {
+    }
+    else {
       let solutionVC = SolutionViewController()
       solutionVC.solution = solutions.first(where: { $0.task == task.id  && $0.owner!.id == APIManager.currentUser!.id})
       solutionVC.taskId = task.id

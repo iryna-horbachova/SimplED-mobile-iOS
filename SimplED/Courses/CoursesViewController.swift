@@ -59,7 +59,8 @@ class CoursesViewController: UIViewController {
     return sControl
   }
   
-  @objc func changeController(_ sender: UISegmentedControl!) {
+  @objc
+  func changeController(_ sender: UISegmentedControl!) {
     // TODO: CHANGE ENROLLED AND CREATED VIEW
   }
   

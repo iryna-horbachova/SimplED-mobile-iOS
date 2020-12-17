@@ -8,12 +8,23 @@ class CourseViewController: UIViewController {
       if let image = course!.image {
         Utilities.loadImage(imageView: imageView, baseURLString: image)
       }
+      getTasks()
+      getParticipants()
+      if participantsTableViewController.creatorId == nil {
+        participantsTableViewController.creatorId = course!.creator
+      }
     }
   }
   
-  var userIsEnrolled: Bool?
+  var participants = [User]() {
+    didSet {
+      participantsTableViewController.participants = participants
+    }
+  }
   
-  let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
+  private var userIsEnrolled: Bool?
+  
+  private let imageView = UIImageView.makeImageView(defaultImageName: "course-default")
   private let segmentedControl = makeSegmentedControl()
   private let containerView = UIView()
   
@@ -41,7 +52,9 @@ class CourseViewController: UIViewController {
     aboutViewController.tasksViewController.creatorId = course!.creator
     aboutViewController.tasksViewController.courseId = course!.id
     aboutViewController.creatorId = course!.creator
-    //aboutViewController.isActive = course.isActive ?? false
+    aboutViewController.course = course
+    participantsTableViewController.creatorId = course!.creator
+    aboutViewController.courseViewController = self
     
     containerView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(containerView)
@@ -77,9 +90,12 @@ class CourseViewController: UIViewController {
       vc.view.isHidden = true
       vc.didMove(toParent: self)
     }
-    aboutViewController.descriptionLabel.text = course.description
     aboutViewController.view.isHidden = false
-    
+  }
+  
+  // API
+  
+  private func getTasks() {
     APIManager.shared.getTasks(courseId: course.id!) { [weak self] result in
         guard let self = self else { return }
         switch result {
@@ -120,6 +136,36 @@ class CourseViewController: UIViewController {
     }
   }
   
+  private func getParticipants() {
+    APIManager.shared.getCourseParticipants(id: course.id!) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let users):
+        var gotParticipants = users
+        APIManager.shared.getUser(id: self.course.creator!) { [weak self] result in
+          guard let self = self else { return }
+          switch result {
+          case .success(let user):
+            gotParticipants.append(user)
+            self.participants = gotParticipants
+          case .failure(let error):
+            print("unluck \(error.rawValue)")
+          } 
+        }
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(UIAlertController.alertWithOKAction(
+                        title: "Error occured with loading tasks!",
+                        message: error.rawValue),
+                       animated: true,
+                       completion: nil)
+        }
+      }
+    }
+  }
+  
+  // UI
+  
   private static func makeSegmentedControl() -> UISegmentedControl {
     let aboutText = NSLocalizedString(
       "ABOUT",
@@ -140,14 +186,16 @@ class CourseViewController: UIViewController {
     return sControl
   }
   
-  @objc private func changeController(_ sender: UISegmentedControl!) {
+  @objc
+  private func changeController(_ sender: UISegmentedControl!) {
     nestedVCs.forEach { vc in
       vc.view.isHidden = true
     }
     nestedVCs[sender.selectedSegmentIndex].view.isHidden = false
   }
   
-  @objc func showEditCourseVC() {
+  @objc
+  private func showEditCourseVC() {
     let editCourseVC = CourseFormViewController()
     editCourseVC.controllerOption = .edit
     editCourseVC.course = course

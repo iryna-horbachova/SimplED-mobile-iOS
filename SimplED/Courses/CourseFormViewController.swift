@@ -182,7 +182,8 @@ class CourseFormViewController: UIViewController,
     view.addGestureRecognizer(tap)
   }
   
-  @objc func addCourse() {
+  @objc
+  func addCourse() {
     let language = languages.first { $0.title == languageTextField.text }
     let category = categories.first { $0.title == categoryTextField.text }
     let course = Course(id: nil,
@@ -224,7 +225,8 @@ class CourseFormViewController: UIViewController,
     }
   }
   
-  @objc func editCourse() {
+  @objc
+  func editCourse() {
     let language = languages.first { $0.title == languageTextField.text }
     let category = categories.first { $0.title == categoryTextField.text }
     var updatedCourse = course
@@ -294,14 +296,16 @@ class CourseFormViewController: UIViewController,
     }
   }
   
-  @objc func startDateChanged() {
+  @objc
+  func startDateChanged() {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
     let date = dateFormatter.string(from: datePicker.date)
     startDateTextField.text = date
   }
   
-  @objc func displayImagePickerButtonTapped(_ sender:UIButton!) {
+  @objc
+  func displayImagePickerButtonTapped(_ sender:UIButton!) {
     let myPickerController = UIImagePickerController()
     myPickerController.delegate = self;
     myPickerController.sourceType = UIImagePickerController.SourceType.photoLibrary

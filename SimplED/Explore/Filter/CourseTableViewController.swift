@@ -59,7 +59,8 @@ class CourseTableViewController: UITableViewController {
     return header
   }
   
-  @objc private func showFilterTableViewController(sender: UIButton!) {
+  @objc
+  private func showFilterTableViewController(sender: UIButton!) {
     present(filterTableViewController, animated: true, completion: nil)
   }
   

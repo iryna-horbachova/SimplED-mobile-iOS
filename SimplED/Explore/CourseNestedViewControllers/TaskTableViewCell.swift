@@ -2,7 +2,6 @@ import UIKit
 
 class TaskTableViewCell: UITableViewCell {
   
-  weak var parentViewController: TasksTableViewController?
   var solution: Solution?
   
   let titleLabel: UILabel = {
@@ -28,7 +27,7 @@ class TaskTableViewCell: UITableViewCell {
     return label
   }()
   
-  let solutionButton = UIButton.makeSecondaryButton(title: "Solution")
+  private let solutionButton = UIButton.makeSecondaryButton(title: "Solution")
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)

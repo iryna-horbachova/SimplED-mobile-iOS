@@ -10,7 +10,6 @@
 		127BAFEEAEADF99EA5144141 /* Pods_SimplEDTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97861AF9D4A51DB06E2CAE1B /* Pods_SimplEDTests.framework */; };
 		89210E7D253CAEB3006E6F47 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89210E7C253CAEB3006E6F47 /* FilterTableViewController.swift */; };
 		89210E82253CAFCA006E6F47 /* FilterOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89210E81253CAFCA006E6F47 /* FilterOptionTableViewCell.swift */; };
-		89293BF0254D73F400539021 /* CategoryCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89293BEF254D73F400539021 /* CategoryCourses.swift */; };
 		89398CFB25670387004DF25C /* SolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFA25670387004DF25C /* SolutionViewController.swift */; };
 		89398D00256707E6004DF25C /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398CFF256707E6004DF25C /* AddTaskViewController.swift */; };
 		89398D0825671CB9004DF25C /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89398D0725671CB9004DF25C /* Solution.swift */; };
@@ -92,7 +91,6 @@
 		7984E6678B3EF77BC9330600 /* Pods-SimplED.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimplED.release.xcconfig"; path = "Target Support Files/Pods-SimplED/Pods-SimplED.release.xcconfig"; sourceTree = "<group>"; };
 		89210E7C253CAEB3006E6F47 /* FilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		89210E81253CAFCA006E6F47 /* FilterOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionTableViewCell.swift; sourceTree = "<group>"; };
-		89293BEF254D73F400539021 /* CategoryCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCourses.swift; sourceTree = "<group>"; };
 		89398CFA25670387004DF25C /* SolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionViewController.swift; sourceTree = "<group>"; };
 		89398CFF256707E6004DF25C /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		89398D0725671CB9004DF25C /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
@@ -229,7 +227,6 @@
 				894AE4CE253AF0C1008EEBF5 /* CourseCollectionViewCell.swift */,
 				894AE4D3253B16D3008EEBF5 /* Course.swift */,
 				89A0774E2546C98A007F65F6 /* Task.swift */,
-				89293BEF254D73F400539021 /* CategoryCourses.swift */,
 				89398D0725671CB9004DF25C /* Solution.swift */,
 			);
 			path = Explore;
@@ -642,7 +639,6 @@
 				89B233712531F4FE00643E02 /* SignInViewController.swift in Sources */,
 				89A0774F2546C98B007F65F6 /* Task.swift in Sources */,
 				89A077452546BF60007F65F6 /* User.swift in Sources */,
-				89293BF0254D73F400539021 /* CategoryCourses.swift in Sources */,
 				894A93E725876A3000CE893B /* MessageInputView.swift in Sources */,
 				894AE4C225384E14008EEBF5 /* CoursesViewController.swift in Sources */,
 				89B233282531CD1E00643E02 /* AuthenticationViewController.swift in Sources */,

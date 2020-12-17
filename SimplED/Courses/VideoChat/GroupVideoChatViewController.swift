@@ -81,7 +81,8 @@ class GroupVideoChatViewController: UIViewController {
     }
   }
   
-  @objc func leaveButtonTapped(sender: UIButton!) {
+  @objc
+  func leaveButtonTapped(sender: UIButton!) {
     leaveChannel()
   }
   

@@ -44,7 +44,8 @@ class ChatRoomViewController: UIViewController {
   
   // Notification Center management
   
-  @objc func keyboardWillShow(notification: NSNotification) {
+  @objc
+  func keyboardWillShow(notification: NSNotification) {
     let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
     messageViewBottomConstraint.constant = -keyboardSize!.height
     UIView.animate(withDuration: 0.3) {
@@ -52,7 +53,8 @@ class ChatRoomViewController: UIViewController {
     }
   }
   
-  @objc func keyboardWillHide(notification: NSNotification) {
+  @objc
+  func keyboardWillHide(notification: NSNotification) {
     messageViewBottomConstraint.constant = 0
     UIView.animate(withDuration: 0.3) {
       self.view.layoutIfNeeded()

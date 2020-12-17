@@ -88,7 +88,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate,
       ])
   }
   
-  @objc func updateProfile() {
+  @objc
+  func updateProfile() {
     var updatedUser = APIManager.currentUser
     updatedUser?.firstName = firstNameTextField.text!
     updatedUser?.lastName = lastNameTextField.text!
@@ -147,7 +148,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate,
     textField.placeholder = nil
   }
   
-  @objc func displayImagePickerButtonTapped(_ sender:UIButton!) {
+  @objc
+  func displayImagePickerButtonTapped(_ sender:UIButton!) {
     let myPickerController = UIImagePickerController()
     myPickerController.delegate = self;
     myPickerController.sourceType = UIImagePickerController.SourceType.photoLibrary

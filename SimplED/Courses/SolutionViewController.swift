@@ -26,7 +26,8 @@ class SolutionViewController: UIViewController, UITextFieldDelegate, UITextViewD
     ])
   }
 
-  @objc func addSolution() {
+  @objc
+  func addSolution() {
     if solution != nil {
       var updatedSolution = solution
       updatedSolution!.text = textField.text!

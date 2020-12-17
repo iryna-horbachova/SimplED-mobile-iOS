@@ -96,7 +96,8 @@ class AuthenticationViewController: UIViewController {
     return sControl
   }
   
-  @objc func changeController(_ sender: UISegmentedControl!) {
+  @objc
+  func changeController(_ sender: UISegmentedControl!) {
     signInViewController.view.isHidden = !signInViewController.view.isHidden
     signUpViewController.view.isHidden = !signUpViewController.view.isHidden
   }
