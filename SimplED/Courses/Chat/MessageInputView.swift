@@ -15,6 +15,7 @@ class MessageInputView: UIView {
     stackView.addArrangedSubview(textView)
     stackView.addArrangedSubview(sendButton)
     addSubview(stackView)
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: topAnchor, constant: 7),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 7),
