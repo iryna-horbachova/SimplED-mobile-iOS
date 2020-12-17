@@ -39,7 +39,8 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate, UITextViewDe
       ])
   }
   
-  @objc func addTask() {
+  @objc
+  func addTask() {
     let task = Task(id: nil, title: titleTextField.text!, description:  descriptionTextView.text!, deadline: "2021-12-02T15:00:00Z", course: courseId)
     APIManager.shared.add(task: task, courseId: courseId!) { [weak self] result in
       guard let self = self else { return }

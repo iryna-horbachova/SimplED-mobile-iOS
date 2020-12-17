@@ -21,19 +21,6 @@ class APIManager {
     return CLDCloudinary(configuration: config!)
   }
   
-  typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
-  typealias categoryCoursesCompletionHandler = (Result<[String: [Course]], APIError>) -> Void
-  typealias courseOptionsCompletionHandler = (Result<[CourseOption], APIError>) -> Void
-  typealias userCompletionHandler = (Result<User, APIError>) -> Void
-  typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
-  typealias deleteCompletionHandler = (APIError?) -> Void
-  
-  typealias tasksCompletionHandler = (Result<[Task], APIError>) -> Void
-  typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
-  typealias solutionsCompletionHandler = (Result<[Solution], APIError>) -> Void
-  typealias solutionCompletionHandler = (Result<Solution, APIError>) -> Void
-  typealias participantsCompletionHandler = (Result<[Participant], APIError>) -> Void
-  
   private init() {}
   
   func getToken(
@@ -238,7 +225,7 @@ class APIManager {
     user: User,
     completion: @escaping userCompletionHandler
   ) {
-    let endpoint = baseURL + "users/\(user.id!)"
+    let endpoint = baseURL + "users/\(user.id!)/"
 
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -297,7 +284,7 @@ class APIManager {
     id: Int,
     completion: @escaping deleteCompletionHandler
   ) {
-    let endpoint = baseURL + "users/\(id)"
+    let endpoint = baseURL + "users/\(id)/"
     
     guard let url = URL(string: endpoint) else {
       completion(.invalidData)
@@ -335,7 +322,7 @@ class APIManager {
     id: Int,
     completion: @escaping courseCompletionHandler
   ) {
-    let endpoint = baseURL + "courses/\(id)"
+    let endpoint = baseURL + "courses/\(id)/"
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -347,6 +334,135 @@ class APIManager {
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let course = try decoder.decode(Course.self, from: data)
+        completion(.success(course))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  func changeStatus(
+    course: Course,
+    completion: @escaping courseCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(course.id!)/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "PATCH"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    let parameters: [String: Bool] = ["is_active": !course.isActive!]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+
+    } catch {
+      print("invalid request body")
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("change status")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
+      
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let course = try decoder.decode(Course.self, from: data)
+        completion(.success(course))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
+  func enrollUserTo(
+    course: Course,
+    completion: @escaping courseCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(course.id!)/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "PATCH"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    var participants = course.participants!
+    participants.append(APIManager.currentUser!.id!)
+    let parameters: [String: [Int]] = ["participants": participants]
+    
+    do {
+      request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+    } catch {
+      print("invalid request body")
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("enroll")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
+      
       if let _ = error {
         completion(.failure(.unableToComplete))
         return
@@ -1000,6 +1116,58 @@ class APIManager {
     }
   }
   
+  func getCourseParticipants(
+    id: Int,
+    completion: @escaping usersCompletionHandler
+  ) {
+    let endpoint = baseURL + "courses/\(id)/participants/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("get participants")
+      print(String(decoding: data!, as: UTF8.self))
+      print("response")
+      print(response)
+      print("error")
+      print(error)
+
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let participants = try decoder.decode([User].self, from: data)
+        print(participants)
+        completion(.success(participants))
+      } catch {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
+  
   func getParticipantsArray(
     completion: @escaping participantsCompletionHandler
   ) {
@@ -1043,4 +1211,20 @@ class APIManager {
     }
     task.resume()
   }
+}
+
+extension APIManager {
+  typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
+  typealias categoryCoursesCompletionHandler = (Result<[String: [Course]], APIError>) -> Void
+  typealias courseOptionsCompletionHandler = (Result<[CourseOption], APIError>) -> Void
+  typealias userCompletionHandler = (Result<User, APIError>) -> Void
+  typealias usersCompletionHandler = (Result<[User], APIError>) -> Void
+  typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
+  typealias deleteCompletionHandler = (APIError?) -> Void
+  
+  typealias tasksCompletionHandler = (Result<[Task], APIError>) -> Void
+  typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
+  typealias solutionsCompletionHandler = (Result<[Solution], APIError>) -> Void
+  typealias solutionCompletionHandler = (Result<Solution, APIError>) -> Void
+  typealias participantsCompletionHandler = (Result<[Participant], APIError>) -> Void
 }

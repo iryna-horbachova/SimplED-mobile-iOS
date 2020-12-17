@@ -4,10 +4,18 @@ class ParticipantTableViewCell: UITableViewCell {
   
   let titleLabel: UILabel = {
     let label = UILabel.makeTitleLabel()
-    label.text = NSLocalizedString(
-      "PARTICIPANT_NAME_LABEL",
-      value: "Participant name",
-      comment: "Label showing the name of the participant")
+    return label
+  }()
+  
+  let statusLabel: UILabel = {
+    let label = UILabel()
+    
+    label.font = .systemFont(ofSize: 15)
+    label.textColor = .label
+    label.minimumScaleFactor = 0.9
+    label.adjustsFontSizeToFitWidth   = true
+    label.translatesAutoresizingMaskIntoConstraints = false
+
     return label
   }()
   
@@ -29,6 +37,7 @@ class ParticipantTableViewCell: UITableViewCell {
  
     addSubview(avatarImageView)
     addSubview(titleLabel)
+    addSubview(statusLabel)
 
     NSLayoutConstraint.activate(
       [
@@ -39,8 +48,13 @@ class ParticipantTableViewCell: UITableViewCell {
 
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: PADDING),
         titleLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: PADDING),
-        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: PADDING),
+        //titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PADDING),
+        
+        statusLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+        statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: PADDING),
+        statusLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PADDING),
+        statusLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PADDING),
       ])
   }
   

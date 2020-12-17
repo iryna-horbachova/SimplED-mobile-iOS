@@ -48,7 +48,8 @@ class FilterOptionTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  @objc private func switchStateDidChange(_ sender: UISwitch){
+  @objc
+  private func switchStateDidChange(_ sender: UISwitch){
     if (sender.isOn == true){
       print("UISwitch state is now ON")
     }

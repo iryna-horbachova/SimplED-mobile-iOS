@@ -2,6 +2,7 @@ import UIKit
 
 class AboutViewController: UIViewController {
   
+  weak var courseViewController: CourseViewController?
   var userIsEnrolled: Bool! {
     didSet {
       if !userIsEnrolled! {
@@ -14,27 +15,31 @@ class AboutViewController: UIViewController {
     }
   }
   
-  var creatorId: Int! {
+  var creatorId: Int!
+  
+  var course: Course! {
     didSet {
       if creatorId == APIManager.currentUser!.id! {
-        if isActive {
+        if course.isActive! {
           stackView.addArrangedSubview(closeCourseButton)
+          relaunchCourseButton.removeFromSuperview()
         } else {
           stackView.addArrangedSubview(relaunchCourseButton)
+          closeCourseButton.removeFromSuperview()
         }
       }
+      descriptionLabel.text = course.description
     }
   }
-  var isActive: Bool! = false
   
-  let stackView = UIStackView.makeHorizontalStackView()
-  let descriptionLabel = UILabel.makeSecondaryLabel()
-  let joinVideoChatButton = UIButton.makeSecondaryButton(title: "Video chat")
-  let joinTextChatButton = UIButton.makeSecondaryButton(title: "Chat")
-  let showTasksButton = UIButton.makeSecondaryButton(title: "Tasks")
-  let enrollButton = UIButton.makeSecondaryButton(title: "Enroll")
-  let closeCourseButton = UIButton.makeSecondaryButton(title: "Close")
-  let relaunchCourseButton = UIButton.makeSecondaryButton(title: "Relaunch")
+  private let stackView = UIStackView.makeHorizontalStackView()
+  private let descriptionLabel = UILabel.makeSecondaryLabel()
+  private let joinVideoChatButton = UIButton.makeSecondaryButton(title: "Video chat")
+  private let joinTextChatButton = UIButton.makeSecondaryButton(title: "Chat")
+  private let showTasksButton = UIButton.makeSecondaryButton(title: "Tasks")
+  private let enrollButton = UIButton.makeSecondaryButton(title: "Enroll")
+  private let closeCourseButton = UIButton.makeSecondaryButton(title: "Archive")
+  private let relaunchCourseButton = UIButton.makeSecondaryButton(title: "Relaunch")
   
   let tasksViewController = TasksTableViewController()
   
@@ -47,6 +52,8 @@ class AboutViewController: UIViewController {
     joinTextChatButton.addTarget(self, action: #selector(pushChatVC), for: .touchUpInside)
     showTasksButton.addTarget(self, action: #selector(pushTasksVC), for: .touchUpInside)
     enrollButton.addTarget(self, action: #selector(enrollUser), for: .touchUpInside)
+    closeCourseButton.addTarget(self, action: #selector(changeCourseStatus), for: .touchUpInside)
+    relaunchCourseButton.addTarget(self, action: #selector(changeCourseStatus), for: .touchUpInside)
     
     view.addSubview(descriptionLabel)
     view.addSubview(stackView)
@@ -64,28 +71,90 @@ class AboutViewController: UIViewController {
       ])
   }
 
-  @objc private func pushVideoChatVC() {
+  @objc
+  private func pushVideoChatVC() {
    navigationController?.pushViewController(GroupVideoChatViewController(), animated: true)
   }
   
-  @objc private func pushChatVC() {
+  @objc
+  private func pushChatVC() {
    navigationController?.pushViewController(ChatRoomViewController(), animated: true)
   }
   
-  @objc private func pushTasksVC() {
+  @objc
+  private func pushTasksVC() {
    navigationController?.pushViewController(tasksViewController, animated: true)
   }
   
-  @objc private func enrollUser() {
+  @objc
+  private func changeCourseStatus() {
     
-    stackView.removeArrangedSubview(enrollButton)
-    enrollButton.removeFromSuperview()
-    userIsEnrolled = true
-    present(UIAlertController.alertWithOKAction(
-                  title: "Enroll successfully completed!",
-                  message: "Knowledge is power. Don't stop studying."),
-                 animated: true,
-                 completion: nil)
-    //view.willRemoveSubview(enrollButton)
+    APIManager.shared.changeStatus(course: course) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let course):
+          var message: String!
+          
+          DispatchQueue.main.sync {
+            if course.isActive! {
+              
+              self.stackView.addArrangedSubview(self.closeCourseButton)
+              message = "Course successfully relaunched!"
+            } else {
+              self.relaunchCourseButton.removeFromSuperview()
+              self.stackView.addArrangedSubview(self.relaunchCourseButton)
+              message = "Course successfully archived!"
+            }
+            self.course = course
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Success!",
+                          message: message),
+                         animated: true,
+                         completion: nil)
+            
+          }
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Error occured with changing course status!",
+                          message: error.rawValue),
+                         animated: true,
+                         completion: nil)
+          }
+        }
+    }
+  }
+  
+  @objc
+  private func enrollUser() {
+    
+    APIManager.shared.enrollUserTo(course: course) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let course):
+          print("success")
+          print(course)
+          DispatchQueue.main.sync {
+            self.stackView.removeArrangedSubview(self.enrollButton)
+            self.enrollButton.removeFromSuperview()
+            self.userIsEnrolled = true
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Enroll successfully completed!",
+                          message: "Knowledge is power. Don't stop studying."),
+                         animated: true,
+                         completion: nil)
+            self.courseViewController?.participants.append(APIManager.currentUser!)
+            
+          }
+        case .failure(let error):
+          DispatchQueue.main.async {
+            self.present(UIAlertController.alertWithOKAction(
+                          title: "Error occured with loading tasks!",
+                          message: error.rawValue),
+                         animated: true,
+                         completion: nil)
+          }
+        }
+    }
   }
 }

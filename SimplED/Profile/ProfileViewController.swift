@@ -77,7 +77,8 @@ class ProfileViewController: UIViewController {
     user = APIManager.currentUser
   }
   
-  @objc func editProfile() {
+  @objc
+  func editProfile() {
     navigationController?.pushViewController(EditProfileViewController(), animated: true)
   }
 

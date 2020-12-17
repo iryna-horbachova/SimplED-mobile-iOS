@@ -50,7 +50,8 @@ class SignUpViewController: BaseAuthViewController {
     continueButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
   }
   
-  @objc private func signUp(sender: UIButton!) {
+  @objc
+  private func signUp(sender: UIButton!) {
     let email = emailTextField.text!
     let password = passwordTextField.text!
     let confirmPassword = confirmPasswordTextField.text!
