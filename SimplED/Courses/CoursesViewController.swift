@@ -10,25 +10,7 @@ class CoursesViewController: UIViewController {
     title = "Courses"
     view.backgroundColor = .systemBackground
     segmentedControl.addTarget(self, action: #selector(changeController(_:)), for: .valueChanged)
-    view.addSubview(segmentedControl)
     containerView.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(containerView)
-    
-    NSLayoutConstraint.activate(
-      [
-        segmentedControl.topAnchor.constraint(equalTo:
-                                                view.safeAreaLayoutGuide.topAnchor, constant: 20),
-        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-        containerView.topAnchor.constraint(equalTo:
-          segmentedControl.bottomAnchor, constant: 20),
-        containerView.leadingAnchor.constraint(equalTo:
-          view.leadingAnchor),
-        containerView.trailingAnchor.constraint(equalTo:
-          view.trailingAnchor),
-        containerView.bottomAnchor.constraint(equalTo:
-          view.bottomAnchor),
-      ])
     
     // Adding view controllers to the container.
     addChild(coursesTVC)
@@ -37,6 +19,22 @@ class CoursesViewController: UIViewController {
 
     containerView.addSubview(coursesTVC.view)
     coursesTVC.didMove(toParent: self)
+    
+    coursesTVC.courses = APIManager.currentUser!.enrolledCourses!
+    
+    view.addSubview(segmentedControl)
+    view.addSubview(containerView)
+    
+    NSLayoutConstraint.activate(
+      [
+        segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+        segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+        containerView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      ])
   }
   
   static func makeSegmentedControl() -> UISegmentedControl {
@@ -46,8 +44,8 @@ class CoursesViewController: UIViewController {
       comment: "Enrolled segmented control")
     
     let createdText = NSLocalizedString(
-      "CREATED",
-      value: "Created",
+      "ADDED",
+      value: "Added",
       comment: "Created segmented control")
     
     let sControl = UISegmentedControl.makeSegmentedControl()
@@ -61,7 +59,12 @@ class CoursesViewController: UIViewController {
   
   @objc
   func changeController(_ sender: UISegmentedControl!) {
-    // TODO: CHANGE ENROLLED AND CREATED VIEW
+    if sender.selectedSegmentIndex == 0 {
+      coursesTVC.courses = APIManager.currentUser!.enrolledCourses!
+    }
+    else {
+      coursesTVC.courses = APIManager.currentUser!.addedCourses!
+    }
   }
   
 }
