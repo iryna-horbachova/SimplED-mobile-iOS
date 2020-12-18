@@ -27,6 +27,8 @@ class ProfileViewController: UIViewController {
 
     title = "Profile"
     view.backgroundColor = .systemBackground
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",style: .plain,
+                                                        target: self, action: #selector(editProfile))
  
     view.addSubview(avatarImageView)
     view.addSubview(nameLabel)
