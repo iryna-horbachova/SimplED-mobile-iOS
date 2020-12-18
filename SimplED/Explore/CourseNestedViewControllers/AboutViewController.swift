@@ -148,6 +148,12 @@ class AboutViewController: UIViewController {
             self.courseViewController?.participants.append(APIManager.currentUser!)
             
           }
+          APIManager.shared.notify(users: [APIManager.currentUser!.email], subject: "Welcome to the club, buddy!!", message: "You successfully enrolled to the course \(self.course.title)!") { [weak self] error in
+            if let error = error {
+              print("ERROR")
+              print(error)
+            }
+          }
         case .failure(let error):
           DispatchQueue.main.async {
             self.present(UIAlertController.alertWithOKAction(

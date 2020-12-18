@@ -1204,6 +1204,65 @@ class APIManager {
     }
     task.resume()
   }
+  
+  // Email notification
+  
+  func notify(
+    users: [String],
+    subject: String,
+    message: String,
+    completion: @escaping (APIError?) -> ()
+  ) {
+    
+    print("NOTIFY USER")
+    let endpoint = baseURL + "users/notify/"
+
+    guard let url = URL(string: endpoint) else {
+      print("invalid url")
+      completion(.invalidData)
+        return
+    }
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["Content-Type"] = "application/json"
+    request.allHTTPHeaderFields = headers
+    
+    let parameters: [String: Any] = ["users": users, "subject": subject, "message": message]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+
+    } catch {
+      print("invalid request body")
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      print("NOTIFY DATA")
+      print(String(decoding: data!, as: UTF8.self))
+      print(response)
+      
+      if let _ = error {
+        print("got an error from the server")
+        completion(.unableToComplete)
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse,
+        (200 ... 299) ~= response.statusCode else {
+        print("invalid response")
+        completion(.invalidResponse)
+        return
+      }
+      
+      completion(nil)
+      
+    }
+    task.resume()
+  }
 }
 
 extension APIManager {
