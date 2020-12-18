@@ -562,7 +562,6 @@ class APIManager {
     courseId: Int,
     completion: @escaping tasksCompletionHandler
   ) {
-    print("getting tasks")
     let endpoint = baseURL + "courses/\(courseId)/tasks/"
     
     guard let url = URL(string: endpoint) else {
@@ -594,8 +593,6 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let tasks = try decoder.decode([Task].self, from: data)
-        print("tasks")
-        print(tasks)
         completion(.success(tasks))
       } catch _ {
         completion(.failure(.invalidData))
@@ -777,8 +774,6 @@ class APIManager {
     completion: @escaping solutionCompletionHandler
   ) {
     let endpoint = baseURL + "courses/\(courseId)/tasks/\(taskId)/solutions/\(solution.id!)/"
-    print("solution")
-    print(solution)
     
     guard let url = URL(string: endpoint) else {
       completion(.failure(.invalidData))
@@ -1114,7 +1109,6 @@ class APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let participants = try decoder.decode([User].self, from: data)
-        print(participants)
         completion(.success(participants))
       } catch {
         completion(.failure(.invalidData))
@@ -1166,12 +1160,59 @@ class APIManager {
     }
     task.resume()
   }
+  
+  func getChatHistory(
+    courseId: Int,
+    completion: @escaping chatCompletionHandler
+  ) {
+    let endpoint = baseURL + "chats/\(courseId)/messages/"
+    
+    guard let url = URL(string: endpoint) else {
+      completion(.failure(.invalidData))
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
+      if let _ = error {
+        completion(.failure(.unableToComplete))
+        return
+      }
+        
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      
+      guard let data = data else {
+        completion(.failure(.invalidData))
+        return
+      }
+      
+      do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let messages = try decoder.decode([TextMessage].self, from: data)
+        completion(.success(messages))
+      } catch let error {
+        completion(.failure(.invalidData))
+      }
+    }
+    task.resume()
+  }
 }
 
 extension APIManager {
   typealias courseCompletionHandler = (Result<Course, APIError>) -> Void
   typealias categoryCoursesCompletionHandler = (Result<[String: [Course]], APIError>) -> Void
   typealias courseOptionsCompletionHandler = (Result<[CourseOption], APIError>) -> Void
+  
+  typealias chatCompletionHandler = (Result<[TextMessage], APIError>) -> Void
+  
   typealias userCompletionHandler = (Result<User, APIError>) -> Void
   typealias usersCompletionHandler = (Result<[User], APIError>) -> Void
   typealias stringArrayCompletionHandler = (Result<[String], APIError>) -> Void
@@ -1179,6 +1220,7 @@ extension APIManager {
   
   typealias tasksCompletionHandler = (Result<[Task], APIError>) -> Void
   typealias taskCompletionHandler = (Result<Task, APIError>) -> Void
+  
   typealias solutionsCompletionHandler = (Result<[Solution], APIError>) -> Void
   typealias solutionCompletionHandler = (Result<Solution, APIError>) -> Void
   typealias participantsCompletionHandler = (Result<[Participant], APIError>) -> Void

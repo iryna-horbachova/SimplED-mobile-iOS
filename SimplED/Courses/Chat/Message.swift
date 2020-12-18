@@ -4,10 +4,17 @@ public struct Message {
 }
 
 public struct TextMessage: Codable {
-  let senderId: Int
-  let fullName: String
+  var senderId: Int?
+  let sender: User?
+  var fullName: String?
   let text: String
 }
+
+/* public struct ArchivedMessage: Codable {
+  let sender: Int
+  let fullName: String
+  let text: String
+} */
 
 public enum MessageType {
   case outgoing
