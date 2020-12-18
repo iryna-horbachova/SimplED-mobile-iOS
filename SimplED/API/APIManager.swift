@@ -526,17 +526,8 @@ class APIManager {
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
-    print("get courses request headers")
-    print(request.allHTTPHeaderFields)
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
-      print("get couurses")
-      print(String(decoding: data!, as: UTF8.self))
-      print("response")
-      print(response)
-      print("error")
-      print(error)
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -878,18 +869,8 @@ class APIManager {
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
-    print(request.allHTTPHeaderFields)
-    print(request.url)
-    
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
-      print("*********get user")
-      print(String(decoding: data!, as: UTF8.self))
-      print("response")
-      print(response)
-      print("error")
-      print(error)
       
       if let _ = error {
         completion(.failure(.unableToComplete))
@@ -1113,13 +1094,6 @@ class APIManager {
     request.setValue("Bearer \(token!.access!)", forHTTPHeaderField:"Authorization")
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      
-      print("get participants")
-      print(String(decoding: data!, as: UTF8.self))
-      print("response")
-      print(response)
-      print("error")
-      print(error)
 
       if let _ = error {
         completion(.failure(.unableToComplete))

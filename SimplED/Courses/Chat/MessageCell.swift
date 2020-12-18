@@ -7,8 +7,8 @@ class MessageCell: UITableViewCell {
   var messageType: MessageType = .incoming
   
   func apply(message: Message) {
-    nameLabel.text = message.senderName
-    messageLabel.text = message.text
+    nameLabel.text = message.textMessage.fullName
+    messageLabel.text = message.textMessage.text
     messageType = message.type
     setNeedsLayout()
   }
@@ -32,8 +32,8 @@ class MessageCell: UITableViewCell {
   
   class func height(for message: Message) -> CGFloat {
     let maxSize = CGSize(width: 2*(UIScreen.main.bounds.size.width/3), height: CGFloat.greatestFiniteMagnitude)
-    let nameHeight = message.type == .outgoing ? 0 : (height(forText: message.senderName, fontSize: 10, maxSize: maxSize) + 4 )
-    let messageHeight = height(forText: message.text, fontSize: 17, maxSize: maxSize)
+    let nameHeight = message.type == .outgoing ? 0 : (height(forText: message.textMessage.fullName, fontSize: 10, maxSize: maxSize) + 4 )
+    let messageHeight = height(forText: message.textMessage.text, fontSize: 17, maxSize: maxSize)
     
     return nameHeight + messageHeight + 32 + 16
   }

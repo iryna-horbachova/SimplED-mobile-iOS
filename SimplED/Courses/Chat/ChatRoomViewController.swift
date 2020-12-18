@@ -1,8 +1,16 @@
 import UIKit
+import Foundation
 
-class ChatRoomViewController: UIViewController {
+class ChatRoomViewController: UIViewController, ObservableObject {
+  
+  var courseId: Int!
+  var socket: URLSessionWebSocketTask!
+  private let session = URLSession(configuration: .default)
+  private let decoder = JSONDecoder()
+  private let encoder = JSONEncoder()
   
   private var messages = [Message]()
+  
   private let tableView = UITableView()
   private let messageInputView = MessageInputView()
   
@@ -17,8 +25,9 @@ class ChatRoomViewController: UIViewController {
     title = "Chat"
     view.backgroundColor = .systemBackground
     
-    messages.append(Message(senderName: "Ira", text: "Hello guys", type: .outgoing))
-    messages.append(Message(senderName: "Ira", text: "Hellooooooooooooooooosddkjsnfjkldsflkbseakshedbbsellbh", type: .incoming))
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    connect()
     
     NotificationCenter.default.addObserver(self,
            selector: #selector(keyboardWillShow),
@@ -28,6 +37,8 @@ class ChatRoomViewController: UIViewController {
            selector: #selector(keyboardWillHide),
            name: UIResponder.keyboardWillHideNotification,
            object: nil)
+    
+    messageInputView.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
     
     let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
     view.addGestureRecognizer(tap)
@@ -53,7 +64,16 @@ class ChatRoomViewController: UIViewController {
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
     ])
     messageViewBottomConstraint.isActive = true
-    insertNewMessageCell(Message(senderName: "Someone", text: "Heeeey", type: .incoming))
+  }
+  
+  @objc
+  private func sendButtonTapped() {
+    print("sendButtonTapped")
+    let text = messageInputView.textView.text!
+    messageInputView.textView.text = ""
+    let fullName = "\(APIManager.currentUser!.firstName) \(APIManager.currentUser!.lastName)"
+    let message = TextMessage(senderId: APIManager.currentUser!.id!, fullName: fullName, text: text)
+    send(message: message)
   }
   
   // Notification Center management
@@ -98,12 +118,83 @@ extension ChatRoomViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func insertNewMessageCell(_ message: Message) {
-    messages.append(message)
-    let indexPath = IndexPath(row: messages.count - 1, section: 0)
-    tableView.beginUpdates()
-    tableView.insertRows(at: [indexPath], with: .bottom)
-    tableView.endUpdates()
-    tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+    DispatchQueue.main.async {
+      self.messages.append(message)
+      let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+      self.tableView.beginUpdates()
+      self.tableView.insertRows(at: [indexPath], with: .bottom)
+      self.tableView.endUpdates()
+      self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+    }
+  }
+}
+
+// Web Sockets
+
+extension ChatRoomViewController {
+  
+  func connect() {
+    socket = session.webSocketTask(with: URL(string: "wss://simpled-api.herokuapp.com/chat/\(courseId!)/")!)
+    listen()
+    socket.resume()
+  }
+  
+  func handle(_ data: Data) {
+    do {
+      let textMessage = try decoder.decode(TextMessage.self, from: data)
+      var type: MessageType!
+      
+      if textMessage.senderId == APIManager.currentUser!.id! {
+        type = .outgoing
+      }
+      else {
+        type = .incoming
+      }
+      
+      let message = Message(textMessage: textMessage, type: type)
+      insertNewMessageCell(message)
+    } catch {
+      print(error)
+    }
+  }
+  
+  func send(message: TextMessage) {
+    do {
+      print(message)
+      let data = try encoder.encode(message)
+      let strData = String(decoding: data, as: UTF8.self)
+      
+      let task = URLSessionWebSocketTask.Message.string(strData)
+      self.socket.send(task) { (err) in
+        if err != nil {
+          print(err.debugDescription)
+        }
+      }
+    } catch {
+      print(error)
+    }
+  }
+  
+  func listen() {
+    self.socket.receive { [weak self] (result) in
+      guard let self = self else { return }
+      switch result {
+      case .failure(let error):
+        print(error)
+        return
+      case .success(let message):
+        switch message {
+        case .data(let data):
+          self.handle(data)
+        case .string(let str):
+          guard let data = str.data(using: .utf8) else { return }
+          self.handle(data)
+        @unknown default:
+          break
+        }
+      }
+      self.listen()
+    }
   }
 }
 
