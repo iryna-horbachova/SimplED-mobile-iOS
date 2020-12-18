@@ -1,10 +1,15 @@
-struct Message {
-  let senderName: String
-  let text: String
-  let type: MessageType
+public struct Message {
+  public let textMessage: TextMessage
+  public let type: MessageType
 }
 
-enum MessageType {
+public struct TextMessage: Codable {
+  let senderId: Int
+  let fullName: String
+  let text: String
+}
+
+public enum MessageType {
   case outgoing
   case incoming
 }

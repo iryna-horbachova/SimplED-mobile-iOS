@@ -78,7 +78,9 @@ class AboutViewController: UIViewController {
   
   @objc
   private func pushChatVC() {
-   navigationController?.pushViewController(ChatRoomViewController(), animated: true)
+    let chatRoomVC = ChatRoomViewController()
+    chatRoomVC.courseId = course.id!
+   navigationController?.pushViewController(chatRoomVC, animated: true)
   }
   
   @objc
