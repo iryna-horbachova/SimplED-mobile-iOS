@@ -25,6 +25,45 @@ class ChatRoomViewController: UIViewController, ObservableObject {
     title = "Chat"
     view.backgroundColor = .systemBackground
     
+    APIManager.shared.getChatHistory(courseId: courseId) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let tMessages):
+        var curMessages = [Message]()
+        for tMessage in tMessages {
+          var type: MessageType!
+          var curMessage = tMessage
+          
+          curMessage.fullName = "\(tMessage.sender!.firstName) \(tMessage.sender!.lastName)"
+          if curMessage.sender!.id == APIManager.currentUser!.id! {
+            type = .outgoing
+          }
+          else {
+            type = .incoming
+          }
+
+          let message = Message(textMessage: curMessage, type: type)
+          curMessages.append(message)
+        }
+        
+        DispatchQueue.main.sync {
+          self.messages = curMessages
+          self.tableView.reloadData()
+        }
+        
+        
+      case .failure(let error):
+        DispatchQueue.main.async {
+          self.present(
+            UIAlertController.alertWithOKAction(
+              title: "Error occured!",
+              message: error.rawValue),
+            animated: true,
+            completion: nil)
+        }
+      }
+    }
+    
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     encoder.keyEncodingStrategy = .convertToSnakeCase
     connect()
@@ -68,11 +107,10 @@ class ChatRoomViewController: UIViewController, ObservableObject {
   
   @objc
   private func sendButtonTapped() {
-    print("sendButtonTapped")
     let text = messageInputView.textView.text!
     messageInputView.textView.text = ""
     let fullName = "\(APIManager.currentUser!.firstName) \(APIManager.currentUser!.lastName)"
-    let message = TextMessage(senderId: APIManager.currentUser!.id!, fullName: fullName, text: text)
+    let message = TextMessage(senderId: APIManager.currentUser!.id!, sender: nil, fullName: fullName, text: text)
     send(message: message)
   }
   
@@ -160,7 +198,6 @@ extension ChatRoomViewController {
   
   func send(message: TextMessage) {
     do {
-      print(message)
       let data = try encoder.encode(message)
       let strData = String(decoding: data, as: UTF8.self)
       

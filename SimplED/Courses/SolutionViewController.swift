@@ -53,7 +53,6 @@ class SolutionViewController: UIViewController, UITextFieldDelegate, UITextViewD
                 message: error.rawValue),
               animated: true,
               completion: nil)
-            
           }
         }
       }

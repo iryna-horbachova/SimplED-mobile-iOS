@@ -61,7 +61,6 @@ class GroupVideoChatViewController: UIViewController {
     setUpVideo()
     joinChannel()
 
-    print("getting participants")
     APIManager.shared.getParticipantsArray{ [weak self] result in
       guard let self = self else { return }
       switch result {
@@ -88,7 +87,6 @@ class GroupVideoChatViewController: UIViewController {
   
   func leaveChannel() {
     getAgoraEngine().leaveChannel(nil)
-    print("leave channel")
     videoView.isHidden = true
     remoteUserIDs.removeAll()
     participantsCollectionView.reloadData()
